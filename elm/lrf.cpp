@@ -1,4 +1,4 @@
-include"lrf.hpp"
+#include"lrf.hpp"
 
 cv::Size normal(100,100);
 
@@ -18,20 +18,60 @@ bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double epsilon
 	}
 	return true;
 }
+/*
+MatrixXd get_beta(MatrixXd feature,MatrixXd T){
+    MatrixXd temp,beta,beta1,temp2,temp3;
+    if(feature.rows()>feature.cols()){ //列满秩
+        //左逆    .transpose()转置  .inverse()逆
+      temp=  feature.transpose()*feature;
+      temp2=temp.inverse()*feature.transpose();
+      beta1=temp2*T;
+    }else if(feature.rows()<feature.cols()){    //行满秩
+        //  T 的左逆
+        temp=  T.transpose()*T;
+        temp2=temp.inverse()*T.transpose();
+        temp3=temp*feature;
+        if(temp3.rows()>temp3.cols()){ //列满秩
+            beta=temp3.transpose()*temp;
+            beta1=beta.inverse()*temp3.transpose();
+        }else if(temp3.rows()<temp3.cols()){    //行满秩
+            //    temp * feature 的矩阵的右逆是 beta
+            beta=temp3.transpose()*temp3;
+            beta1=temp3.transpose()*beta.inverse();
+        }else if(temp3.rows()==temp3.cols()){
+            beta1=  temp3.inverse();
+        }
+    }else if(feature.rows()==feature.cols()){
+        temp=  feature.inverse();
+        beta1=temp*T;
+    }
+    return beta1;
+}*/
 
-void LRF_train(MatrixXd feature,MatrixXd T,MatrixXd beta){
-//     N = feature.rows();
+
+MatrixXd LRF_train(MatrixXd feature,MatrixXd T){
+    MatrixXd beta;
+    cout<<"start train"<<endl;
     MatrixXd Hg1;
     pseudoInverse(feature, Hg1);
+    cout<<"H->get!"<<Hg1.rows()<<","<<Hg1.cols()<<endl;
     beta=Hg1*T;
+    
+//     beta=get_beta(feature,T);
+    cout<<"beta->get!"<<beta.rows()<<","<<beta.cols()<<endl;
+    return beta;
 }
-void LRF_test(MatrixXd feature,MatrixXd beta,MatrixXd output){
-//     N = feature.rows();
+MatrixXd LRF_test(MatrixXd feature,MatrixXd beta){
+    MatrixXd output;
+     cout<<"start test"<<endl;
+     cout<<feature.rows()<<","<<feature.cols()<<"::"<<beta.rows()<<","<<beta.cols()<<endl;
     output=feature*beta;
+    cout<<"out->get!"<<endl;
+    return output;
 }
 
 //该函数   读取一张图(灰度)   随机权重卷积 池化 拉直    返回vector
-std::vector<float> get_feature(Mat img,int L,int e){
+Mat get_feature(Mat img,int L,int e){
     
 //     int L=8;    //L 为隐含层数量 为特征图数量
     Mat kernel;
@@ -49,7 +89,7 @@ std::vector<float> get_feature(Mat img,int L,int e){
     for (int i = 0; i < L; i++) {
         pool[i] = Mat(img.size(), CV_8UC1);   //CV_8UC-->uchar
         for (int m = 0; m < img.rows; m++) {
-            for (int n = 0; n < cols; n++) {
+            for (int n = 0; n < img.cols; n++) {
                 int tmp = 0;
                 for (int j = max(0, m - e); j < min(m + e, img.rows); j++) {
                     for (int k = max(0, n - e); k < min(n + e, img.cols); k++) {
@@ -62,14 +102,19 @@ std::vector<float> get_feature(Mat img,int L,int e){
         }
     }
     std::vector<float> end;
+    std::vector<float> fea;
     for(int i=0;i<L;i++){
-        std::vector<float> feature;
-        feature.clear();
+        
+        fea.clear();
         for (int i=0;i<pool[L].rows;i++)
             for (int j=0;j<pool[L].cols;j++)
-                    feature.push_back(pool[L].at<uchar>(i,j));   //拉直单个特征图
-        end.insert(end.end(), feature.begin(), feature.end());  //拉直所有特征图
+                    fea.push_back(pool[L].at<uchar>(i,j));   //拉直单个特征图
+        end.insert(end.end(), fea.begin(), fea.end());  //拉直所有特征图
     }
+    vector<float>().swap(fea);
+    Mat SrcImage1= Mat(end,true);
+    Mat SrcImage2=SrcImage1.t();
+    vector<float>().swap(end);
     
-    return end;
+    return SrcImage2;
 }

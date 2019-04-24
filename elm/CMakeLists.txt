@@ -22,12 +22,16 @@ INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 # include_directories(../src)
 # include_directories(../native)
 include_directories(${CMAKE_CURRENT_LIST_DIR})
+# include_directories(/usr/include/dlib)
+# include_directories(/home/huoda/Downloads/dlib-19.17/dlib/)
 # include(../libpico.cmake)
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
+add_subdirectory(/home/huoda/Downloads/dlib-19.17//dlib dlib_build)
+link_directories(${OpenCV_LIBRARY_DIRS})
 
 add_executable(elm ${SRC})
 #add_library(libelm SHARED ${SRC})
-link_directories(${OpenCV_LIBRARY_DIRS})
-target_link_libraries(elm  ${OpenCV_LIBS})
+
+target_link_libraries(elm dlib::dlib ${OpenCV_LIBS})

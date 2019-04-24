@@ -1,6 +1,13 @@
 #ifndef _ELM_H
 #define _ELM_H
 
+// #define DLIB_JPEG_SUPPORT
+
+#include <dlib/image_processing/frontal_face_detector.h>
+#include <dlib/image_processing/render_face_detections.h>
+#include <dlib/image_processing.h>
+#include <dlib/image_transforms.h>
+#include <dlib/image_io.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -19,15 +26,16 @@ using namespace cv;
 
 	int k=1;   //程序参数个数
 	int flag=0;        // 没有人脸?
-	MatrixXd T;	//存放训练集标签  //目标矩阵
-	int L = 100;     //隐层节点数   //单个图像  随机权重  特征矩阵 的 个数
+	int L = 3;     //隐层节点数   //单个图像  随机权重  特征矩阵 的 个数
+	int e=3;       //默认池化参数    e 表示池化中心到边的距离
 	// m 可以设置为文件夹的个数
-	int m = 100;      //训练集以及测试集   人数    
+	int m = 50;      //训练集以及测试集   人数    
 
 	int training_face_num_per_person=7; //训练集中每个人的人脸数
 	int testing_face_num_per_person=3;  // 测试集中每个人的人脸数
-	string trainfile_path="/home/huoda/Desktop/test100"; //路径
-	string testfile_path="/home/huoda/Desktop/sh";
+	
+	string trainfile_path="/home/huoda/Desktop/100/"; //路径
+	string testfile_path="/home/huoda/Desktop/100/";
 	vector<int> train_labels_ori;
 	vector<int> test_labels_ori;
 	Mat trainingImages;
@@ -80,6 +88,10 @@ using namespace cv;
 	*/
 
 cv::Mat face_align(const char* filename);
+
+	static dlib::frontal_face_detector detector;    //dlib face detector
+	static dlib::shape_predictor sp;			   // dlib shape predictor
+	void init_face_detector_dlib(string face_landmark="shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
 	
 
 #endif /* _TEST_H */

@@ -1,6 +1,12 @@
 #include "elm.hpp"
 #include"lrf.hpp"
 
+//init_face_detector_dlib();
+void init_face_detector_dlib(string face_landmark)
+{
+	detector = dlib::get_frontal_face_detector();
+	dlib::deserialize(face_landmark) >> sp;
+}
 
 void getFiles_train( string path, vector<string>& files )  
 {
@@ -91,8 +97,7 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
             continue;
         }
     // 	resize(SrcImage,SrcImage,cv::Size(50,50));
-        Mat SrcImage1= Mat(get_feature(SrcImage),true);
-        Mat SrcImage2=SrcImage1.t();		//
+        Mat SrcImage2= get_feature(SrcImage,L,e);
         trainingImages.push_back(SrcImage2);			//
         //push_back的标签是人    第几个人
         trainingLabels.push_back(train_labels_ori.at(i));
@@ -115,10 +120,9 @@ void getFaces_test(string filePath, Mat& testingImages, vector<int>& testingLabe
             continue;
         }
 //         resize(SrcImage,SrcImage,cv::Size(50,50));
-        Mat SrcImage1= Mat(get_feature(SrcImage),true);
-        Mat SrcImage2=SrcImage1.t();
+        Mat SrcImage2= get_feature(SrcImage,L,e);
         testingImages.push_back(SrcImage2);
-        testingLabels.push_back(test_labels_ori.at(i));//i/faces_per_person);
+        testingLabels.push_back(test_labels_ori.at(i));
 
      }     
 }
@@ -154,13 +158,35 @@ void print_matrix(MatrixXd &T) {
 
 cv::Mat face_align(const char* filename)
 {
+// 		dlib::array2d<dlib::rgb_pixel> img;
+// 		dlib::load_image(img, filename);
+// 
+// 		dlib::pyramid_up(img);
+// 		std::vector<dlib::rectangle> dets = detector(img); 
+// 		std::vector<dlib::full_object_detection> shapes;
+// 		dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;		
+// 		if(dets.size()<=0)
+// 		{
+// 			flag=1;
+// 			return cv::Mat::zeros(100,100,CV_8UC3);
+// 		}
+// 			for (unsigned long j = 0; j < dets.size(); ++j)
+// 			{
+// 				dlib::full_object_detection shape = sp(img, dets[j]);				
+// 				shapes.push_back(shape);
+// 			}
+// 			dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
+// 			dlib::array2d<dlib::rgb_pixel> equ;
+// 			dlib::equalize_histogram(face_chips[0],equ);
+//             cv::Mat img2 =dlib::toMat(equ);
+// 			return img2;
     
         Mat pic=imread(filename,0);flag=0;
 		if(pic.empty())
 		{
             flag=1;
             cout<<"pic  empty"<<endl;
-			return cv::Mat::zeros(100,100,CV_8UC3);
+			return cv::Mat::zeros(50,50,CV_8UC3);
 		}
 		 resize(pic,pic,cv::Size(50,50),0,0,INTER_LINEAR);
 // equalizeHist(pic,pic);
@@ -192,7 +218,7 @@ int my_parse_args(int argc, char* argv[]) {
 			cout<<"Setting testing path ..."<<endl;
 			testfile_path=argv[k++];
 		}else {
-			cout<<"command not find\n";
+			cout<<"command not find"<<endl;
 			return 1;
 		}
 	}
@@ -202,8 +228,8 @@ int my_parse_args(int argc, char* argv[]) {
 void cout_current_settings()
 {
 	cout<<"*****************************"<<endl;
-	cout<<"Current settings:\n";
-	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<<<endl;
+	cout<<"Current settings:"<<endl;
+	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<endl;
 	cout<<"training_face_num_per_person="<<training_face_num_per_person<<','<<"testing_face_num_per_person="<<testing_face_num_per_person<<endl;
 	cout<<"trainfile_path="<<trainfile_path<<endl;
 	cout<<"testfile_path="<<testfile_path<<endl;
@@ -214,12 +240,9 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files()
 {
 	cout<<"Loading train Data..."<<endl;
 	getFaces_train(trainfile_path,trainingImages,trainingLabels);
-	MatrixXd feature(trainingImages.rows, trainingImages.cols);		
-// 	VectorXd label(trainingLabels.size());							
-	cv2eigen(trainingImages,feature);								
-// 	cv2eigen(Mat(trainingLabels),label);							
-	cout<<"Number of training images:"<<trainingImages.rows<<endl;		//
-// 	n = trainingImages.cols;                                           //number of features						//
+	MatrixXd feature(trainingImages.rows, trainingImages.cols);								
+	cv2eigen(trainingImages,feature);														
+	cout<<"Number of training images:"<<trainingImages.rows<<endl;	
 	return feature;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
@@ -228,9 +251,7 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
 	cout<<"Loading test Data..."<<endl;
 	getFaces_test(testfile_path,testingImages,testingLabels);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
-// 	VectorXd label1(testingLabels.size());
 	cv2eigen(testingImages,feature1);
-// 	cv2eigen(Mat(testingLabels),label1);	
 	N_test = testingImages.rows;
 	cout<<"Number of testing images:"<<N_test<<endl;
 	return feature1;
@@ -238,6 +259,7 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
 
 MatrixXd generate_training_labels()
 {
+    cout<<"generate labels"<<endl;
 	N = trainingImages.rows;
 	MatrixXd temp_T;
 	//generate testing labels
@@ -248,12 +270,11 @@ MatrixXd generate_training_labels()
 			if (trainingLabels.at(i)==jj)
 				temp_T(i, jj) = 1;
 			else
-				temp_T(i, jj) = 0;
+				temp_T(i, jj) = -1;
 		}
 	
 	}
-	T = temp_T ;
-	return T;
+	return temp_T;
 }
 
 
@@ -261,7 +282,7 @@ MatrixXd generate_training_labels()
 
 void show_testing_results()
 {
-    cout<<"testing results(ELM,real):\n";
+    cout<<"testing results(ELM,real):"<<endl;
     cout<<output.rows()<<','<<output.cols()<<",N_test(rows):"<<N_test<<endl;
     int count=0;
     
@@ -286,9 +307,10 @@ void show_testing_results()
 int main(int argc, char** argv)
 {
 	init_stdio();//cin 提速
+    init_face_detector_dlib();
 	int in=my_parse_args(argc,argv);
 	if(argc<=1)
-		cout<<"Using default settings!\n";
+		cout<<"Using default settings!"<<endl;
 	cout_current_settings();
 	if(in!=0)
 		return 0;
@@ -297,8 +319,9 @@ int main(int argc, char** argv)
 	feature=ELM_in_ELM_face_training_matrix_from_files();
 	feature1=ELM_in_ELM_face_testing_matrix_from_files();
 	T=generate_training_labels();
-    LRF_train(MatrixXd feature,MatrixXd T,MatrixXd beta);
-    LRF_test(MatrixXd feature1,MatrixXd beta,MatrixXd output);
+    cout<<"T->get!"<<T.rows()<<","<<T.cols()<<endl;
+    beta=LRF_train( feature, T );
+    output=LRF_test( feature1, beta);
 	show_testing_results();
 	return 0;
 }
