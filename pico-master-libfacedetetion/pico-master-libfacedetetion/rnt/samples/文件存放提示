@@ -1,7 +1,0 @@
- 
-native 是真正的src文件
-3rdparty是linear的源文件
-include是lbf的源文件
-src是facedetect的源文件
-
-native中test是真正的主函数

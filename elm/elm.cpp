@@ -1,4 +1,5 @@
 #include "elm.hpp"
+#include"lrf.hpp"
 
 
 /******extract_feature: put one image into a vector(convert to gray image firstly)*****/
@@ -105,8 +106,8 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
             continue;
         }
     // 	resize(SrcImage,SrcImage,cv::Size(50,50));
-        Mat SrcImage1= Mat(extract_feature(SrcImage),true);
-        Mat SrcImage2=SrcImage1.t();		//矩阵逆		extract_feature特征值的逆
+        Mat SrcImage1= Mat(get_feature(SrcImage),true);
+        Mat SrcImage2=SrcImage1.t();		//
         trainingImages.push_back(SrcImage2);			//
         trainingLabels.push_back(train_labels_ori.at(i));//(i/faces_per_person);//i 将标签 push进
      }
@@ -128,7 +129,7 @@ void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLa
             continue;
         }
 //         resize(SrcImage,SrcImage,cv::Size(50,50));
-        Mat SrcImage1= Mat(extract_feature(SrcImage),true);
+        Mat SrcImage1= Mat(get_feature(SrcImage),true);
         Mat SrcImage2=SrcImage1.t();
         trainingImages.push_back(SrcImage2);
         trainingLabels.push_back(test_labels_ori.at(i));//i/faces_per_person);
@@ -136,22 +137,6 @@ void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLa
      }     
 }
 
-template<typename _Matrix_Type_>
-bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double epsilon = std::numeric_limits<typename _Matrix_Type_::Scalar>::epsilon()) {
-	Eigen::JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
-	if (a.rows() < a.cols()) {
-		typename _Matrix_Type_::Scalar tolerance = epsilon * std::max(a.cols(), a.rows()) * svd.singularValues().array().abs()(0);
-		result = svd.matrixV() * (svd.singularValues().array().abs() > tolerance).select(svd.singularValues().array().inverse(), 0).matrix().asDiagonal() * svd.matrixU().adjoint();
-	}
-       //return false;
-	else {
-		typename _Matrix_Type_::Scalar tolerance = epsilon * std::max(a.cols(), a.rows()) * svd.singularValues().array().abs().maxCoeff();
-		//  Eigen::JacobiSVD< _Matrix_Type_ > svd = a.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
-		//  typename _Matrix_Type_::Scalar tolerance = epsilon * std::max(a.cols(), a.rows()) * svd.singularValues().array().abs().maxCoeff();
-		result = svd.matrixV() * ((svd.singularValues().array().abs() > tolerance).select(svd.singularValues().array().inverse(), 0)).matrix().asDiagonal() * svd.matrixU().adjoint();
-	}
-	return true;
-}
 
 void init_stdio() {
 	std::ios::sync_with_stdio(false);
@@ -159,43 +144,6 @@ void init_stdio() {
 }
 
 
-void ELM_basic(MatrixXd &feature,/* VectorXd &label,*/ MatrixXd &W, MatrixXd &b_1, MatrixXd &beta, MatrixXd &output, int L, int m, int n, int N) {
-	MatrixXd b, R, Tem, H;
-	W = MatrixXd::Random(n, L);
-	b_1 = MatrixXd::Random(1, L);// + MatrixXd::Ones(1, L)) / 2;
-	b = MatrixXd::Ones(N, 1)*b_1;
-	R = -feature*W+b;
-	Tem = R.array().exp() + 1;
-	H = Tem.array().inverse();
-/*	MatrixXd temp_T, T;
-	temp_T = MatrixXd::Zero(N, m);
-	for (int i = 0; i < N; i++) {
-		if (label(i)==1) {
-			temp_T(i, 0) = 1;
-			temp_T(i, 1) = 0;
-		} else {
-			temp_T(i, 0) = 0;
-			temp_T(i, 1) = 1;
-		}
-	}
-	T = temp_T * 2 - MatrixXd::Ones(N, m);*/
-	MatrixXd result(L, N);
-	pseudoInverse(H, result);
-	beta = result*T;
-	output = H*beta;
-}
-void ELM_in_ELM(MatrixXd &feature, /*VectorXd &label,*/ MatrixXd* W, MatrixXd* b, MatrixXd* beta, MatrixXd & F, MatrixXd &output, int L, int m, int n, int N, int model_num){
-	MatrixXd Hg,temp_out;
-	Hg=MatrixXd::Zero(N,m*model_num);
-	for(int i=0;i<model_num;i++){
-		ELM_basic(feature, W[i], b[i], beta[i], temp_out,L, m, n, N) ;
-		Hg.block(0,m*i,N,m)=temp_out;
-	}
-	MatrixXd Hg1;
-	pseudoInverse(Hg, Hg1);
-	F=Hg1*T;
-	output=Hg*F;
-}
 
 void pr(string msg, MatrixXd &T) {
 	cout<<msg<<endl<<T<<endl;
@@ -247,7 +195,7 @@ int my_parse_args(int argc, char* argv[]) {
 			m=atoi(argv[k++]);
 		} else if(*p=='n') {
 			cout<<"Setting number of models ..."<<endl;
-			model_num=atoi(argv[k++]);
+// 			model_num=atoi(argv[k++]);
 		} else if(*p=='t') {
 			cout<<"Setting number of faces per training person ..."<<endl;
 			training_face_num_per_person=atoi(argv[k++]);
@@ -279,7 +227,7 @@ void cout_current_settings()
 {
 	cout<<"*****************************"<<endl;
 	cout<<"Current settings:\n";
-	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<','<<"model_num="<<model_num<<endl;
+// 	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<','<<"model_num="<<model_num<<endl;
 	cout<<"training_face_num_per_person="<<training_face_num_per_person<<','<<"testing_face_num_per_person="<<testing_face_num_per_person<<endl;
 	cout<<"trainfile_path="<<trainfile_path<<endl;
 	cout<<"testfile_path="<<testfile_path<<endl;
@@ -319,9 +267,9 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
 MatrixXd generate_training_labels()
 {
 	N = trainingImages.rows;
-	MatrixXd F,output;
+// 	MatrixXd F,output;
 	MatrixXd temp_T;
-	MatrixXd W[model_num],b[model_num], beta[model_num];
+// 	MatrixXd W[model_num],b[model_num], beta[model_num];
 	//generate testing labels
 	temp_T = MatrixXd::Zero(N, m);
 	for (int i = 0; i < N; i++) {
@@ -339,29 +287,7 @@ MatrixXd generate_training_labels()
 }
 
 
-	//ELM training
-	void ELM_training(MatrixXd feature,MatrixXd* W,MatrixXd* b,MatrixXd* beta)
-	{
-		//MatrixXd W[model_num],b[model_num], beta[model_num];
-        TickMeter tm; tm.start();
-		ELM_in_ELM(feature,W,b,beta,F,output,L,m,n,N,model_num);
-        tm.stop();  std::cout << "Training time:      "<<tm.getTimeSec()*1000<<"   ms"<<endl;
-	}
-	//ELM testing
-	void ELM_testing(MatrixXd feature1,MatrixXd* W,MatrixXd* b,MatrixXd* beta)
-	{
-		MatrixXd out_all,R,Tem,H;
-		out_all=MatrixXd::Zero(N_test,m*model_num);
-        TickMeter tm; tm.start();
-		for(int i=0;i<model_num;i++){
-			R = -feature1*W[i]+MatrixXd::Ones(N_test, 1)*b[i];
-			Tem = R.array().exp() + 1;
-			H = Tem.array().inverse();
-			out_all.block(0,m*i,N_test,m)=H*beta[i];
-		}
-		output=out_all*F;
-        tm.stop();  std::cout << "Testing time:      "<<tm.getTimeSec()*1000<<"   ms"<<endl;
-	}
+
 	//calculate accuracy
 
 	void show_testing_results()
@@ -391,7 +317,7 @@ MatrixXd generate_training_labels()
 
 int main(int argc, char** argv)
 {
-	init_stdio();
+	init_stdio();//cin 提速
 	int in=my_parse_args(argc,argv);
 	if(argc<=1)
 		cout<<"Using default settings!\n";
@@ -399,14 +325,16 @@ int main(int argc, char** argv)
 	if(in!=0)
 		return 0;
 	//time
-	MatrixXd W[model_num],b[model_num], beta[model_num];
+// 	MatrixXd W[model_num],b[model_num], beta[model_num];
     
 	MatrixXd feature,feature1;
 	feature=ELM_in_ELM_face_training_matrix_from_files();
 	feature1=ELM_in_ELM_face_testing_matrix_from_files();
 	T=generate_training_labels();
-	ELM_training(feature,W,b,beta);
-	ELM_testing(feature1,W,b,beta);
+    LRF_train();
+    LRF_test();
+// 	ELM_training(feature,W,b,beta);
+// 	ELM_testing(feature1,W,b,beta);
 	show_testing_results();
 	return 0;
 }
