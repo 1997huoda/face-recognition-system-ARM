@@ -2,21 +2,6 @@
 #include"lrf.hpp"
 
 
-/******extract_feature: put one image into a vector(convert to gray image firstly)*****/
-/*********************************************/
-std::vector<float> extract_feature(Mat src) 
-	{	
-//         cout<<"      extract_feature     "<<endl;
-		Mat dst;
-// 		cvtColor(src,dst,COLOR_BGR2GRAY);
-		std::vector<float> feature;
-		for (int i=0;i<src.rows;i++)
-			for (int j=0;j<src.cols;j++)
-					feature.push_back(src.at<uchar>(i,j));
-		return feature;
-	}
-	
-
 void getFiles_train( string path, vector<string>& files )  
 {
 	int count_train=0;
@@ -91,7 +76,7 @@ void getFiles_test( string path, vector<string>& files )
 } 
 
 
-void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person)
+void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels)
 {
      vector<string> files;  
      getFiles_train(filePath, files);  
@@ -109,11 +94,12 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
         Mat SrcImage1= Mat(get_feature(SrcImage),true);
         Mat SrcImage2=SrcImage1.t();		//
         trainingImages.push_back(SrcImage2);			//
-        trainingLabels.push_back(train_labels_ori.at(i));//(i/faces_per_person);//i 将标签 push进
+        //push_back的标签是人    第几个人
+        trainingLabels.push_back(train_labels_ori.at(i));
      }
 }
 
-void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person)
+void getFaces_test(string filePath, Mat& testingImages, vector<int>& testingLabels)
 {
      vector<string> files;  
      getFiles_test(filePath, files );  
@@ -131,8 +117,8 @@ void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLa
 //         resize(SrcImage,SrcImage,cv::Size(50,50));
         Mat SrcImage1= Mat(get_feature(SrcImage),true);
         Mat SrcImage2=SrcImage1.t();
-        trainingImages.push_back(SrcImage2);
-        trainingLabels.push_back(test_labels_ori.at(i));//i/faces_per_person);
+        testingImages.push_back(SrcImage2);
+        testingLabels.push_back(test_labels_ori.at(i));//i/faces_per_person);
 
      }     
 }
@@ -193,9 +179,6 @@ int my_parse_args(int argc, char* argv[]) {
 		} else if(*p=='p') {
 			cout<<"Setting number of training people ..."<<endl;
 			m=atoi(argv[k++]);
-		} else if(*p=='n') {
-			cout<<"Setting number of models ..."<<endl;
-// 			model_num=atoi(argv[k++]);
 		} else if(*p=='t') {
 			cout<<"Setting number of faces per training person ..."<<endl;
 			training_face_num_per_person=atoi(argv[k++]);
@@ -209,14 +192,7 @@ int my_parse_args(int argc, char* argv[]) {
 			cout<<"Setting testing path ..."<<endl;
 			testfile_path=argv[k++];
 		}else {
-			cout<<"-o: Setting number of hidden nodes\n";
-			cout<<"-p: Setting number of training people\n";
-			cout<<"-n: Setting number of models\n";
-			cout<<"-t: Setting number of faces per training person\n";
-			cout<<"-s: Setting number of faces per testing person\n";
-			cout<<"-r: Setting training path\n";
-			cout<<"-e: Setting testing path\n";
-			cout<<"other: Help\n";
+			cout<<"command not find\n";
 			return 1;
 		}
 	}
@@ -227,7 +203,7 @@ void cout_current_settings()
 {
 	cout<<"*****************************"<<endl;
 	cout<<"Current settings:\n";
-// 	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<','<<"model_num="<<model_num<<endl;
+	cout<<"Hidden nodes="<<L<<','<<"People="<<m<<<<endl;
 	cout<<"training_face_num_per_person="<<training_face_num_per_person<<','<<"testing_face_num_per_person="<<testing_face_num_per_person<<endl;
 	cout<<"trainfile_path="<<trainfile_path<<endl;
 	cout<<"testfile_path="<<testfile_path<<endl;
@@ -236,29 +212,25 @@ void cout_current_settings()
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files()
 {
-
 	cout<<"Loading train Data..."<<endl;
-	//load training images
-	getFaces_train(trainfile_path,trainingImages,trainingLabels,training_face_num_per_person);
-	MatrixXd feature(trainingImages.rows, trainingImages.cols);		//创建新的矩阵
-	VectorXd label(trainingLabels.size());							//创建新的向量
-	cv2eigen(trainingImages,feature);								//转化
-	cv2eigen(Mat(trainingLabels),label);							//转化
+	getFaces_train(trainfile_path,trainingImages,trainingLabels);
+	MatrixXd feature(trainingImages.rows, trainingImages.cols);		
+// 	VectorXd label(trainingLabels.size());							
+	cv2eigen(trainingImages,feature);								
+// 	cv2eigen(Mat(trainingLabels),label);							
 	cout<<"Number of training images:"<<trainingImages.rows<<endl;		//
-	n = trainingImages.cols;//number of features						//
+// 	n = trainingImages.cols;                                           //number of features						//
 	return feature;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
 {
 	// loading test images
 	cout<<"Loading test Data..."<<endl;
-	Mat testingImages;
-// 	vector<int> testingLabels;
-	getFaces_test(testfile_path,testingImages,testingLabels,testing_face_num_per_person);
+	getFaces_test(testfile_path,testingImages,testingLabels);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	VectorXd label1(testingLabels.size());
+// 	VectorXd label1(testingLabels.size());
 	cv2eigen(testingImages,feature1);
-	cv2eigen(Mat(testingLabels),label1);	
+// 	cv2eigen(Mat(testingLabels),label1);	
 	N_test = testingImages.rows;
 	cout<<"Number of testing images:"<<N_test<<endl;
 	return feature1;
@@ -267,9 +239,7 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files()
 MatrixXd generate_training_labels()
 {
 	N = trainingImages.rows;
-// 	MatrixXd F,output;
 	MatrixXd temp_T;
-// 	MatrixXd W[model_num],b[model_num], beta[model_num];
 	//generate testing labels
 	temp_T = MatrixXd::Zero(N, m);
 	for (int i = 0; i < N; i++) {
@@ -287,33 +257,31 @@ MatrixXd generate_training_labels()
 }
 
 
+//calculate accuracy
 
-	//calculate accuracy
+void show_testing_results()
+{
+    cout<<"testing results(ELM,real):\n";
+    cout<<output.rows()<<','<<output.cols()<<",N_test(rows):"<<N_test<<endl;
+    int count=0;
+    
+    std::string fileName = "my.txt" ;
+    std::ofstream outfile( fileName.c_str() ) ; // file name and the operation type. 
+    outfile <<output<<endl;
+    outfile.close() ;
 
-	void show_testing_results()
-	{
-		cout<<"testing results(ELM,real):\n";
-		cout<<output.rows()<<','<<output.cols()<<",N_test(rows):"<<N_test<<endl;
-//         cout<<output<<endl;
-		int count=0;
-        
-        std::string fileName = "my.txt" ;
-        std::ofstream outfile( fileName.c_str() ) ; // file name and the operation type. 
-        outfile <<output<<endl;
-        outfile.close() ;
-
-		for (int i=0;i<N_test;i++)
-		{
+    for (int i=0;i<N_test;i++)
+    {
 //             cout<<i<<endl;
-			int ii,jj;
+        int ii,jj;
 //             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
-			output.row(i).maxCoeff(&ii,&jj);
-			cout<<jj<<','<<testingLabels.at(i)<<endl;
-			if(jj==testingLabels.at(i))
-				count++;
-		}
-		cout<<"accuracy:"<<(double)count/(double)N_test<<endl;
-	}
+        output.row(i).maxCoeff(&ii,&jj);
+        cout<<jj<<','<<testingLabels.at(i)<<endl;
+        if(jj==testingLabels.at(i))
+            count++;
+    }
+    cout<<"accuracy:"<<(double)count/(double)N_test<<endl;
+}
 
 int main(int argc, char** argv)
 {
@@ -324,17 +292,13 @@ int main(int argc, char** argv)
 	cout_current_settings();
 	if(in!=0)
 		return 0;
-	//time
-// 	MatrixXd W[model_num],b[model_num], beta[model_num];
     
 	MatrixXd feature,feature1;
 	feature=ELM_in_ELM_face_training_matrix_from_files();
 	feature1=ELM_in_ELM_face_testing_matrix_from_files();
 	T=generate_training_labels();
-    LRF_train();
-    LRF_test();
-// 	ELM_training(feature,W,b,beta);
-// 	ELM_testing(feature1,W,b,beta);
+    LRF_train(MatrixXd feature,MatrixXd T,MatrixXd beta);
+    LRF_test(MatrixXd feature1,MatrixXd beta,MatrixXd output);
 	show_testing_results();
 	return 0;
 }

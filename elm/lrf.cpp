@@ -20,20 +20,20 @@ bool pseudoInverse(const _Matrix_Type_ &a, _Matrix_Type_ &result, double epsilon
 }
 
 void LRF_train(MatrixXd feature,MatrixXd T,MatrixXd beta){
-    N = feature.rows();
+//     N = feature.rows();
     MatrixXd Hg1;
     pseudoInverse(feature, Hg1);
     beta=Hg1*T;
 }
-void LRF_train(MatrixXd feature,MatrixXd beta,MatrixXd output){
-    N = feature.rows();
+void LRF_test(MatrixXd feature,MatrixXd beta,MatrixXd output){
+//     N = feature.rows();
     output=feature*beta;
 }
 
 //该函数   读取一张图(灰度)   随机权重卷积 池化 拉直    返回vector
-std::vector<float> get_feature(Mat img){
+std::vector<float> get_feature(Mat img,int L,int e){
     
-    int L=8;    //L 为隐含层数量 为特征图数量
+//     int L=8;    //L 为隐含层数量 为特征图数量
     Mat kernel;
     Mat feature[L];
     for (int i = 0; i < L; i++) {
@@ -45,19 +45,19 @@ std::vector<float> get_feature(Mat img){
     Mat pool[L];    
     // pool[0].allocator
     //池化 e的大小   ：   e 表示池化中心到边的距离
-    int e = 3;
-    for (int i = 0; i < 8; i++) {
-        pool[i] = Mat(100, 100, CV_8UC1);   //CV_8UC-->uchar
-        for (int m = 0; m < 100; m++) {
-            for (int n = 0; n < 100; n++) {
+//     int e = 3;
+    for (int i = 0; i < L; i++) {
+        pool[i] = Mat(img.size(), CV_8UC1);   //CV_8UC-->uchar
+        for (int m = 0; m < img.rows; m++) {
+            for (int n = 0; n < cols; n++) {
                 int tmp = 0;
-                for (int j = max(0, m - e); j < min(m + e, 100); j++) {
-                    for (int k = max(0, n - e); k < min(n + e, 100); k++) {
+                for (int j = max(0, m - e); j < min(m + e, img.rows); j++) {
+                    for (int k = max(0, n - e); k < min(n + e, img.cols); k++) {
                         //  tmp 为方均根
-                        tmp += pow(feature[i].at<uchar>(j, k), 2);
+                        tmp += pow(feature[i].at<uchar>(j, k), 2);  //j行k列
                     }
                 }
-                pool[i].at<uchar>(m, n) = tmp;
+                pool[i].at<uchar>(m, n) = tmp;  //m行n列
             }
         }
     }

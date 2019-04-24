@@ -11,10 +11,11 @@ using namespace std;
 using namespace cv;
 using namespace Eigen;
 
-std::vector<float> get_feature(Mat img);
 
+
+std::vector<float> get_feature(Mat img,int L,int e);
 void LRF_train(MatrixXd feature,MatrixXd T,MatrixXd beta);
-void LRF_train(MatrixXd feature,MatrixXd beta,MatrixXd output);
+void LRF_test(MatrixXd feature,MatrixXd beta,MatrixXd output);
 
 
 
