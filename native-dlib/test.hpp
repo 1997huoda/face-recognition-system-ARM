@@ -29,13 +29,16 @@ using namespace std;
 using namespace cv;
 // using namespace dlib;
 
+//标准化输出尺寸    //alignment 输出大小 设置为50*50减小内存损耗
+cv::Size size_box(100,100);
+cv::Size nor(160,120);//160 120// 320 160 // 128 96 //
 
 struct val{
 	Mat mat;
 };
 struct location{
     int x,y,w,h,q;
-    bool operator<(location& a); //<号重载
+    bool operator<(location& a);    // <号重载
 };
 vector<location> final_location;
 vector<Mat> alignment_face_recall;
@@ -55,8 +58,8 @@ bool big(const location &m1,const location &m2);
 Mat contrastStretch(cv::Mat srcImage);      //灰度值归一化
 void cap_save(Mat src,string out_name);
 
-	static dlib::frontal_face_detector detector;    //dlib face detector
-	static dlib::shape_predictor sp;			   // dlib shape predictor
-	void init_face_detector_dlib(string face_landmark="shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
+static dlib::frontal_face_detector detector;    //dlib face detector
+static dlib::shape_predictor sp;			   // dlib shape predictor
+void init_face_detector_dlib(string face_landmark="shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
 
 #endif /* _TEST_H */

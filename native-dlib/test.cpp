@@ -10,10 +10,6 @@
 // //define the buffer size. Do not change the size!
 // #define DETECT_BUFFER_SIZE 0x20000
 
-cv::Size size_box(100,100);//标准化输出尺寸    //alignment 输出大小 设置为50*50减小内存损耗
-cv::Size nor(320,160);
-
-
 bool cmp(const location &m1,const location &m2){//按照x从小到大，的顺序
     return m1.x<m2.x;
 }
@@ -91,7 +87,6 @@ void process_image(Mat mat)
             location good={x,y,w,h,neighbors};  
             final_location.push_back(good);     
         }
-    
 		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x,y,w,h,neighbors,angle );
 	}	
 	    free(pBuffer);
@@ -117,11 +112,9 @@ void process_webcam_frames()
         cvtColor(frame, bak_gray, CV_BGR2GRAY);
         capture>>frame;
 		resize(frame,frame,nor,0,0,INTER_LINEAR);//320 160//256 144 //192*172
-        //bak_gray为缩放图
-//         cvtColor(frame, bak_gray, CV_BGR2GRAY);
 
         process_image(frame);
-        
+    
         //                  算法稳定仍然需要去重
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
             if(iter+1==final_location.end())break;
@@ -172,8 +165,7 @@ void process_webcam_frames()
             rectangle(frame,rect,cv::Scalar(100, 0, 0),1,0);
             cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
         }
-        
-       // cap_save(bak_gray,"cap");
+
 
         for(vector<Mat>::iterator iter = alignment_face_recall.begin();iter!=alignment_face_recall.end();iter++){
             imshow("show"+to_string(iter-alignment_face_recall.begin()),(*iter));
