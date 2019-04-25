@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include<pthread.h>
 #include<math.h>
-#include "lbf.hpp"
+
 #include "test.hpp"
 #include "facedetectcnn.h"
 #include "elm.hpp"
@@ -30,16 +30,16 @@
 using namespace std;
 using namespace Eigen;
 using namespace cv;
-using namespace lbf;
-extern void global_init();//参数初始化 模型加载
-extern void process_webcam_frames();//演示函数
-extern void pic_scan(string pic_name);
+
+// extern void global_init();//参数初始化 模型加载
+// extern void process_webcam_frames();//演示函数
+// extern void pic_scan(string pic_name);
 int main(int argc, char* argv[])
 {
 	printf("START OK  \n");
 	int arg;
 	char input[100];
-	global_init();
+	// global_init();
 	input[0] = 0;
 	// parse command line arguments
 	arg = 1;
@@ -67,10 +67,10 @@ int main(int argc, char* argv[])
 	}
 	if(0 == strlen(input))
 	{
-		process_webcam_frames();
+		// process_webcam_frames();
 	}
 	else{
-        pic_scan(input);
+        // pic_scan(input);
     }
 	return 0;
 }

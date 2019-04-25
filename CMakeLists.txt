@@ -16,8 +16,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 # add_compile_options(-fPIC)
 # add_definitions()
 
-include_directories(${CMAKE_CURRENT_LIST_DIR}/3rdparty/liblinear)
-include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
+
 include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/elm)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/native)
@@ -27,7 +26,7 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 include(${CMAKE_CURRENT_LIST_DIR}/libpico.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/elm/libelm.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/libelm.cmake)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 link_directories(${CMAKE_CURRENT_LIST_DIR})
@@ -37,6 +36,6 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 add_executable(pro ${SRC})
 # add_library(libpico SHARED ${SRC})
 
-target_link_libraries(pro libpico lib7000 liblinear libelm libfacedetection ${OpenCV_LIBS})
+target_link_libraries(pro libpico libfacedetection dlib::dlib libelm ${OpenCV_LIBS})
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/lfpw.model DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/native/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
