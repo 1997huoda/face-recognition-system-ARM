@@ -25,7 +25,7 @@ link_directories(${CMAKE_CURRENT_LIST_DIR})
 link_directories(/usr/lib)
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
-add_subdirectory(/home/huoda/Downloads/dlib-19.17//dlib dlib_build)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/dlib dlib_build)
 
 add_executable(pico ${SRC})
 add_library(libpico SHARED ${SRC})
