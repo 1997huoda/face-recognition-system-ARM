@@ -162,7 +162,8 @@ void process_webcam_frames()
 			break;          
 		resize(frame,frame,cv::Size(320,160),0,0,INTER_LINEAR);//320 160//256 144 //192*172
         cvtColor(frame, bak_gray, CV_BGR2GRAY);
-		start_4thread(frame);
+// 		start_4thread(frame);
+        process_image(frame);
         
         //                  算法稳定仍然需要去重
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
@@ -195,8 +196,9 @@ void process_webcam_frames()
 //             cvtColor(image, image, CV_BGR2GRAY);
             resize(image,image,size_box,0,0,INTER_LINEAR);//这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
 //             image=contrastStretch(image);
-            equalizeHist(image,image);
-            star_alignment_thread(image);
+//             equalizeHist(image,image);
+//             star_alignment_thread(image);
+            face_alignment(image);
             
             Point point(x,y+h);//左下角
             String text=to_string(iter-final_location.begin());
