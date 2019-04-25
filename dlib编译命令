@@ -1,0 +1,4 @@
+mkdir build; cd build; cmake .. -DDLIB_USE_CUDA=0 -DUSE_AVX_INSTRUCTIONS=1; cmake --build .
+
+禁用CUDA
+使用AVX
