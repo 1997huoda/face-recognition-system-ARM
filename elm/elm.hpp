@@ -34,8 +34,8 @@ using namespace cv;
 	int training_face_num_per_person=7; //训练集中每个人的人脸数
 	int testing_face_num_per_person=3;  // 测试集中每个人的人脸数
 	
-	string trainfile_path="/home/huoda/Desktop/100/"; //路径
-	string testfile_path="/home/huoda/Desktop/100/";
+	string trainfile_path="/home/huoda/Desktop/origin100"; //路径
+	string testfile_path="/home/huoda/Desktop/origin50/";
 	vector<int> train_labels_ori;
 	vector<int> test_labels_ori;
 	Mat trainingImages;

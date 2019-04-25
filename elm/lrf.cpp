@@ -74,7 +74,7 @@ MatrixXd LRF_test(MatrixXd feature,MatrixXd beta){
 Mat get_feature(Mat img,int L,int e){
     
 //     int L=8;    //L 为隐含层数量 为特征图数量
-    Mat kernel;
+    Mat kernel ;
     Mat feature[L];
     for (int i = 0; i < L; i++) {
         //随机权重  3*3扫描   kernel窗口大小
@@ -115,6 +115,11 @@ Mat get_feature(Mat img,int L,int e){
     Mat SrcImage1= Mat(end,true);
     Mat SrcImage2=SrcImage1.t();
     vector<float>().swap(end);
+    kernel.release();
+    for (int i = 0; i < L; i++) {
+        pool[i].release();
+    }
+    SrcImage1.release();
     
     return SrcImage2;
 }

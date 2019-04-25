@@ -98,7 +98,12 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
         }
     // 	resize(SrcImage,SrcImage,cv::Size(50,50));
         Mat SrcImage2= get_feature(SrcImage,L,e);
-        trainingImages.push_back(SrcImage2);			//
+        trainingImages.push_back(SrcImage2);	
+        
+        vector<string>().swap(files);
+        SrcImage.release();
+        SrcImage2.release();
+        
         //push_back的标签是人    第几个人
         trainingLabels.push_back(train_labels_ori.at(i));
      }
@@ -122,6 +127,11 @@ void getFaces_test(string filePath, Mat& testingImages, vector<int>& testingLabe
 //         resize(SrcImage,SrcImage,cv::Size(50,50));
         Mat SrcImage2= get_feature(SrcImage,L,e);
         testingImages.push_back(SrcImage2);
+        
+        vector<string>().swap(files);
+        SrcImage.release();
+        SrcImage2.release();
+        
         testingLabels.push_back(test_labels_ori.at(i));
 
      }     
