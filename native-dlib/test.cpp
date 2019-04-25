@@ -11,6 +11,7 @@
 // #define DETECT_BUFFER_SIZE 0x20000
 
 cv::Size size_box(100,100);//标准化输出尺寸    //alignment 输出大小 设置为50*50减小内存损耗
+cv::Size nor(320,160);
 
 
 bool cmp(const location &m1,const location &m2){//按照x从小到大，的顺序
@@ -35,7 +36,6 @@ void global_init(){
 
 }
 void face_alignment(Mat image_roi){	
-    
     //<dlib::rgb_pixel>                                 //彩色图
     dlib::cv_image<unsigned char> img(image_roi);       //灰度图
     
@@ -58,8 +58,6 @@ void face_alignment(Mat image_roi){
     alignment_face_recall.push_back(eve);
 
 	}
-	
-
 
 void process_image(Mat mat)
 {
@@ -110,12 +108,17 @@ void process_webcam_frames()
 	{	
         final_location.clear();
         alignment_face_recall.clear();
+        
 		Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
 		capture>>frame;
 		if (frame.empty())
 			break;          
-		resize(frame,frame,cv::Size(320,160),0,0,INTER_LINEAR);//320 160//256 144 //192*172
+        //bak_gray为原图
         cvtColor(frame, bak_gray, CV_BGR2GRAY);
+        capture>>frame;
+		resize(frame,frame,nor,0,0,INTER_LINEAR);//320 160//256 144 //192*172
+        //bak_gray为缩放图
+//         cvtColor(frame, bak_gray, CV_BGR2GRAY);
 
         process_image(frame);
         
@@ -137,23 +140,28 @@ void process_webcam_frames()
         
         cout<<"检测到的人脸的个数    "<<final_location.size()<<"个"<<endl;
         
+        
+        int x_b=cvRound(bak_gray.cols/nor.width);int y_b=cvRound(bak_gray.rows/nor.height);
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
-            float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h; 
-                
+            
+            int x=cvRound(x_b*(*iter).x);int y = cvRound(y_b*(*iter).y);int w =cvRound(x_b* (*iter).w);int h =cvRound( y_b*(*iter).h); 
+            
 //                 x-=0;if(x<0)x=0;
 //                 y-=0;if(y<0)y=0;
 //                 w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
 //                 h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
-                /*********/
+
             Rect rect(x,y,w,h);
-            Mat image2=(bak_gray(rect));
-            Mat image=image2.clone();
+            Mat image=(bak_gray(rect));
             
-            //resize这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
+            //resize 将长方形的人脸 resize 成标准方形
             resize(image,image,size_box,0,0,INTER_LINEAR);
-            
             face_alignment(image);
-            
+        }
+        
+		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
+            int x=(*iter).x;int y = (*iter).y;int w = (*iter).w;int h = (*iter).h; 
+            Rect rect(x,y,w,h);
             Point point(x,y+h);//左下角
             String text=to_string(iter-final_location.begin());
             int font_face = cv::FONT_HERSHEY_COMPLEX;
@@ -166,8 +174,6 @@ void process_webcam_frames()
         }
         
        // cap_save(bak_gray,"cap");
-        
-        
 
         for(vector<Mat>::iterator iter = alignment_face_recall.begin();iter!=alignment_face_recall.end();iter++){
             imshow("show"+to_string(iter-alignment_face_recall.begin()),(*iter));
