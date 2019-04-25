@@ -8,6 +8,8 @@
 #include <dlib/image_processing.h>
 #include <dlib/image_transforms.h>
 #include <dlib/image_io.h>
+#include <dlib/opencv.h>
+
 #include <iostream>
 #include <fstream>
 #include <vector>

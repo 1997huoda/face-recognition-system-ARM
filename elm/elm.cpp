@@ -96,13 +96,13 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
             cout<<"No face in this file:"<<files[i].c_str()<<endl;
             continue;
         }
-    // 	resize(SrcImage,SrcImage,cv::Size(50,50));
+//     	resize(SrcImage,SrcImage,cv::Size(50,50));
         Mat SrcImage2= get_feature(SrcImage,L,e);
         trainingImages.push_back(SrcImage2);	
         
 
-        SrcImage.release();
-        SrcImage2.release();
+//         SrcImage.release();
+//         SrcImage2.release();
         
         //push_back的标签是人    第几个人
         trainingLabels.push_back(train_labels_ori.at(i));
@@ -129,8 +129,8 @@ void getFaces_test(string filePath, Mat& testingImages, vector<int>& testingLabe
         testingImages.push_back(SrcImage2);
         
 
-        SrcImage.release();
-        SrcImage2.release();
+//         SrcImage.release();
+//         SrcImage2.release();
         
         testingLabels.push_back(test_labels_ori.at(i));
 
@@ -168,30 +168,32 @@ void print_matrix(MatrixXd &T) {
 
 cv::Mat face_align(const char* filename)
 {
-// 		dlib::array2d<dlib::rgb_pixel> img;
-// 		dlib::load_image(img, filename);
-// 
-// 		dlib::pyramid_up(img);
-// 		std::vector<dlib::rectangle> dets = detector(img); 
-// 		std::vector<dlib::full_object_detection> shapes;
-// 		dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;		
-// 		if(dets.size()<=0)
-// 		{
-// 			flag=1;
-// 			return cv::Mat::zeros(100,100,CV_8UC3);
-// 		}
-// 			for (unsigned long j = 0; j < dets.size(); ++j)
-// 			{
-// 				dlib::full_object_detection shape = sp(img, dets[j]);				
-// 				shapes.push_back(shape);
-// 			}
-// 			dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
-// 			dlib::array2d<dlib::rgb_pixel> equ;
-// 			dlib::equalize_histogram(face_chips[0],equ);
-//             cv::Mat img2 =dlib::toMat(equ);
-// 			return img2;
     
-        Mat pic=imread(filename,0);flag=0;
+		dlib::array2d<dlib::rgb_pixel> img;
+		dlib::load_image(img, filename);
+
+		dlib::pyramid_up(img);
+		std::vector<dlib::rectangle> dets = detector(img); 
+		std::vector<dlib::full_object_detection> shapes;
+		dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;		
+		if(dets.size()<=0)
+		{
+			flag=1;
+			return cv::Mat::zeros(100,100,CV_8UC3);
+		}
+			for (unsigned long j = 0; j < dets.size(); ++j)
+			{
+				dlib::full_object_detection shape = sp(img, dets[j]);				
+				shapes.push_back(shape);
+			}
+			dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
+			dlib::array2d<dlib::rgb_pixel> equ;
+			dlib::equalize_histogram(face_chips[0],equ);
+            cv::Mat pic =dlib::toMat(equ);
+//             cv::Mat img = dlib::toMat(equ);
+// 			return dlib::toMat(equ);
+    
+//         Mat pic=imread(filename,0);flag=0;
 		if(pic.empty())
 		{
             flag=1;
@@ -199,7 +201,7 @@ cv::Mat face_align(const char* filename)
 			return cv::Mat::zeros(50,50,CV_8UC3);
 		}
 		 resize(pic,pic,cv::Size(50,50),0,0,INTER_LINEAR);
-// equalizeHist(pic,pic);
+//         equalizeHist(pic,pic);
             return pic;
         
 }
