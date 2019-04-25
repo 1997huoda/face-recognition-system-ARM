@@ -140,15 +140,17 @@ void process_webcam_frames()
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
             float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h; 
                 
-                x-=0;if(x<0)x=0;
-                y-=0;if(y<0)y=0;
-                w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
-                h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
+//                 x-=0;if(x<0)x=0;
+//                 y-=0;if(y<0)y=0;
+//                 w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
+//                 h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
                 /*********/
             Rect rect(x,y,w,h);
             Mat image2=(bak_gray(rect));
             Mat image=image2.clone();
-            resize(image,image,size_box,0,0,INTER_LINEAR);//这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
+            
+            //resize这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
+            resize(image,image,size_box,0,0,INTER_LINEAR);
             
             face_alignment(image);
             
