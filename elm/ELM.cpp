@@ -211,7 +211,7 @@ void getFiles_test( string path, vector<string>& files )
         trainingLabels.push_back(i/faces_per_person);
      }  
 }*/
-void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person)
+void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels)
 {
      vector<string> files;  
      getFiles_train(filePath, files);  
@@ -228,13 +228,13 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
 	resize(SrcImage,SrcImage,cv::Size(50,50));
         Mat SrcImage1= Mat(extract_feature(SrcImage),true);
         //Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
-        Mat SrcImage2=SrcImage1.t();		//矩阵逆		extract_feature特征值的逆
-        trainingImages.push_back(SrcImage2);			//
-        trainingLabels.push_back(train_labels_ori.at(i));//(i/faces_per_person);//i 将标签 push进
+        Mat SrcImage2=SrcImage1.t();		
+        trainingImages.push_back(SrcImage2);			
+        trainingLabels.push_back(train_labels_ori.at(i));
      }
 }
 
-void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person)
+void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLabels)
 {
      vector<string> files;  
      getFiles_test(filePath, files );  
@@ -256,7 +256,7 @@ void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLa
         Mat SrcImage2=SrcImage1.t();
         trainingImages.push_back(SrcImage2);
         //cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-        trainingLabels.push_back(test_labels_ori.at(i));//i/faces_per_person);
+        trainingLabels.push_back(test_labels_ori.at(i));
         //cout<<i<<':'<<test_labels_ori.at(i)<<endl;
      }     
 }
@@ -316,32 +316,21 @@ void extract_data(vector<vector<double>> &traindata, MatrixXd &feature, VectorXd
 */
 
 #if 1
-void ELM_basic(MatrixXd &feature,/* VectorXd &label,*/ MatrixXd &W, MatrixXd &b_1, MatrixXd &beta, MatrixXd &output, int L, int m, int n, int N) {
+void ELM_basic(MatrixXd &feature, MatrixXd &W, MatrixXd &b_1, MatrixXd &beta, MatrixXd &output, int L, int m, int n, int N) {
 	MatrixXd b, R, Tem, H;
 	W = MatrixXd::Random(n, L);
-	b_1 = MatrixXd::Random(1, L);// + MatrixXd::Ones(1, L)) / 2;
+	b_1 = MatrixXd::Random(1, L);
 	b = MatrixXd::Ones(N, 1)*b_1;
 	R = -feature*W+b;
 	Tem = R.array().exp() + 1;
 	H = Tem.array().inverse();
-/*	MatrixXd temp_T, T;
-	temp_T = MatrixXd::Zero(N, m);
-	for (int i = 0; i < N; i++) {
-		if (label(i)==1) {
-			temp_T(i, 0) = 1;
-			temp_T(i, 1) = 0;
-		} else {
-			temp_T(i, 0) = 0;
-			temp_T(i, 1) = 1;
-		}
-	}
-	T = temp_T * 2 - MatrixXd::Ones(N, m);*/
+
 	MatrixXd result(L, N);
 	pseudoInverse(H, result);
 	beta = result*T;
 	output = H*beta;
 }
-void ELM_in_ELM(MatrixXd &feature, /*VectorXd &label,*/ MatrixXd* W, MatrixXd* b, MatrixXd* beta, MatrixXd & F, MatrixXd &output, int L, int m, int n, int N, int model_num){
+void ELM_in_ELM(MatrixXd &feature, MatrixXd* W, MatrixXd* b, MatrixXd* beta, MatrixXd & F, MatrixXd &output, int L, int m, int n, int N, int model_num){
 	MatrixXd Hg,temp_out;
 	Hg=MatrixXd::Zero(N,m*model_num);
 	for(int i=0;i<model_num;i++){

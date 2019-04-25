@@ -74,8 +74,8 @@ using namespace cv;
 	double difftimeval(const struct timeval *start, const struct timeval *end) ;//计算时间间隔
 	void getFiles_train( string path, vector<string>& files ) ; //从路径中获取训练集图像的路径
 	void getFiles_test( string path, vector<string>& files ) ; //从路径中获取测试集图像的路径
-	void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person); //获取训练集图像
-	void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLabels, int faces_per_person);  //获取测试集图像
+	void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingLabels); //获取训练集图像
+	void getFaces_test(string filePath, Mat& trainingImages, vector<int>& trainingLabels);  //获取测试集图像
 	void init_stdio() ; //初始化IO
 	void ELM_basic(MatrixXd &feature,MatrixXd &W, MatrixXd &b_1, MatrixXd &beta, MatrixXd &output, int L, int m, int n, int N) ; //原始ELM训练函数
 	void ELM_in_ELM(MatrixXd &feature, MatrixXd* W, MatrixXd* b, MatrixXd* beta, MatrixXd & F, MatrixXd &output, int L, int m, int n, int N, int model_num); //ELM-in-ELM训练函数
