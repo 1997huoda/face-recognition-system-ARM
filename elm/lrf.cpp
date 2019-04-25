@@ -82,6 +82,11 @@ Mat get_feature(Mat img,int L,int e){
         //卷积    feature为卷积之后的图
         cv::filter2D(img, feature[i], CV_8U, kernel);
     }
+     for (int i = 0; i < L; i++) {
+          if(feature[i].empty())
+              cout<<"empty error"<<endl;
+    }
+   
     Mat pool[L];    
     // pool[0].allocator
     //池化 e的大小   ：   e 表示池化中心到边的距离
@@ -117,9 +122,12 @@ Mat get_feature(Mat img,int L,int e){
     vector<float>().swap(end);
     kernel.release();
     for (int i = 0; i < L; i++) {
+        if(pool[i].empty())
+            cout<<"pool empty"<<endl;
         pool[i].release();
     }
     SrcImage1.release();
-    
+    if(SrcImage2.empty())
+        cout<<"SrcImage2 empty"<<endl;
     return SrcImage2;
 }

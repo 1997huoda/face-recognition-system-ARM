@@ -169,13 +169,15 @@ void print_matrix(MatrixXd &T) {
 cv::Mat face_align(const char* filename)
 {
     
-		dlib::array2d<dlib::rgb_pixel> img;
-		dlib::load_image(img, filename);
-
-		dlib::pyramid_up(img);
-		std::vector<dlib::rectangle> dets = detector(img); 
-		std::vector<dlib::full_object_detection> shapes;
-		dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;		
+		dlib::array2d<dlib::rgb_pixel> img;//常规图片格式
+		//dlib::array2d<unsigned char> img_gray;//img_rgb转灰度图片
+		//dlib::assign_image(img_gray, img_rgb);
+		dlib::load_image(img, filename);//加载图片
+		//gettimeofday(&start2, NULL);
+		dlib::pyramid_up(img);//使可以扫描更小像素的人脸
+		std::vector<dlib::rectangle> dets = detector(img);  //返回矩阵【（x1，y1）（x2，y2）】
+		std::vector<dlib::full_object_detection> shapes;//shape的向量
+		dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸	
 		if(dets.size()<=0)
 		{
 			flag=1;
@@ -183,26 +185,34 @@ cv::Mat face_align(const char* filename)
 		}
 			for (unsigned long j = 0; j < dets.size(); ++j)
 			{
-				dlib::full_object_detection shape = sp(img, dets[j]);				
+				dlib::full_object_detection shape = sp(img, dets[j]);	
+/*				//cout << "pixel position of first part:  " << shape.part(0) << endl;//获得第一个点的坐标,注意第一个点是从0开始的
+				//cout << "pixel position of second part: " << shape.part(1) << endl;//获得第二个点的坐标
+				//自己改写，打印出全部68个点
+				for (int i = 1; i < 69; i++)
+				{
+					cout << "第 " << i<< " 个点的坐标： " << shape.part(i-1) << endl;
+				}
+*/				
 				shapes.push_back(shape);
 			}
 			dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
-			dlib::array2d<dlib::rgb_pixel> equ;
+			dlib::array2d<dlib::rgb_pixel> equ;//图像格式
 			dlib::equalize_histogram(face_chips[0],equ);
-            cv::Mat pic =dlib::toMat(equ);
-//             cv::Mat img = dlib::toMat(equ);
-// 			return dlib::toMat(equ);
+			//gettimeofday(&end2, NULL);
+			//cout<<"Preprocessing time:"<<(difftimeval(&end2, &start2)/1000000)<<'s'<<endl;
+			return dlib::toMat(equ);
     
 //         Mat pic=imread(filename,0);flag=0;
-		if(pic.empty())
-		{
-            flag=1;
-            cout<<"pic  empty"<<endl;
-			return cv::Mat::zeros(50,50,CV_8UC3);
-		}
-		 resize(pic,pic,cv::Size(50,50),0,0,INTER_LINEAR);
+// 		if(pic.empty())
+// 		{
+//             flag=1;
+//             cout<<"pic  empty"<<endl;
+// 			return cv::Mat::zeros(50,50,CV_8UC3);
+// 		}
+// 		 resize(pic,pic,cv::Size(50,50),0,0,INTER_LINEAR);
 //         equalizeHist(pic,pic);
-            return pic;
+//             return pic;
         
 }
 /**********************************************************************************/
