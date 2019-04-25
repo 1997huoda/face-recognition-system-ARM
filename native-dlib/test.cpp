@@ -57,7 +57,6 @@ void face_alignment(Mat image_roi){
     Mat eve=dlib::toMat(equ);
     alignment_face_recall.push_back(eve);
 
-//         alignment_face_recall.push_back(image_roi);
 	}
 	
 
@@ -117,7 +116,7 @@ void process_webcam_frames()
 			break;          
 		resize(frame,frame,cv::Size(320,160),0,0,INTER_LINEAR);//320 160//256 144 //192*172
         cvtColor(frame, bak_gray, CV_BGR2GRAY);
-// 		start_4thread(frame);
+
         process_image(frame);
         
         //                  算法稳定仍然需要去重
@@ -148,11 +147,8 @@ void process_webcam_frames()
             Rect rect(x,y,w,h);
             Mat image2=(bak_gray(rect));
             Mat image=image2.clone();
-//             cvtColor(image, image, CV_BGR2GRAY);
             resize(image,image,size_box,0,0,INTER_LINEAR);//这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
-//             image=contrastStretch(image);
-//             equalizeHist(image,image);
-//             star_alignment_thread(image);
+            
             face_alignment(image);
             
             Point point(x,y+h);//左下角
@@ -184,44 +180,6 @@ void pic_scan(string pic_name){
 
 }
 
-cv::Mat contrastStretch(cv::Mat srcImage)//灰度值归一化
-{
-	cv::Mat resultImage = srcImage.clone();
-	int nRows = resultImage.rows;
-	int nCols = resultImage.cols;
-	// 图像连续性判断
-	if(resultImage.isContinuous())
-	{
-		nCols  = nCols  * nRows;
-		nRows = 1;
-	}
-	// 图像指针操作
-	uchar *pDataMat;
-	int pixMax = 0, pixMin = 255;
-	// 计算图像的最大最小值
-	for(int j = 0; j <nRows; j ++)
-	{
-		pDataMat = resultImage.ptr<uchar>(j);
-		for(int i = 0; i < nCols; i ++)
-		{
-			if(pDataMat[i] > pixMax)       
-				pixMax = pDataMat[i];
-			if(pDataMat[i] < pixMin)      
-				pixMin = pDataMat[i];
-		}
-	}
-    // 对比度拉伸映射
-	for(int j = 0; j < nRows; j ++)
-	{
-		pDataMat = resultImage.ptr<uchar>(j);
-		for(int i = 0; i < nCols; i ++)
-		{
-			pDataMat[i] = (pDataMat[i] - pixMin) * 
-			    255 / (pixMax - pixMin);
-		}
-	}
-	return resultImage;
-}
 void cap_save(Mat src,string out_name){
         for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
         float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h;
