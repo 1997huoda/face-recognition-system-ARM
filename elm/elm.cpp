@@ -100,7 +100,7 @@ void getFaces_train(string filePath, Mat& trainingImages, vector<int>& trainingL
         Mat SrcImage2= get_feature(SrcImage,L,e);
         trainingImages.push_back(SrcImage2);	
         
-        vector<string>().swap(files);
+
         SrcImage.release();
         SrcImage2.release();
         
@@ -128,7 +128,7 @@ void getFaces_test(string filePath, Mat& testingImages, vector<int>& testingLabe
         Mat SrcImage2= get_feature(SrcImage,L,e);
         testingImages.push_back(SrcImage2);
         
-        vector<string>().swap(files);
+
         SrcImage.release();
         SrcImage2.release();
         
