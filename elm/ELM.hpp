@@ -1,3 +1,6 @@
+#ifndef _ELM_H
+#define _ELM_H
+
 // #define DLIB_JPEG_SUPPORT
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
@@ -114,6 +117,8 @@ using namespace cv;
 	}
 	*/
 
+    
+#endif /* _ELM_H */
 	
 
 

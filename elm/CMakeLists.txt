@@ -23,7 +23,7 @@ include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
-add_subdirectory(/home/huoda/Downloads/dlib-19.17//dlib dlib_build)
+add_subdirectory(../native-dlib/dlib dlib_build)
 link_directories(${OpenCV_LIBRARY_DIRS})
 
 add_executable(elm ${SRC})
