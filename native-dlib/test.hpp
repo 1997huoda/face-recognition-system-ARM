@@ -39,7 +39,6 @@ struct location{
 };
 vector<location> final_location;
 vector<Mat> alignment_face_recall;
-vector<Mat> alignment_shapes;
       
 
 void global_init();//参数初始化 模型加载

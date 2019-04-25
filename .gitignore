@@ -1,6 +1,7 @@
 build/
 
 native/build/
+native-dlib/build/
 
 elm/build/
 

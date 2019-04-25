@@ -36,21 +36,21 @@ void global_init(){
 }
 void face_alignment(Mat image_roi){	
     
-    dlib::matrix<unsigned char> img;
-//     dlib::matrix<dlib::rgb_pixel> img;
-    dlib::assign_image(img,dlib::cv_image<unsigned char>(image_roi));
-    
-//     dlib::cv_image<unsigned char> img(image_roi);
+    //<dlib::rgb_pixel>                                 //彩色图
+    dlib::cv_image<unsigned char> img(image_roi);       //灰度图
     
     std::vector<dlib::full_object_detection> shapes;//shape的向量
     dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
-    
     dlib::rectangle dlibRect(0,0,image_roi.cols,image_roi.rows);
-    dlib::full_object_detection shape = sp(img, dlibRect);
-    shapes.push_back(shape);
-
-    dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
     
+	TickMeter tm;
+    tm.start();
+    dlib::full_object_detection shape = sp(img, dlibRect);
+    tm.stop();
+    std::cout << "alignment 用时      "<<tm.getTimeSec()*1000<<"   ms"<<endl;//输出是s
+    
+    shapes.push_back(shape);
+    dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
     dlib::array2d<dlib::rgb_pixel> equ;//图像格式
     dlib::equalize_histogram(face_chips[0],equ);
     
@@ -58,7 +58,6 @@ void face_alignment(Mat image_roi){
     alignment_face_recall.push_back(eve);
 
 //         alignment_face_recall.push_back(image_roi);
-//         alignment_shapes.push_back(shape);
 	}
 	
 
@@ -157,7 +156,6 @@ void process_webcam_frames()
 	{	
         final_location.clear();
         alignment_face_recall.clear();
-        alignment_shapes.clear();
 		Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
 		capture>>frame;
 		if (frame.empty())
@@ -235,7 +233,6 @@ void pic_scan(string pic_name){
     
     final_location.clear();
     alignment_face_recall.clear();
-    alignment_shapes.clear();
     start_4thread(pic);
     
     sort(final_location.begin(),final_location.end(),cmp);//按照x从小到大排序
