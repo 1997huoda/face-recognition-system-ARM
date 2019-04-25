@@ -136,9 +136,10 @@ void process_webcam_frames()
 		sort(final_location.begin(),final_location.end(),cmp);//按照x从小到大排序
         
         cout<<"检测到的人脸的个数    "<<final_location.size()<<"个"<<endl;
+        
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
             float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h; 
-                /***为了更好的检测到嘴巴*******/
+                
                 x-=0;if(x<0)x=0;
                 y-=0;if(y<0)y=0;
                 w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
@@ -161,7 +162,8 @@ void process_webcam_frames()
             rectangle(frame,rect,cv::Scalar(100, 0, 0),1,0);
             cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
         }
-        cap_save(bak_gray,"cap");
+        
+       // cap_save(bak_gray,"cap");
         
         
 
