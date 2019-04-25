@@ -140,10 +140,10 @@ void process_webcam_frames()
 		for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
             float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h; 
                 /***为了更好的检测到嘴巴*******/
-                x-=3;if(x<0)x=0;
-                y-=3;if(y<0)y=0;
-                w+=6;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
-                h+=6;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
+                x-=0;if(x<0)x=0;
+                y-=0;if(y<0)y=0;
+                w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
+                h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
                 /*********/
             Rect rect(x,y,w,h);
             Mat image2=(bak_gray(rect));
@@ -180,30 +180,7 @@ void process_webcam_frames()
 	}
 }
 void pic_scan(string pic_name){
-    cout<<pic_name<<endl;
-    Mat pic=imread(pic_name);
-    Mat pic_gray;
-    if(pic.empty()){
-        cout<<"pic_scan open error "<<endl;
-    }
-    cvtColor(pic, pic_gray, CV_BGR2GRAY);
-    
-    final_location.clear();
-    alignment_face_recall.clear();
-    start_4thread(pic);
-    
-    sort(final_location.begin(),final_location.end(),cmp);//按照x从小到大排序
-    cout<<"检测到的人脸的个数    "<<final_location.size()<<"个"<<endl;
-    
-    for(vector<location>::iterator  iter = final_location.begin();iter!=final_location.end();iter++){
-        float x=(*iter).x;float y = (*iter).y;float w = (*iter).w;float h = (*iter).h;
-        Rect rect(x,y,w,h);
-        Mat image=(pic_gray(rect));
-       resize(image,image,size_box,0,0,INTER_LINEAR);//这个的意义在于放大检测出的小人脸，alignment不能匹配小人脸
-        star_alignment_thread(image);
-//         rectangle(pic,rect,cv::Scalar(100, 0, 0),-1,0);
-    }
-    cap_save(pic_gray,"pic");
+
 
 }
 
