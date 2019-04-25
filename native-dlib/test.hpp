@@ -42,11 +42,10 @@ vector<Mat> alignment_face_recall;
       
 
 void global_init();//参数初始化 模型加载
-void start_4thread(Mat edges);//启动人脸检测
-void star_alignment_thread(Mat edges);//人脸矫正线程
-void face_alignment(Mat image_roi);//人脸矫正 直到误差小于等于3度 最后结果标准化输出
 
+void face_alignment(Mat image_roi);//人脸矫正 直到误差小于等于3度 最后结果标准化输出
 void process_image(Mat mat);//角度检测函数
+
 void process_webcam_frames();//演示函数
 void pic_scan(string pic_name);
 

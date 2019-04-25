@@ -99,52 +99,7 @@ void process_image(Mat mat)
 	}	
 	    free(pBuffer);
 }
-//send a struct to arg
-void *text(void *arg)
-{
-    struct val *v = (struct val *)arg;
-    process_image(v->mat);
-    //pthread_exit(NULL);
-    return NULL;
-}
 
-void *text_alignment(void *arg)
-{
-    struct val *v = (struct val *)arg;
-    face_alignment(v->mat);
-//     pthread_exit(NULL);
-    return NULL;
-}
-
-void star_alignment_thread(Mat edges){
-    pthread_t t;
-    
-    struct val v;
-    v.mat=edges;
-    
-    pthread_create(&t, NULL, text_alignment,(void *)&v);
-   // 等待线程结束
-    void * result;
-    if(pthread_join(t, &result) == -1){
-        puts("fail to recollect t\n");
-        exit(1);
-    }
-}
-void start_4thread(Mat edges){
-    if(edges.empty())return ;
-    pthread_t t0;   
-    struct val v;
-    v.mat=edges;
-    
-    pthread_create(&t0, NULL, text,(void *)&v);
-
-    // 等待线程结束
-    void * result;
-    if(pthread_join(t0, &result) == -1){
-        puts("fail to recollect t0\n");
-        exit(1);
-    }
-}
 void process_webcam_frames()
 {
 	//定义一个Mat变量，用于存储每一帧的图像
