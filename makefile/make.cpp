@@ -25,7 +25,7 @@ cv::Size size_box(100,100);//标准化输出尺寸
 int main(int argc, char* argv[])
 {
     global_init();
-    string path="/home/huoda/Desktop/100old";
+    string path="/home/huoda/Desktop/1w_10photos";
     
     struct dirent *ptr,*ptr1;    
 	DIR *dir,*dir1;
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 				continue;
 			string sss=ss+'/'+ptr1->d_name;		//获得地址开始人脸检测和矫正
 			cout<<"sss      "<<sss<<endl;
-            string s2="/home/huoda/Desktop/test100";                      //   "/home/huoda/Desktop/1w"
+            string s2="/home/huoda/Desktop/new1w";                      //   "/home/huoda/Desktop/1w"
             string s3=".jpg";
             s2=s2+'/'+ptr->d_name+'/'+to_string(to_num)+s3;
             to_num++;   
@@ -94,11 +94,12 @@ int main(int argc, char* argv[])
                 Mat image2=(pic(rect));
                 cvtColor(image2, image2, CV_BGR2GRAY);
                 resize(image2,image2,cv::Size(100,100),0,0,INTER_LINEAR);
-                face_alignment(image2);
+//                 face_alignment(image2);
 //             }  
-                Mat to_save=(*alignment_face_recall.begin());
-                if(!to_save.empty())
-                imwrite(s2,to_save);
+//                 Mat to_save=(*alignment_face_recall.begin());
+//                 cvtColor(to_save, to_save, CV_BGRA2GRAY);
+                if(!image2.empty())
+                imwrite(s2,image2);
 		}
 		closedir(dir1);
     }

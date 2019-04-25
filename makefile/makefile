@@ -18,5 +18,5 @@ CFLAGS=-I../include -I../3rdparty/liblinear -I/usr/include/eigen3/ -I../src -I..
 #-L. -llbf_
 
 output:
-	g++ make.cpp -I../src/ -lrt  -pthread  $(CFLAGS) -o make -O3 -I/usr/lib -L. -llibpico -llibelm -llib7000 -lliblinear  -llibfacedetection $(OPENCV)		#pico
+	g++ make.cpp -I../src/ -lrt  -pthread  $(CFLAGS) -o make -O3 -I/usr/lib -L. -llibpico -llib7000 -lliblinear  -llibfacedetection $(OPENCV)		#pico
 	#g++ src.cpp -fPIC -shared -o lib***.so

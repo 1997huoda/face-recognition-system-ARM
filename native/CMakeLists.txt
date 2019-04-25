@@ -31,8 +31,8 @@ link_directories(/usr/lib)
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_executable(pico ${SRC})
-# add_library(libpico SHARED ${SRC})
+add_library(libpico SHARED ${SRC})
 
 target_link_libraries(pico -llibfacedetection -llib7000 -lliblinear  ${OpenCV_LIBS})
 
-FILE(COPY ${CMAKE_CURRENT_LIST_DIR}/lfpw.model DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+FILE(COPY ${CMAKE_CURRENT_LIST_DIR}/my_helen.model DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

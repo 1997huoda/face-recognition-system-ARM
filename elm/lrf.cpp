@@ -116,17 +116,20 @@ Mat get_feature(Mat img,int L,int e){
                     fea.push_back(pool[L].at<uchar>(i,j));   //拉直单个特征图
         end.insert(end.end(), fea.begin(), fea.end());  //拉直所有特征图
     }
-    vector<float>().swap(fea);
+    
     Mat SrcImage1= Mat(end,true);
-    Mat SrcImage2=SrcImage1.t();
-    vector<float>().swap(end);
-    kernel.release();
-    for (int i = 0; i < L; i++) {
-        if(pool[i].empty())
-            cout<<"pool empty"<<endl;
-        pool[i].release();
-    }
-    SrcImage1.release();
+    Mat SrcImage2=SrcImage1.t();   
+    
+//     vector<float>().swap(fea);
+//     vector<float>().swap(end);
+//     kernel.release();
+//     for (int i = 0; i < L; i++) {
+//         if(pool[i].empty())
+//             cout<<"pool empty"<<endl;
+//         pool[i].release();
+//     }
+//     SrcImage1.release();
+    
     if(SrcImage2.empty())
         cout<<"SrcImage2 empty"<<endl;
     return SrcImage2;

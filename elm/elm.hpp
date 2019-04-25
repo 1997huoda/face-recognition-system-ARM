@@ -31,13 +31,13 @@ using namespace cv;
 	int L = 3;     //隐层节点数   //单个图像  随机权重  特征矩阵 的 个数
 	int e=3;       //默认池化参数    e 表示池化中心到边的距离
 	// m 可以设置为文件夹的个数
-	int m = 50;      //训练集以及测试集   人数    
+	int m = 15;      //训练集以及测试集   人数    
 
-	int training_face_num_per_person=7; //训练集中每个人的人脸数
-	int testing_face_num_per_person=3;  // 测试集中每个人的人脸数
+	int training_face_num_per_person=10; //训练集中每个人的人脸数
+	int testing_face_num_per_person=1;  // 测试集中每个人的人脸数
 	
-	string trainfile_path="/home/huoda/Desktop/origin100"; //路径
-	string testfile_path="/home/huoda/Desktop/origin50/";
+	string trainfile_path="/mnt/PT/YALE"; //路径
+	string testfile_path="/mnt/PT/test";
 	vector<int> train_labels_ori;
 	vector<int> test_labels_ori;
 	Mat trainingImages;
