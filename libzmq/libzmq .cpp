@@ -1,8 +1,6 @@
-#include <bits/stdc++.h>
-#include <opencv2/opencv.hpp>
-#include <unistd.h>
-#include <zmq.hpp>
-using namespace std;
+
+
+#include "libzmq.hpp"
 
 void send_msg(zmq::socket_t &socket, std::string str) {
     zmq::message_t msg(str.size());
@@ -27,3 +25,4 @@ void send_pic(zmq::socket_t &socket, std::string path) {
     cv::Mat img = cv::imread(path);
     send_pic(socket, img);
 }
+
