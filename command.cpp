@@ -1,5 +1,27 @@
 #include "make.hpp"
 
+void mkdir_human_name(string human_name,vector<string> & names){
+
+}
+
+void get_filename(string path, vector<string> & names){
+
+	struct dirent * ptr;
+	DIR * dir;
+	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
+	while((ptr = readdir(dir)) != NULL)  //读取列表
+	{
+		if(ptr->d_name[0] == '..' ||ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
+			                 // Thumbs.db这个windows下保存图片就会产生的文件
+			continue;
+        if(ptr->d_type== DT_DIR){       //DT_DIR目录    DT_REG常规文件
+      		string ss = path + '/' + ptr->d_name ;//+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
+           names.push_back(ss);      
+        }
+	}
+	closedir(dir);
+}
+
 void process_once()
 {
 	VideoCapture capture(0);

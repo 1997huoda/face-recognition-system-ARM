@@ -46,12 +46,13 @@ int main() {
             socket.recv(&received);
 
             //发人脸名字
-            std::string name = "dada";
+            // std::string name = "dada";
             send_msg(socket, name);
             socket.recv(&received);
             //发图片
-            send_pic(socket, img);
-            socket.recv(&received);
+            // send_pic(socket, img);
+            // socket.recv(&received);
+
             for (int i = 0; i < face_num; i++) {
                 send_pic(socket, img);
                 socket.recv(&received);
@@ -69,16 +70,16 @@ int main() {
             std::string tmp = "change_train_set";
             send_msg(socket, tmp);
             //收人名
-            socket.recv(&received);
-            std::string human_name =
-                std::string((char *)received.data(), received.size());
+            // socket.recv(&received);
+            // std::string human_name =    std::string((char *)received.data(), received.size());
+            human_name = recv_msg(socket);
             tmp = "received_human_name";
             send_msg(socket, tmp);
 
             //收照片名字
-            socket.recv(&received);
-            std::string picture_name =
-                std::string((char *)received.data(), received.size());
+            // socket.recv(&received);
+            // std::string picture_name = std::string((char *)received.data(), received.size());
+            std::string picture_name = recv_msg(socket);
             tmp = "received_picture_name";
             send_msg(socket, tmp);
 
@@ -86,8 +87,8 @@ int main() {
             socket.recv(&received);
             std::vector<uchar> img_data(received.size());
             memcpy(img_data.data(), received.data(), received.size());
-            img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-            imwrite("a.jpg", img);
+            rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+            imwrite("rec_img.jpg", rec_img);
             tmp = "received_picture";
             send_msg(socket, tmp);
 
