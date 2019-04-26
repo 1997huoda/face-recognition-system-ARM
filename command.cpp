@@ -1,7 +1,22 @@
 #include "make.hpp"
 
 void mkdir_human_name(string human_name,vector<string> & names){
-
+    for(vector<string>::iterator  iter = names.begin();iter!=names.end();iter++){
+       if(!human_name.compare((*iter))){
+           cout<<"human_name  exist"<<endl;
+           return ;
+       }else
+       {
+           filename= "../A/"+  human_name ;
+            mode_t mode = umask(0);
+            if(0==mkdir(filename,0777))
+                cout<<filename<<"  mkdir OK!"<<endl;
+            umask(mode);
+            return  ;
+       }
+       
+        
+    }
 }
 
 void get_filename(string path, vector<string> & names){

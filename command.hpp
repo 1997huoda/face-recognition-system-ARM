@@ -38,6 +38,9 @@
 #include "libzmq.hpp"
 #include "command.hpp"
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 using namespace std;
 using namespace Eigen;
 using namespace cv;
