@@ -6,3 +6,6 @@ native-dlib/build/
 elm/build/
 
 exe/build
+zmq/build
+libzmq/build
+*/build
