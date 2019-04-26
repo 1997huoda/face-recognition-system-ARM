@@ -51,17 +51,17 @@ static const int table[256] = {
 
 int k = 1;
 int flag = 0;                         // 没有人脸?
-MatrixXd T;                           //存放训练集标签
+// MatrixXd T;                           //存放训练集标签
 int L = 600;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数
 int model_num = 5;                    //子ELM模型的数量
 int training_face_num_per_person = 7; //训练集中每个人的人脸数
 int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "../A";   // = "/home/huoda/Desktop/100"; //路径
+string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
 string testfile_path;  // = "/home/huoda/Desktop/50";
-vector<int> train_labels_ori;
-vector<int> test_labels_ori;
+extern vector<int> train_labels_ori;
+extern vector<int> test_labels_ori;
 Mat trainingImages;
 vector<int> trainingLabels;
 Mat testingImages;
@@ -70,7 +70,7 @@ int N;
 int n;
 int N_test;
 MatrixXd F, output;
-MatrixXd temp_T;
+MatrixXd T, temp_T;
 // extern MatrixXd W[model_num], b[model_num], beta[model_num];
 // static dlib::frontal_face_detector detector; // dlib face detector
 // static dlib::shape_predictor sp;             // dlib shape predictor

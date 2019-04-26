@@ -1,5 +1,6 @@
 #include "command.hpp"
 
+
 void train_elm(){
     MatrixXd W[model_num], b[model_num], beta[model_num];
     //训练参数  W b beta
@@ -141,4 +142,8 @@ Mat process_once()
     waitKey(5); //延时5ms 
     return frame;
 	
+}
+
+int main(){
+    return 0;
 }

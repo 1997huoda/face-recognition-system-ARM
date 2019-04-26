@@ -1,4 +1,9 @@
 #include "elm.hpp"
+vector<int> train_labels_ori;
+vector<int> test_labels_ori;
+
+
+
 
 void write_parameter(string path, MatrixXd output){
 

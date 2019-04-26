@@ -1,4 +1,4 @@
-project(pro)
+project(com)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
 find_package(OpenCV REQUIRED)
@@ -27,16 +27,18 @@ INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
-include(${CMAKE_CURRENT_LIST_DIR}/libcom.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/libpico.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/libelm.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/libzmq.cmake)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 # link_directories(${CMAKE_CURRENT_LIST_DIR})
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
+file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/command/*.cpp)
 
-add_executable(pro ${SRC})
-# add_library(libpico SHARED ${SRC})
+# add_executable(pro ${SRC})
+add_library(libcom SHARED ${SRC})
 
-target_link_libraries(pro libcom libzmq libelm libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+target_link_libraries(libcom libzmq libelm libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/native/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+# file(COPY ${CMAKE_CURRENT_LIST_DIR}/native/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

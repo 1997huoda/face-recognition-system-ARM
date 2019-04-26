@@ -46,8 +46,6 @@ using namespace cv;
 extern vector<location> final_location;
 extern vector<Mat> alignment_face_recall;
 
-//摄像头--0
-VideoCapture capture(0);
 
 //发送人脸数量
 int face_num ;
@@ -70,6 +68,7 @@ void test_elm(vector<Mat> mat_v);
 vector<string> show_once();
 void mkdir_human_name(string human_name,vector<string> & names);
 void get_filename(string path, vector<string> & names);
+
 
 
 #endif /* _COMMAND_H */

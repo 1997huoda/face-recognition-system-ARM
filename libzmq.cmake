@@ -14,7 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #set(CMAKE_MODULE_PATH ./)
 FIND_PACKAGE(ZMQ REQUIRED)
 FIND_PACKAGE(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
+# include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
 set(LIBRARY ${ZMQ_LIBRARIES} ${OpenCV_LIBS})
 

@@ -16,7 +16,7 @@ add_definitions(-fPIC -pthread -fopenmp)
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/native)
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+# include_directories(${CMAKE_CURRENT_LIST_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 include(${CMAKE_CURRENT_LIST_DIR}/libYu.cmake)

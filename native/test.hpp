@@ -38,8 +38,8 @@ struct location {
 	int x, y, w, h, q;
 	bool operator<(location & a);    // <号重载
 };
-vector<location> final_location;
-vector<Mat> alignment_face_recall;
+extern vector<location> final_location;
+extern vector<Mat> alignment_face_recall;
 
 
 void global_init();//参数初始化 模型加载
