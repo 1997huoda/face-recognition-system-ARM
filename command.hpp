@@ -4,7 +4,6 @@
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include<time.h>
-#include "facedetectcnn.h"
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -14,7 +13,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgproc/types_c.h>  
 #include <opencv2/highgui/highgui_c.h>
-#include<opencv2/opencv.hpp>  
+#include <opencv2/opencv.hpp>  
 
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
@@ -33,10 +32,8 @@
 #include <string>
 
 #include "test.hpp"
-#include "facedetectcnn.h"
 #include "elm.hpp"
 #include "libzmq.hpp"
-#include "command.hpp"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -45,19 +42,20 @@ using namespace std;
 using namespace Eigen;
 using namespace cv;
 
-
+// MatrixXd W[model_num], b[model_num], beta[model_num];
+extern vector<location> final_location;
+extern vector<Mat> alignment_face_recall;
 
 //摄像头--0
 VideoCapture capture(0);
 
 //发送人脸数量
-int face_num = 1;
+int face_num ;
 //人 名字 标签
 vector<string> names;
 //识别结果
 std::string name;
-//摄像头    缩放带标记图像      原尺寸灰度图
- Mat frame,bak_gray; 
+
 
 //收到的人的名称
 std::string human_name;
@@ -66,7 +64,7 @@ std::string picture_name;
 //收到的图
 Mat rec_img;
 
-void process_once();
+Mat process_once();
 void train_elm();
 void test_elm(vector<Mat> mat_v);
 vector<string> show_once();

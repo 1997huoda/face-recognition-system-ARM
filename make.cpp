@@ -40,7 +40,7 @@ int main() {
         command = recv_msg(socket);
         if (command == "send_picture") {
             //单次人脸识别
-            process_once();
+            Mat frame=process_once();
 
             //发人脸数量
             // std::string face_num = std::to_string(1);
@@ -60,6 +60,7 @@ int main() {
             socket.recv(&received);
 
             //face_num个人脸的图像
+            VideoCapture capture(0);
             Mat next;
             capture>>next;
             int x_b=cvRound(next.cols/nor.width);int y_b=cvRound(next.rows/nor.height);

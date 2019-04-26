@@ -71,7 +71,7 @@ int n;
 int N_test;
 MatrixXd F, output;
 MatrixXd temp_T;
-// MatrixXd W[model_num],b[model_num], beta[model_num];
+// extern MatrixXd W[model_num], b[model_num], beta[model_num];
 // static dlib::frontal_face_detector detector; // dlib face detector
 // static dlib::shape_predictor sp;             // dlib shape predictor
 

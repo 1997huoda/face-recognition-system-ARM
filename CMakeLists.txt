@@ -31,13 +31,13 @@ include(${CMAKE_CURRENT_LIST_DIR}/libelm.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libzmq.cmake)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
-link_directories(${CMAKE_CURRENT_LIST_DIR})
+# link_directories(${CMAKE_CURRENT_LIST_DIR})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_executable(pro ${SRC})
 # add_library(libpico SHARED ${SRC})
 
-target_link_libraries(pro libpico libfacedetection dlib::dlib libelm libzmq ${OpenCV_LIBS})
+target_link_libraries(pro libzmq libelm libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/native/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

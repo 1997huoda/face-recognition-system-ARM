@@ -1,4 +1,4 @@
-#include "make.hpp"
+#include "command.hpp"
 
 void train_elm(){
     MatrixXd W[model_num], b[model_num], beta[model_num];
@@ -9,6 +9,7 @@ void train_elm(){
 	ELM_training(feature, W, b, beta);
 }
 void test_elm(vector<Mat> mat_v){
+     MatrixXd W[model_num], b[model_num], beta[model_num];
     //将整个 alignment vector送进来 产生测试数据集
     MatrixXd feature, feature1;
 	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
@@ -20,7 +21,7 @@ vector<string> show_once(){
 	for(int i = 0; i < N_test; i++){
 		int ii, jj;
         cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
-        output_name.push_back(names[jj])
+        output_name.push_back(names[jj]);
 	}
     return output_name;
 }
@@ -32,9 +33,9 @@ void mkdir_human_name(string human_name,vector<string> & names){
            return ;
        }else
        {
-           filename= "../A/"+  human_name ;
+           string filename= trainfile_path+"/"+  human_name ;
             mode_t mode = umask(0);
-            if(0==mkdir(filename,0777))
+            if(0==mkdir(filename.c_str(),0777))
                 cout<<filename<<"  mkdir OK!"<<endl;
             umask(mode);
             return  ;
@@ -49,7 +50,7 @@ void get_filename(string path, vector<string> & names){
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
-		if(ptr->d_name[0] == '..' ||ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
+		if(ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
 			                 // Thumbs.db这个windows下保存图片就会产生的文件
 			continue;
         if(ptr->d_type== DT_DIR){       //DT_DIR目录    DT_REG常规文件
@@ -60,18 +61,21 @@ void get_filename(string path, vector<string> & names){
 	closedir(dir);
 }
 
-void process_once()
+Mat process_once()
 {
+    VideoCapture capture(0);
 	if (!capture.isOpened())//没有打开摄像头的话，就返回。
-		return;
+        cout<<""<<endl;
+		// return ;
 
     final_location.clear();
     alignment_face_recall.clear();
     
-    // Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
+    Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
     capture>>frame;
     if (frame.empty())
-        break;          
+         cout<<""<<endl;
+        // return ;          
     //bak_gray为原图的灰度图
     cvtColor(frame, bak_gray, CV_BGR2GRAY);
     capture>>frame;
@@ -135,5 +139,6 @@ void process_once()
 
     imshow("point", frame); //显示当前帧  
     waitKey(5); //延时5ms 
+    return frame;
 	
 }
