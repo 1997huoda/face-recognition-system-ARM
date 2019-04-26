@@ -7,14 +7,15 @@
 #include <zmq.hpp>
 
 using namespace std;
+using namespace cv;
 
-void send_msg(zmq::socket_t &socket, std::string str) ;
+void send_msg(zmq::socket_t & socket, std::string str);
 
-std::string recv_msg(zmq::socket_t &socket) ;
+std::string recv_msg(zmq::socket_t & socket);
 
-void send_pic(zmq::socket_t &socket, cv::Mat img) ;
+void send_pic(zmq::socket_t & socket, cv::Mat img);
 
-void send_pic(zmq::socket_t &socket, std::string path) ;
+void send_pic(zmq::socket_t & socket, std::string path);
 
 
 

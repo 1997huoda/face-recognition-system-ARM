@@ -35,9 +35,15 @@
 #include "test.hpp"
 #include "facedetectcnn.h"
 #include "elm.hpp"
+#include "libzmq.hpp"
 
 using namespace std;
 using namespace Eigen;
 using namespace cv;
+
+//发送人脸数量
+int face_num = 1;
+
+
 
 #endif /* _MAKE_H */
