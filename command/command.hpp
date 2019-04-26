@@ -3,7 +3,7 @@
 
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
-#include<time.h>
+#include <time.h>
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -11,9 +11,9 @@
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/objdetect.hpp>
 #include <opencv2/imgproc.hpp>
-#include <opencv2/imgproc/types_c.h>  
+#include <opencv2/imgproc/types_c.h>
 #include <opencv2/highgui/highgui_c.h>
-#include <opencv2/opencv.hpp>  
+#include <opencv2/opencv.hpp>
 
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
@@ -43,12 +43,11 @@ using namespace Eigen;
 using namespace cv;
 
 // MatrixXd W[model_num], b[model_num], beta[model_num];
-extern vector<location> final_location;
-extern vector<Mat> alignment_face_recall;
+
 
 
 //发送人脸数量
-int face_num ;
+int face_num;
 //人 名字 标签
 vector<string> names;
 //识别结果
@@ -62,11 +61,12 @@ std::string picture_name;
 //收到的图
 Mat rec_img;
 
+void eve_init();
 Mat process_once();
 void train_elm();
 void test_elm(vector<Mat> mat_v);
 vector<string> show_once();
-void mkdir_human_name(string human_name,vector<string> & names);
+void mkdir_human_name(string human_name, vector<string> & names);
 void get_filename(string path, vector<string> & names);
 
 
