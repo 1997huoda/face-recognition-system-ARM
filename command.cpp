@@ -1,5 +1,30 @@
 #include "make.hpp"
 
+void train_elm(){
+    MatrixXd W[model_num], b[model_num], beta[model_num];
+    //训练参数  W b beta
+    MatrixXd feature;
+    feature = ELM_in_ELM_face_training_matrix_from_files();
+	T = generate_training_labels();
+	ELM_training(feature, W, b, beta);
+}
+void test_elm(vector<Mat> mat_v){
+    //将整个 alignment vector送进来 产生测试数据集
+    MatrixXd feature, feature1;
+	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
+	ELM_testing(feature1, W, b, beta);
+	vector<string>  output_name = show_once();
+}
+vector<string> show_once(){
+    vector<string>  output_name;
+	for(int i = 0; i < N_test; i++){
+		int ii, jj;
+        cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
+        output_name.push_back(names[jj])
+	}
+    return output_name;
+}
+
 void mkdir_human_name(string human_name,vector<string> & names){
     for(vector<string>::iterator  iter = names.begin();iter!=names.end();iter++){
        if(!human_name.compare((*iter))){
@@ -14,8 +39,6 @@ void mkdir_human_name(string human_name,vector<string> & names){
             umask(mode);
             return  ;
        }
-       
-        
     }
 }
 
@@ -39,14 +62,13 @@ void get_filename(string path, vector<string> & names){
 
 void process_once()
 {
-	VideoCapture capture(0);
 	if (!capture.isOpened())//没有打开摄像头的话，就返回。
 		return;
 
     final_location.clear();
     alignment_face_recall.clear();
     
-    Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
+    // Mat frame,bak_gray; //定义一个Mat变量，用于存储每一帧的图像  
     capture>>frame;
     if (frame.empty())
         break;          

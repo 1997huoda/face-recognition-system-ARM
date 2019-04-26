@@ -29,7 +29,7 @@ int main() {
     std::cout << "waiting connetting" << std::endl;
     socket.connect("tcp://localhost:5555");
 
-    cv::Mat img = cv::imread("../pic/1.png");
+    // cv::Mat img = cv::imread("../pic/1.png");
     zmq::message_t msg;
     zmq::message_t received;
     std::string command;
@@ -39,6 +39,9 @@ int main() {
         //接收命令
         command = recv_msg(socket);
         if (command == "send_picture") {
+            //单次人脸识别
+            process_once();
+
             //发人脸数量
             // std::string face_num = std::to_string(1);
             // int face_num = 1;
@@ -46,17 +49,29 @@ int main() {
             socket.recv(&received);
 
             //发人脸名字
+
             // std::string name = "dada";
             send_msg(socket, name);
             socket.recv(&received);
-            //发图片
-            // send_pic(socket, img);
-            // socket.recv(&received);
 
-            for (int i = 0; i < face_num; i++) {
-                send_pic(socket, img);
+            //发图片
+            //摄像头 带标记图像
+            send_pic(socket, frame);
+            socket.recv(&received);
+
+            //face_num个人脸的图像
+            Mat next;
+            capture>>next;
+            int x_b=cvRound(next.cols/nor.width);int y_b=cvRound(next.rows/nor.height);
+            for(vector<location>::iterator iter=final_location.begin();iter!=final_location.end();iter++){                
+                int x=cvRound(x_b*(*iter).x);int y = cvRound(y_b*(*iter).y);
+                int w =cvRound(x_b* (*iter).w);int h =cvRound( y_b*(*iter).h); 
+                Rect rect(x,y,w,h);
+                Mat send=(next(rect));
+                send_pic(socket, send);
                 socket.recv(&received);
             }
+
             std::string tmp = "send_picture_done";
             send_msg(socket, tmp);
 
@@ -64,6 +79,7 @@ int main() {
             std::string tmp = "none";
             send_msg(socket, tmp);
         } else if (command == "start_traning") {
+            train_elm();
             std::string tmp = "start_training";
             send_msg(socket, tmp);
         } else if (command == "change_train_set") {
@@ -73,10 +89,14 @@ int main() {
             // socket.recv(&received);
             // std::string human_name =    std::string((char *)received.data(), received.size());
             human_name = recv_msg(socket);
+            //检测文件夹是否存在 没有就创建一个
+            mkdir_human_name( human_name ,names);
+
+
             tmp = "received_human_name";
             send_msg(socket, tmp);
 
-            //收照片名字
+            //收照片名字        好像不需要了
             // socket.recv(&received);
             // std::string picture_name = std::string((char *)received.data(), received.size());
             std::string picture_name = recv_msg(socket);
@@ -88,7 +108,8 @@ int main() {
             std::vector<uchar> img_data(received.size());
             memcpy(img_data.data(), received.data(), received.size());
             rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-            imwrite("rec_img.jpg", rec_img);
+            string sss=trainfile_path+"/"+human_name+".jpg";
+            imwrite(sss, rec_img);
             tmp = "received_picture";
             send_msg(socket, tmp);
 

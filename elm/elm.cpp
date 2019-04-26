@@ -262,10 +262,8 @@ void getFaces_train(string filePath, Mat & trainingImages,
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
-
 void getFaces_test(Mat SrcImage, Mat & trainingImages,
 				   vector<int> & trainingLabels){
-	// Mat  SrcImage=face_align(files[i].c_str());
 	//  SrcImage ->resize   ->拉直
 	resize(SrcImage, SrcImage, cv::Size(50, 50));
 	Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
@@ -273,13 +271,19 @@ void getFaces_test(Mat SrcImage, Mat & trainingImages,
 	Mat SrcImage2 = SrcImage1.t();
 	trainingImages.push_back(SrcImage2);
 	// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-
 	// trainingLabels.push_back(test_labels_ori.at(i));//人 标签  暂时注释掉
-
 	// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
-
 }
-
+void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
+	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
+		Mat SrcImage;
+		resize((*iter), SrcImage, cv::Size(50, 50));
+		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
+		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
+		Mat SrcImage2 = SrcImage1.t();
+		trainingImages.push_back(SrcImage2);
+	}
+}
 void getFaces_test(string filePath, Mat & trainingImages,
 				   vector<int> & trainingLabels){
 	vector<string> files;
@@ -300,9 +304,7 @@ void getFaces_test(string filePath, Mat & trainingImages,
 		Mat SrcImage2 = SrcImage1.t();
 		trainingImages.push_back(SrcImage2);
 		// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-
 		trainingLabels.push_back(test_labels_ori.at(i));
-
 		// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
 	}
 }
@@ -535,6 +537,17 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有�
 	// VectorXd label1(testingLabels.size());
 	cv2eigen(testingImages, feature1);
 	// cv2eigen(Mat(testingLabels), label1);
+	N_test = testingImages.rows;
+	cout << "Number of testing images:" << N_test << endl;
+	return feature1;
+}
+MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
+	// loading test images
+	cout << "Loading test Data..." << endl;
+	Mat testingImages;
+	getFaces_test(mat_v, testingImages);
+	MatrixXd feature1(testingImages.rows, testingImages.cols);
+	cv2eigen(testingImages, feature1);
 	N_test = testingImages.rows;
 	cout << "Number of testing images:" << N_test << endl;
 	return feature1;
