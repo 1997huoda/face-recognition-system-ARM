@@ -8,9 +8,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    command="send_picture";
-
-
+    command="none";
 
     return a.exec();
 }

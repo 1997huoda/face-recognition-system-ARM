@@ -25,7 +25,7 @@
 
 int main(){
 	eve_init();
-	cout<<"init--OK"<<endl;
+	cout << "init--OK" << endl;
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
 	std::cout << "waiting connetting" << std::endl;
@@ -35,12 +35,14 @@ int main(){
 	zmq::message_t msg;
 	zmq::message_t received;
 	// std::string command;
-	send_msg(socket, "none");
+	send_msg(socket, "xxxx");
 
 	while(true){
 		//接收命令
 		command = recv_msg(socket);
-		if(command == "send_picture"){
+		cout << command << endl;
+		if(!strcmp(command.c_str(), "send_picture")){
+
 			//单次人脸识别
 			Mat frame = process_once();
 
@@ -78,16 +80,15 @@ int main(){
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
 
-		} else if(command == "none"){
+		} else if(!strcmp(command.c_str(), "none")){
 			std::string tmp = "none";
 			send_msg(socket, tmp);
-		} else if(command == "start_traning"){
+		} else if(!strcmp(command.c_str(), "start_traning")){
 			train_elm();
 			std::string tmp = "start_training";
 			send_msg(socket, tmp);
-		} else if(command == "change_train_set"){
-			std::string tmp = "change_train_set";
-			send_msg(socket, tmp);
+		} else if(!strcmp(command.c_str(), "change_train_set")){
+
 			//收人名
 			// socket.recv(&received);
 			// std::string human_name =    std::string((char *)received.data(), received.size());
@@ -96,13 +97,13 @@ int main(){
 			mkdir_human_name(human_name, names);
 
 
-			tmp = "received_human_name";
+			std::string tmp = "received_human_name";
 			send_msg(socket, tmp);
 
 			//收照片名字        好像不需要了
 			// socket.recv(&received);
 			// std::string picture_name = std::string((char *)received.data(), received.size());
-			
+
 			// std::string picture_name = recv_msg(socket);
 			// tmp = "received_picture_name";
 			// send_msg(socket, tmp);
@@ -115,6 +116,9 @@ int main(){
 			string sss = trainfile_path + "/" + human_name + ".jpg";
 			imwrite(sss, rec_img);
 			tmp = "received_picture";
+			send_msg(socket, tmp);
+
+			tmp = "change_train_set";
 			send_msg(socket, tmp);
 
 		} else {
