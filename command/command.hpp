@@ -65,7 +65,7 @@ Mat rec_img;
 void eve_init();
 Mat process_once();
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
-void test_elm(Mat mat,MatrixXd * W, MatrixXd * b, MatrixXd * beta)
+void test_elm(Mat mat,MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 string show_once();
 void mkdir_human_name(string human_name, vector<string> & names);

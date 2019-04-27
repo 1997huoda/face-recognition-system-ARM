@@ -104,20 +104,21 @@ void process_webcam_frames()
 	VideoCapture capture(0);
 	if(!capture.isOpened()) //没有打开摄像头的话，就返回。
 		return;
-
 	while(true)
 	{
 		final_location.clear();
 		alignment_face_recall.clear();
 
-		Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
-		capture >> frame;
-		if(frame.empty())
+		Mat origin, frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+		capture >> origin;
+		if(origin.empty())
 			break;
 		//bak_gray为原图
-		cvtColor(frame, bak_gray, CV_BGR2GRAY);
-		capture >> frame;
-		resize(frame, frame, nor, 0, 0, INTER_LINEAR);//320 160//256 144 //192*172
+		cvtColor(origin, bak_gray, CV_BGR2GRAY);
+		// capture >> origin;
+		resize(origin, frame, nor, 0, 0, INTER_LINEAR);//320 160//256 144 //192*172
+		if(frame.empty())
+			break;
 
 		process_image(frame);
 
@@ -177,8 +178,8 @@ void process_webcam_frames()
 			imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
 			imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
 		}
-		
-  		 imwrite("save.jpg",frame);
+
+		imwrite("save.jpg", frame);
 
 		imshow("point", frame); //显示当前帧
 		waitKey(5); //延时5ms

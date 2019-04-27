@@ -177,7 +177,7 @@ Mat process_once()
 		// int thickness = 2;
 		// int baseline;
 		// cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baselinebaseline);
-		rectangle(frame, rect, cv::Scalar(100, 0, 0), 2, 0);
+		rectangle(frame, rect, cv::Scalar(100, 0, 0), 1, 0);
         //检测结果不用写在图上
 		// cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
 	}
