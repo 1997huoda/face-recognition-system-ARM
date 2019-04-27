@@ -1,4 +1,5 @@
 PROJECT(example)
+cmake_minimum_required(VERSION 3.7)
 FIND_PACKAGE(Qt5 REQUIRED)
 
 SET(QT_DONT_USE_QTGUI TRUE)
