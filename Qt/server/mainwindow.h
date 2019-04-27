@@ -19,65 +19,66 @@ class thr : public QThread
 {
     void run() override {
         while(1){
+            cout<<"hello"<<endl;
+            std::cout << "command: " << command << std::endl;
+            send_msg(socket, command);
+            if (!strcmp(command.c_str(), "send_picture")) {
+                //下位机发图，上位机收图
+                //收人脸数
+                socket.recv(&request);
+                int face_num =
+                    std::stoi(std::string((char *)request.data(), request.size()));
+                send_msg(socket, "received_face_num");
+                //人脸名字
+                socket.recv(&request);
+                std::string name =   std::string((char *)request.data(), request.size());
+                send_msg(socket, "received_face_name");
+                //收图片
+                cv::Mat img;
 
-        
-    cout<<"hello"<<endl;
-    std::cout << "command: " << command << std::endl;
-    send_msg(socket, command);
-    if (!strcmp(command.c_str(), "send_picture")) {
-        //下位机发图，上位机收图
-        //收人脸数
-        socket.recv(&request);
-        int face_num =
-            std::stoi(std::string((char *)request.data(), request.size()));
-        send_msg(socket, "received_face_num");
-        //人脸名字
-        socket.recv(&request);
-        std::string name =   std::string((char *)request.data(), request.size());
-        send_msg(socket, "received_face_name");
-        //收图片
-        cv::Mat img;
+                socket.recv(&request);
+                std::vector<uchar> img_data(request.size());
+                memcpy(img_data.data(), request.data(), request.size());
+                img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+                imwrite("cap.jpg", img);
+                send_msg(socket, "reveice_picture_i");
 
-        socket.recv(&request);
-        std::vector<uchar> img_data(request.size());
-        memcpy(img_data.data(), request.data(), request.size());
-        img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-        imwrite("cap.jpg", img);
-        send_msg(socket, "reveice_picture_i");
+                for (int i = 0; i < face_num; i++) {
+                    socket.recv(&request);
+                    std::vector<uchar> img_data(request.size());
+                    memcpy(img_data.data(), request.data(), request.size());
+                    img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+                    resize(img, img, cv::Size(100,100) , 0, 0, INTER_LINEAR);
+                    imwrite("face" + to_string(i) + ".jpg", img);
+                    send_msg(socket, "reveice_picture_i");
+                }
+                socket.recv(&request);
 
-        for (int i = 0; i < face_num; i++) {
-            socket.recv(&request);
-            std::vector<uchar> img_data(request.size());
-            memcpy(img_data.data(), request.data(), request.size());
-            img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-            imwrite("face" + to_string(i) + ".jpg", img);
-            send_msg(socket, "reveice_picture_i");
-        }
-        socket.recv(&request);
-    } else if (!strcmp(command.c_str(), "none")) {
-        socket.recv(&request);
-    } else if (!strcmp(command.c_str(), "start_traning") ) {
-        //收
-        socket.recv(&request);
-    } else if (!strcmp(command.c_str(), "change_train_set")) {
-        socket.recv(&request);
-        //发人名
-        std::string human_name = "hhh";
-        send_msg(socket, human_name);
-        //收
-        socket.recv(&request);
-        //发照片名字
-//             std::string picture_name = "1.jpg";
-//             send_msg(socket, picture_name);
-        //收
-//             socket.recv(&request);
-        //发送图片
-        send_pic(socket, "../pic/1.png");
-        //收
-        socket.recv(&request);
-    } else {
-        std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
-    }
+
+            } else if (!strcmp(command.c_str(), "none")) {
+                socket.recv(&request);
+            } else if (!strcmp(command.c_str(), "start_traning") ) {
+                //收
+                socket.recv(&request);
+            } else if (!strcmp(command.c_str(), "change_train_set")) {
+                socket.recv(&request);
+                //发人名
+                std::string human_name = "hhh";
+                send_msg(socket, human_name);
+                //收
+                socket.recv(&request);
+                //发照片名字
+        //             std::string picture_name = "1.jpg";
+        //             send_msg(socket, picture_name);
+                //收
+        //             socket.recv(&request);
+                //发送图片
+                send_pic(socket, "../pic/1.png");
+                //收
+                socket.recv(&request);
+            } else {
+                std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
+            }
         }
     // run();
 

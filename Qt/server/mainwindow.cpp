@@ -48,6 +48,13 @@ void MainWindow::on_cmd_3_clicked()
     //改变训练集 PC传参数
     command="change_train_set";
     // run();
+    TickMeter tm;
+    tm.start();
+    int xxx=1e9;
+    while(--xxx);
+    tm.stop();
+    std::cout << "xxx 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
+
 }
 
 void MainWindow::on_cmd_4_clicked()
@@ -55,6 +62,24 @@ void MainWindow::on_cmd_4_clicked()
     //空
     command="none";
     // run();
+    QPixmap cap("cap.jpg");
+    ui->cap->setPixmap(cap);
+    ui->cap->show();
+    QPixmap face1("face1.jpg");
+    ui->face_1->setPixmap(face1);
+    ui->face_1->show();
+    QPixmap face2("face2.jpg");
+    ui->face_2->setPixmap(face2);
+    ui->face_2->show();
+    QPixmap face3("face1.jpg");
+    ui->face_3->setPixmap(face3);
+    ui->face_3->show();
+    QPixmap face4("face1.jpg");
+    ui->face_4->setPixmap(face4);
+    ui->face_4->show();
+    QPixmap face5("face1.jpg");
+    ui->face_5->setPixmap(face5);
+    ui->face_5->show();
 }
 
 void MainWindow::on_cmd_connect_clicked()
