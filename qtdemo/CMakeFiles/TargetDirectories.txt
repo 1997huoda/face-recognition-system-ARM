@@ -1,0 +1,11 @@
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/rebuild_cache.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/edit_cache.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/libpico.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/libzmq.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/libelm.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/libcom.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/libfacedetection.dir
+/mnt/Code/dada/pico/qtdemo/CMakeFiles/pro.dir
+/mnt/Code/dada/pico/qtdemo/dlib_build/CMakeFiles/rebuild_cache.dir
+/mnt/Code/dada/pico/qtdemo/dlib_build/CMakeFiles/dlib.dir
+/mnt/Code/dada/pico/qtdemo/dlib_build/CMakeFiles/edit_cache.dir

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcudnn_test.a  CMakeFiles/cudnn_test.dir/cudnn_dlibapi.cpp.o
+/usr/bin/ranlib libcudnn_test.a
