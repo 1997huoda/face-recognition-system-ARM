@@ -61,7 +61,6 @@ int main(){
 			socket.recv(&received);
 
 			//face_num个人脸的图像
-			VideoCapture capture(0);
 			Mat next;
 			capture >> next;
 			int x_b = cvRound(next.cols / nor.width); int y_b = cvRound(next.rows / nor.height);

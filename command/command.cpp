@@ -27,6 +27,7 @@ void train_elm(){
 }
 void test_elm(vector<Mat> mat_v){
 	MatrixXd W[model_num], b[model_num], beta[model_num];
+    //
 	for(int i = 0; i < model_num; i++){
 		string write_w = "W"+to_string(i)+".txt";
 		string write_b = "b"+to_string(i)+".txt";
@@ -39,14 +40,15 @@ void test_elm(vector<Mat> mat_v){
 	MatrixXd feature, feature1;
 	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
 	ELM_testing(feature1, W, b, beta);
-	vector<string>  output_name = show_once();
+	//name为识别结果字符串
+	name = show_once();
 }
-vector<string> show_once(){
-	vector<string>  output_name;
+string show_once(){
+	string output_name;
 	for(int i = 0; i < N_test; i++){
 		int ii, jj;
 		cout << output.row(i).maxCoeff(&ii, &jj) << endl;
-		output_name.push_back(names[jj]);
+		output_name=names[jj]+"/";
 	}
 	return output_name;
 }
