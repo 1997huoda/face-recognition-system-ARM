@@ -12,8 +12,8 @@ void eve_init(){
 		
 }
 
-void train_elm(){
-	MatrixXd W[model_num], b[model_num], beta[model_num];
+void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+	// MatrixXd W[model_num], b[model_num], beta[model_num];
 	//训练参数  W b beta
 	MatrixXd feature;
 	feature = ELM_in_ELM_face_training_matrix_from_files();
@@ -29,8 +29,8 @@ void train_elm(){
 		write_parameter(write_beta,beta[i]);
 	}
 }
-void test_elm(vector<Mat> mat_v){
-	MatrixXd W[model_num], b[model_num], beta[model_num];
+void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+	// MatrixXd W[model_num], b[model_num], beta[model_num];
     //
 	for(int i = 0; i < model_num; i++){
 		string write_w = "W"+to_string(i)+".txt";
@@ -152,7 +152,7 @@ Mat process_once()
 	for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 		int x = (*iter).x; int y = (*iter).y; int w = (*iter).w; int h = (*iter).h;
 		Rect rect(x, y, w, h);
-		Point point(x, y + h);//左下角
+		Point point(x, y );//左上角 //不影响截图
 		String text = to_string(iter - final_location.begin());
 		int font_face = cv::FONT_HERSHEY_COMPLEX;
 		double font_scale = 2;

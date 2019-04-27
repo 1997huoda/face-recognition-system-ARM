@@ -49,29 +49,28 @@ static const int table[256] = {
 	0,  0,  0,  46, 0,  0,  0,  0,  0, 0,  0,  47, 48, 49, 0,  50, 0,  0,  0,
 	51, 52, 53, 0,  54, 55, 56, 57, 58};
 
-int k = 1;
-int flag = 0;                         // 没有人脸?
+extern int k;
+extern int flag;                          // 没有人脸?
 // MatrixXd T;                           //存放训练集标签
-int L = 600;                          //隐层节点数
-int m = 50;                           //训练集以及测试集人数
-int model_num = 5;                    //子ELM模型的数量
-int training_face_num_per_person = 7; //训练集中每个人的人脸数
-int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
+extern int L;                           //隐层节点数
+extern int m;                           //训练集以及测试集人数
+extern int model_num;                     //子ELM模型的数量
+extern int training_face_num_per_person;  //训练集中每个人的人脸数
+extern int testing_face_num_per_person;   // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
-string testfile_path;  // = "/home/huoda/Desktop/50";
+extern string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
+extern string testfile_path;  // = "/home/huoda/Desktop/50";
 extern vector<int> train_labels_ori;
 extern vector<int> test_labels_ori;
-Mat trainingImages;
-vector<int> trainingLabels;
-Mat testingImages;
-vector<int> testingLabels;
-int N;
-int n;
-int N_test;
-MatrixXd F, output;
-MatrixXd T, temp_T;
-// extern MatrixXd W[model_num], b[model_num], beta[model_num];
+extern Mat trainingImages;
+extern Mat testingImages;
+extern vector<int> trainingLabels;
+extern vector<int> testingLabels;
+extern int N;
+extern int n;
+extern int N_test;
+extern MatrixXd F, output, T, temp_T;
+// extern MatrixXd * W, * b, * beta;
 // static dlib::frontal_face_detector detector; // dlib face detector
 // static dlib::shape_predictor sp;             // dlib shape predictor
 

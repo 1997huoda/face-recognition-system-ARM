@@ -2,8 +2,29 @@
 vector<int> train_labels_ori;
 vector<int> test_labels_ori;
 
+int k = 1;
+int flag = 0;                         // 没有人脸?
+// MatrixXd T;                           //存放训练集标签
+int L = 600;                          //隐层节点数
+int m = 50;                           //训练集以及测试集人数
+int model_num = 5;                    //子ELM模型的数量
 
+int training_face_num_per_person = 7; //训练集中每个人的人脸数
+int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
+//此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
+string trainfile_path = "../A";   // = "/home/huoda/Desktop/100"; //路径
+string testfile_path;  // = "/home/huoda/Desktop/50";
 
+Mat trainingImages;
+Mat testingImages;
+vector<int> trainingLabels;
+vector<int> testingLabels;
+
+int N;
+int n;
+int N_test;
+MatrixXd F, output, T, temp_T;
+// MatrixXd W[model_num], b[model_num], beta[model_num];
 
 void write_parameter(string path, MatrixXd output){
 	std::ofstream outfile(path.c_str()); // file name and the operation type. 
@@ -20,10 +41,10 @@ void read_parameter(string path, MatrixXd & in){
 	MatrixXd input(row, col);
 	double fxck;
 	for(int i = 0; i < row; i++){
-			for(int j = 0; j < col; j++){
-				infile >> fxck;
-				input(row, col) = fxck;
-			}
+		for(int j = 0; j < col; j++){
+			infile >> fxck;
+			input(row, col) = fxck;
+		}
 	}
 	in = input;
 }

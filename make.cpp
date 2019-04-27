@@ -25,6 +25,9 @@
 
 int main(){
 	eve_init();
+    //main 函数变量
+    MatrixXd W[model_num], b[model_num], beta[model_num];
+
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
@@ -84,7 +87,7 @@ int main(){
 			std::string tmp = "none";
 			send_msg(socket, tmp);
 		} else if(!strcmp(command.c_str(), "start_traning")){
-			train_elm();
+			train_elm(W,b,beta);
 			std::string tmp = "start_training";
 			send_msg(socket, tmp);
 		} else if(!strcmp(command.c_str(), "change_train_set")){
