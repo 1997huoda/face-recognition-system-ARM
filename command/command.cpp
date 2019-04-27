@@ -29,6 +29,24 @@ void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 		write_parameter(write_beta,beta[i]);
 	}
 }
+void test_elm(Mat mat,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+	// MatrixXd W[model_num], b[model_num], beta[model_num];
+    //
+	for(int i = 0; i < model_num; i++){
+		string write_w = "W"+to_string(i)+".txt";
+		string write_b = "b"+to_string(i)+".txt";
+		string write_beta = "beta"+to_string(i)+".txt";
+		read_parameter(write_w,W[i]);
+		read_parameter(write_b,b[i]);
+		read_parameter(write_beta,beta[i]);
+	}
+	//将整个 alignment vector送进来 产生测试数据集
+	MatrixXd feature, feature1;
+	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat);
+	ELM_testing(feature1, W, b, beta);
+	//name为识别结果字符串
+	name = show_once();
+}
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	// MatrixXd W[model_num], b[model_num], beta[model_num];
     //
@@ -152,15 +170,16 @@ Mat process_once()
 	for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 		int x = (*iter).x; int y = (*iter).y; int w = (*iter).w; int h = (*iter).h;
 		Rect rect(x, y, w, h);
-		Point point(x, y );//左上角 //不影响截图
-		String text = to_string(iter - final_location.begin());
-		int font_face = cv::FONT_HERSHEY_COMPLEX;
-		double font_scale = 2;
-		int thickness = 2;
-		int baseline;
+		// Point point(x, y );//左上角 //不影响截图
+		// String text = to_string(iter - final_location.begin());
+		// int font_face = cv::FONT_HERSHEY_COMPLEX;
+		// double font_scale = 2;
+		// int thickness = 2;
+		// int baseline;
 		cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baseline);
-		rectangle(frame, rect, cv::Scalar(100, 0, 0), 1, 0);
-		cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
+		rectangle(frame, rect, cv::Scalar(100, 0, 0), 2, 0);
+        //检测结果不用写在图上
+		// cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
 	}
 
 
