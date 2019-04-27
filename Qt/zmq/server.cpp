@@ -67,7 +67,7 @@ int run() {
                 std::vector<uchar> img_data(request.size());
                 memcpy(img_data.data(), request.data(), request.size());
                 img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-                imwrite("" + to_string(i) + ".jpg", img);
+                imwrite("face" + to_string(i) + ".jpg", img);
                 send_msg(socket, "reveice_picture_i");
             }
             socket.recv(&request);
