@@ -31,4 +31,4 @@ add_library(libpico SHARED ${SRC})
 
 target_link_libraries(pico libfacedetection dlib::dlib  ${OpenCV_LIBS})
 
-# FILE(COPY ${CMAKE_CURRENT_LIST_DIR}/my_helen.model DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+FILE(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

@@ -177,7 +177,8 @@ void process_webcam_frames()
 			imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
 			imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
 		}
-//      imwrite("save.jpg",frame);
+		
+  		 imwrite("save.jpg",frame);
 
 		imshow("point", frame); //显示当前帧
 		waitKey(5); //延时5ms

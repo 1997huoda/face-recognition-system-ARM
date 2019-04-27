@@ -9,3 +9,5 @@ exe/build
 zmq/build
 libzmq/build
 */build
+*/*/build
+*/*/*/build
