@@ -9,7 +9,7 @@ void eve_init(){
 		cout << "failed open capture" << endl;		
 		return;
 	}
-		
+    get_filename(trainfile_path,names);
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -176,7 +176,7 @@ Mat process_once()
 		// double font_scale = 2;
 		// int thickness = 2;
 		// int baseline;
-		cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baseline);
+		// cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baselinebaseline);
 		rectangle(frame, rect, cv::Scalar(100, 0, 0), 2, 0);
         //检测结果不用写在图上
 		// cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);

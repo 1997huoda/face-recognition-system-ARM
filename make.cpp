@@ -48,6 +48,8 @@ int main(){
 
 			//单次人脸识别
 			Mat frame = process_once();
+            //alignment-->string name
+            test_elm(alignment_face_recall,W,b,beta);
 
 			//发人脸数量
 			// std::string face_num = std::to_string(1);
@@ -56,7 +58,6 @@ int main(){
 			socket.recv(&received);
 
 			//发人脸名字
-
 			// std::string name = "dada";
 			send_msg(socket, name);
 			socket.recv(&received);

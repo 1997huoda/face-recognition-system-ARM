@@ -12,7 +12,7 @@ int model_num = 5;                    //子ELM模型的数量
 int training_face_num_per_person = 7; //训练集中每个人的人脸数
 int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "../A";   // = "/home/huoda/Desktop/100"; //路径
+string trainfile_path = "../../A";   // = "/home/huoda/Desktop/100"; //路径
 string testfile_path;  // = "/home/huoda/Desktop/50";
 
 Mat trainingImages;
