@@ -46,7 +46,7 @@ using namespace cv;
 
 
 //
-	VideoCapture capture(0);
+VideoCapture capture;
 //发送人脸数量
 int face_num;
 //人 名字 标签
@@ -66,7 +66,7 @@ void eve_init();
 Mat process_once();
 void train_elm();
 void test_elm(vector<Mat> mat_v);
-vector<string> show_once();
+string show_once();
 void mkdir_human_name(string human_name, vector<string> & names);
 void get_filename(string path, vector<string> & names);
 

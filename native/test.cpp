@@ -34,10 +34,8 @@ bool location::operator<(location & a){
 }
 void global_init(){
 	init_face_detector_dlib();
-
 	final_location.clear();
 	alignment_face_recall.clear();
-
 }
 void face_alignment(Mat image_roi){
 	//<dlib::rgb_pixel>                                 //彩色图

@@ -3,8 +3,13 @@
 void eve_init(){
 	global_init();
 	//开启摄像头
+	capture.open(0);
 	if(!capture.isOpened()) //没有打开摄像头的话，就返回。
-		cout << "capture(0)     failed" << endl;
+	{
+		cout << "failed open capture" << endl;		
+		return;
+	}
+		
 }
 
 void train_elm(){
@@ -23,7 +28,6 @@ void train_elm(){
 		string write_beta = "beta"+to_string(i)+".txt";
 		write_parameter(write_beta,beta[i]);
 	}
-
 }
 void test_elm(vector<Mat> mat_v){
 	MatrixXd W[model_num], b[model_num], beta[model_num];
@@ -91,8 +95,9 @@ void get_filename(string path, vector<string> & names){
 Mat process_once()
 {
 	// VideoCapture capture(0);
-	// if(!capture.isOpened()) //没有打开摄像头的话，就返回。
-	// 	cout << "" << endl;
+	// captrue.open(0);
+	if(!capture.isOpened()) //没有打开摄像头的话，就返回。
+		cout << "failed open capture" << endl;
 	// return ;
 
 	final_location.clear();

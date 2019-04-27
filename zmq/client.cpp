@@ -83,11 +83,11 @@ int main() {
             send_msg(socket, tmp);
 
             //收照片名字
-            socket.recv(&received);
-            std::string picture_name =
-                std::string((char *)received.data(), received.size());
-            tmp = "received_picture_name";
-            send_msg(socket, tmp);
+//             socket.recv(&received);
+//             std::string picture_name =
+//                 std::string((char *)received.data(), received.size());
+//             tmp = "received_picture_name";
+//             send_msg(socket, tmp);
 
             //收图
             socket.recv(&received);

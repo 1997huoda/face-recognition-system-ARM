@@ -25,8 +25,11 @@
 
 int main(){
 	eve_init();
+	cout<<"init--OK"<<endl;
 	zmq::context_t context(1);
+	cout<<"context(1)"<<endl;
 	zmq::socket_t socket(context, ZMQ_REQ);
+	cout<<" socket(context, ZMQ_REQ);"<<endl;
 	std::cout << "waiting connetting" << std::endl;
 	socket.connect("tcp://localhost:5555");
 
@@ -61,6 +64,7 @@ int main(){
 			socket.recv(&received);
 
 			//face_num个人脸的图像
+			// VideoCapture capture(0);
 			Mat next;
 			capture >> next;
 			int x_b = cvRound(next.cols / nor.width); int y_b = cvRound(next.rows / nor.height);
@@ -100,9 +104,10 @@ int main(){
 			//收照片名字        好像不需要了
 			// socket.recv(&received);
 			// std::string picture_name = std::string((char *)received.data(), received.size());
-			std::string picture_name = recv_msg(socket);
-			tmp = "received_picture_name";
-			send_msg(socket, tmp);
+			
+			// std::string picture_name = recv_msg(socket);
+			// tmp = "received_picture_name";
+			// send_msg(socket, tmp);
 
 			//收图
 			socket.recv(&received);

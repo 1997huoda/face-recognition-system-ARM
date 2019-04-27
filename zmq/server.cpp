@@ -84,10 +84,10 @@ int main() {
             //收
             socket.recv(&request);
             //发照片名字
-            std::string picture_name = "1.jpg";
-            send_msg(socket, picture_name);
+//             std::string picture_name = "1.jpg";
+//             send_msg(socket, picture_name);
             //收
-            socket.recv(&request);
+//             socket.recv(&request);
             //发送图片
             send_pic(socket, "../pic/1.png");
             //收
