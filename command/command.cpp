@@ -121,15 +121,17 @@ Mat process_once()
 	final_location.clear();
 	alignment_face_recall.clear();
 
-	Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
-	capture >> frame;
-	if(frame.empty())
+	Mat origin,frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+	capture >> origin;
+	if(origin.empty())
 		cout << "" << endl;
 	// return ;
 	//bak_gray为原图的灰度图
-	cvtColor(frame, bak_gray, CV_BGR2GRAY);
-	capture >> frame;
-	resize(frame, frame, nor, 0, 0, INTER_LINEAR);
+	cvtColor(origin, bak_gray, CV_BGR2GRAY);
+	// capture >> frame;
+	resize(origin, frame, nor, 0, 0, INTER_LINEAR);
+    	if(frame.empty())
+		cout << "" << endl;
 
 	process_image(frame);
 
