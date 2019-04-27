@@ -2,6 +2,8 @@
 
 #include "libzmq.hpp"
 
+std::string command;
+
 void send_msg(zmq::socket_t &socket, std::string str) {
     zmq::message_t msg(str.size());
     memcpy(msg.data(), str.c_str(), str.size());

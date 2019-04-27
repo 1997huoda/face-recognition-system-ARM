@@ -27,16 +27,14 @@ int main(){
 	eve_init();
 	cout<<"init--OK"<<endl;
 	zmq::context_t context(1);
-	cout<<"context(1)"<<endl;
 	zmq::socket_t socket(context, ZMQ_REQ);
-	cout<<" socket(context, ZMQ_REQ);"<<endl;
 	std::cout << "waiting connetting" << std::endl;
 	socket.connect("tcp://localhost:5555");
 
 	// cv::Mat img = cv::imread("../pic/1.png");
 	zmq::message_t msg;
 	zmq::message_t received;
-	std::string command;
+	// std::string command;
 	send_msg(socket, "none");
 
 	while(true){

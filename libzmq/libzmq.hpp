@@ -9,6 +9,8 @@
 using namespace std;
 using namespace cv;
 
+extern std::string command;
+
 void send_msg(zmq::socket_t & socket, std::string str);
 
 std::string recv_msg(zmq::socket_t & socket);
