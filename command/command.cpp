@@ -2,6 +2,9 @@
 
 void eve_init(){
 	global_init();
+	//开启摄像头
+	if(!capture.isOpened()) //没有打开摄像头的话，就返回。
+		cout << "capture(0)     failed" << endl;
 }
 
 void train_elm(){
@@ -12,13 +15,26 @@ void train_elm(){
 	T = generate_training_labels();
 	ELM_training(feature, W, b, beta);
 
-	for(i = 0; i < model_num; i++){
-
+	for(int i = 0; i < model_num; i++){
+		string write_w = "W"+to_string(i)+".txt";
+		write_parameter(write_w,W[i]);
+		string write_b = "b"+to_string(i)+".txt";
+		write_parameter(write_b,b[i]);
+		string write_beta = "beta"+to_string(i)+".txt";
+		write_parameter(write_beta,beta[i]);
 	}
 
 }
 void test_elm(vector<Mat> mat_v){
 	MatrixXd W[model_num], b[model_num], beta[model_num];
+	for(int i = 0; i < model_num; i++){
+		string write_w = "W"+to_string(i)+".txt";
+		string write_b = "b"+to_string(i)+".txt";
+		string write_beta = "beta"+to_string(i)+".txt";
+		read_parameter(write_w,W[i]);
+		read_parameter(write_b,b[i]);
+		read_parameter(write_beta,beta[i]);
+	}
 	//将整个 alignment vector送进来 产生测试数据集
 	MatrixXd feature, feature1;
 	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
@@ -72,9 +88,9 @@ void get_filename(string path, vector<string> & names){
 
 Mat process_once()
 {
-	VideoCapture capture(0);
-	if(!capture.isOpened()) //没有打开摄像头的话，就返回。
-		cout << "" << endl;
+	// VideoCapture capture(0);
+	// if(!capture.isOpened()) //没有打开摄像头的话，就返回。
+	// 	cout << "" << endl;
 	// return ;
 
 	final_location.clear();

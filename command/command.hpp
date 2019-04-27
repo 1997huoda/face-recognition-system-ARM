@@ -45,7 +45,8 @@ using namespace cv;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
 
-
+//
+	VideoCapture capture(0);
 //发送人脸数量
 int face_num;
 //人 名字 标签

@@ -6,30 +6,26 @@ vector<int> test_labels_ori;
 
 
 void write_parameter(string path, MatrixXd output){
-
 	std::ofstream outfile(path.c_str()); // file name and the operation type. 
 	outfile << output.rows() << endl;
 	outfile << output.cols() << endl;
 	outfile << output << endl;
 	outfile.close();
-
 }
 
 void read_parameter(string path, MatrixXd & in){
-
-	std::ifstream infile(path.c_str());
-	int row, col;
-	infile >> row >> col;
-	MatrixXd input(row, col);
-	double fxck;
-	for(int i = 0; i < row; i++){
-		for(int j = 0; j < col; j++){
-			infile >> fxck;
-			input(row, col) = fxck;
+		std::ifstream infile(path.c_str());
+		int row, col;
+		infile >> row >> col;
+		MatrixXd input(row, col);
+		double fxck;
+		for(int i = 0; i < row; i++){
+				for(int j = 0; j < col; j++){
+					infile >> fxck;
+					input(row, col) = fxck;
+				}
 		}
-	}
-	in = input;
-
+		in = input;
 }
 
 /******************LBP***********************/
