@@ -28,7 +28,8 @@ int main(){
 	//main 函数变量
 	MatrixXd W[model_num], b[model_num], beta[model_num];
 	//读取txt中的matrixxd
-	// read_Matrix((W,b,beta);
+	if(model_num==5)
+		read_Matrix((W,b,beta);
 
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);

@@ -12,8 +12,8 @@ int model_num = 5;                    //子ELM模型的数量
 int training_face_num_per_person = 7; //训练集中每个人的人脸数
 int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "../A";   // = "/home/huoda/Desktop/100"; //路径
-string testfile_path;  // = "/home/huoda/Desktop/50";
+string trainfile_path = "/home/huoda/Desktop/1"; //路径
+string testfile_path = "/home/huoda/Desktop/1";
 
 Mat trainingImages;
 Mat testingImages;
@@ -460,8 +460,8 @@ void print_matrix(MatrixXd & T){
 cv::Mat face_align(const char * filename){
 
 	Mat pic = imread(filename);
-	if(pic.channels() == 3)
-		cvtColor(pic, pic, CV_BGRA2GRAY);
+	// if(pic.channels() == 3)
+		// cvtColor(pic, pic, CV_BGRA2GRAY);
 	flag = 0;
 	if(pic.empty())
 	{
@@ -470,7 +470,7 @@ cv::Mat face_align(const char * filename){
 		return cv::Mat::zeros(50, 50, CV_8UC3);
 	}
 	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
-	equalizeHist(pic, pic);
+	// equalizeHist(pic, pic);
 	return pic;
 
 }
