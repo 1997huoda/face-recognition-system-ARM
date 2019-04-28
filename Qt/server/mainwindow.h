@@ -1,37 +1,42 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include<qt/QtCore/QCoreApplication>
-#include <string>
-#include<QTimer>
 #include "libzmq.hpp"
-#include<QThread>
+#include <QMainWindow>
+#include <QThread>
+#include <QTimer>
+#include <qt/QtCore/QCoreApplication>
+#include <string>
 
-//using namespace std;
+// using namespace std;
 extern std::string command;
-extern  zmq::socket_t socket;
+extern zmq::socket_t socket;
 extern zmq::message_t reply;
 extern zmq::message_t request;
 
+class thr : public QThread {
+    Q_OBJECT
+  signals:
+    void update_signal();
 
-class thr : public QThread
-{
+  public:
     void run() override {
-        while(1){
-            cout<<"hello"<<endl;
+
+        while (1) {
+            cout << "hello" << endl;
             std::cout << "command: " << command << std::endl;
             send_msg(socket, command);
             if (!strcmp(command.c_str(), "send_picture")) {
                 //下位机发图，上位机收图
                 //收人脸数
                 socket.recv(&request);
-                int face_num =
-                    std::stoi(std::string((char *)request.data(), request.size()));
+                int face_num = std::stoi(
+                    std::string((char *)request.data(), request.size()));
                 send_msg(socket, "received_face_num");
                 //人脸名字
                 socket.recv(&request);
-                std::string name =   std::string((char *)request.data(), request.size());
+                std::string name =
+                    std::string((char *)request.data(), request.size());
                 send_msg(socket, "received_face_name");
                 //收图片
                 cv::Mat img;
@@ -48,16 +53,16 @@ class thr : public QThread
                     std::vector<uchar> img_data(request.size());
                     memcpy(img_data.data(), request.data(), request.size());
                     img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-                    resize(img, img, cv::Size(100,100) , 0, 0, INTER_LINEAR);
+                    resize(img, img, cv::Size(100, 100), 0, 0, INTER_LINEAR);
                     imwrite("face" + to_string(i) + ".jpg", img);
                     send_msg(socket, "reveice_picture_i");
                 }
+                this->update_signal();
                 socket.recv(&request);
-
 
             } else if (!strcmp(command.c_str(), "none")) {
                 socket.recv(&request);
-            } else if (!strcmp(command.c_str(), "start_traning") ) {
+            } else if (!strcmp(command.c_str(), "start_traning")) {
                 //收
                 socket.recv(&request);
             } else if (!strcmp(command.c_str(), "change_train_set")) {
@@ -68,10 +73,10 @@ class thr : public QThread
                 //收
                 socket.recv(&request);
                 //发照片名字
-        //             std::string picture_name = "1.jpg";
-        //             send_msg(socket, picture_name);
+                //             std::string picture_name = "1.jpg";
+                //             send_msg(socket, picture_name);
                 //收
-        //             socket.recv(&request);
+                //             socket.recv(&request);
                 //发送图片
                 send_pic(socket, "../pic/1.png");
                 //收
@@ -80,36 +85,22 @@ class thr : public QThread
                 std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
             }
         }
-    // run();
-
-
+        // run();
     }
 };
-
-
-
-
-
-
-
-
-
-
-
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+  private slots:
     void timerUpdate();
     void on_cmd_1_clicked();
 
@@ -121,14 +112,11 @@ private slots:
 
     void on_cmd_connect_clicked();
 
+    void update_ui();
 
-private:
+  private:
     Ui::MainWindow *ui;
     thr t;
- 
 };
-
-
-
 
 #endif // MAINWINDOW_H
