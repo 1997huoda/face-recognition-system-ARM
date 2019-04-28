@@ -73,6 +73,7 @@ int main(){
 				int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
 				Rect rect(x, y, w, h);
 				Mat send = (origin(rect));
+				resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
