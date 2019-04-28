@@ -50,7 +50,8 @@ int main() {
             //单次人脸识别
             Mat frame = process_once();
             // alignment-->string name
-            test_elm(alignment_face_recall, W, b, beta);
+            if(alignment_face_recall.size()!=0)
+                test_elm(alignment_face_recall, W, b, beta);
 
             //发人脸数量
             send_msg(socket, to_string(face_num));
