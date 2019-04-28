@@ -82,19 +82,23 @@ void get_filename(string path, vector<string> & names){
 	struct dirent * ptr;
 	DIR * dir;
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
-	cout<<dir<<endl;
-	// if(dir!=NULL)
+	if(!dir){
+		cout<<"dir fail"<<endl;
+		return;
+	}
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
 		string ss = path + '/' + ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
 		cout<<ss<<endl;
-		if(ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
+		// if(ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
 			// Thumbs.db这个windows下保存图片就会产生的文件
-			continue;
+			// continue;
+		if(strncmp(ptr->d_name, ".", 1) == 0)	//去掉本级目录	去掉上级目录	去掉隐藏文件
+     		       continue;
 		if(ptr->d_type == DT_DIR){       //DT_DIR目录    DT_REG常规文件
 			string ss = path + '/' + ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
-			cout<<ss<<endl;
-			// names.push_back(ss);
+			cout<<"push_back"<<ss<<endl;
+			names.push_back(ss);
 		}
 	}
 	closedir(dir);
