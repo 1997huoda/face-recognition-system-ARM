@@ -93,7 +93,7 @@ void process_image(Mat mat)
 			location good = {x, y, w, h, neighbors};
 			final_location.push_back(good);
 		}
-		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
+		// printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
 	}
 	free(pBuffer);
 }

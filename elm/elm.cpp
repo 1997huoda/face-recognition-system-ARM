@@ -6,7 +6,7 @@ int k = 1;
 int flag = 0;                         // 没有人脸?
 // MatrixXd T;                           //存放训练集标签
 int L = 600;                          //隐层节点数
-int m = 50;                           //训练集以及测试集人数
+int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
 int training_face_num_per_person = 7; //训练集中每个人的人脸数
@@ -547,7 +547,7 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有参数Mat
 	// loading test images
-	cout << "Loading test Data..." << endl;
+	// cout << "Loading test Data..." << endl;
 	Mat testingImages;
 	getFaces_test(SrcImage, testingImages, testingLabels);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
@@ -555,18 +555,18 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有�
 	cv2eigen(testingImages, feature1);
 	// cv2eigen(Mat(testingLabels), label1);
 	N_test = testingImages.rows;
-	cout << "Number of testing images:" << N_test << endl;
+	// cout << "Number of testing images:" << N_test << endl;
 	return feature1;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 	// loading test images
-	cout << "Loading test Data..." << endl;
+	// cout << "Loading test Data..." << endl;
 	Mat testingImages;
 	getFaces_test(mat_v, testingImages);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
 	cv2eigen(testingImages, feature1);
 	N_test = testingImages.rows;
-	cout << "Number of testing images:" << N_test << endl;
+	// cout << "Number of testing images:" << N_test << endl;
 	return feature1;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(){
@@ -633,18 +633,16 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	}
 	output = out_all * F;
 	tm.stop();
-	std::cout << "Testing time:    " << tm.getTimeSec() << "  s" << endl;
+	std::cout << "Testing time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 }
 // calculate accuracy
 void show_testing_results(){
 	cout << "testing results(ELM,real):" << endl;
-	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test
-		 << endl;
+	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test << endl;
 	int count = 0;
 
 	std::string fileName = "my.txt";
-	std::ofstream outfile(
-		fileName.c_str()); // file name and the operation type. 
+	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
 	outfile << output.rows() << endl;
 	outfile << output.cols() << endl;
 	outfile << output << endl;
@@ -656,9 +654,6 @@ void show_testing_results(){
 		//             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
 		double truth = output.row(i).maxCoeff(&ii, &jj);
 		cout << truth << endl;
-		//       if(truth<0.3){
-		//           N_test--;continue;
-		//     }
 		cout << jj << ',' << testingLabels.at(i) << endl;
 		if(jj == testingLabels.at(i))
 			count++;

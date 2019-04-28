@@ -50,19 +50,18 @@ int main(){
 			//单次人脸识别
 			Mat frame = process_once();
 			//alignment-->string name
-			// test_elm(alignment_face_recall,W,b,beta);
+			test_elm(alignment_face_recall,W,b,beta);
 
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
 			socket.recv(&received);
 
 			//发人脸名字
-			// std::string name = "dada";
 			send_msg(socket, name);
+			cout<<"name:"<<name<<endl;
 			socket.recv(&received);
 
-			//发图片
-			//摄像头 
+			//摄像头 图像
 			send_pic(socket, frame);
 			socket.recv(&received);
 
@@ -77,6 +76,7 @@ int main(){
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
+			
 			//备用发送 未测试
 			// for(vector<location>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
 			// 	send_pic(socket, (*iter);
