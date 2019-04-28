@@ -30,10 +30,6 @@ int main(){
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了 也就不用写参数了
 	// train_elm(W,b,beta);
 
-	// 读取txt中的matrixxd
-	// if(model_num==5)
-		// read_Matrix((W,b,beta);
-
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);

@@ -9,6 +9,7 @@ void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 		read_parameter(write_beta,beta[i]);
 	}
 }
+
 void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	for(int i = 0; i < model_num; i++){
 		string write_w = "W"+to_string(i)+".txt";
@@ -19,6 +20,7 @@ void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 		write_parameter(write_beta,beta[i]);
 	}
 }
+
 void eve_init(){
 	global_init();
 	//开启摄像头
@@ -27,8 +29,10 @@ void eve_init(){
 	{
 		cout << "failed open capture" << endl;		
 		return;
+	}else{
+		cout<<"open cap(0) -->"<<endl;
 	}
-//     get_filename(“../A”,names);
+    get_filename("../A",names);
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -75,18 +79,22 @@ void mkdir_human_name(string human_name, vector<string> & names){
 }
 
 void get_filename(string path, vector<string> & names){
-
 	struct dirent * ptr;
 	DIR * dir;
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
+	cout<<dir<<endl;
+	// if(dir!=NULL)
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
+		string ss = path + '/' + ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
+		cout<<ss<<endl;
 		if(ptr->d_name[0] == '.' ||  ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
 			// Thumbs.db这个windows下保存图片就会产生的文件
 			continue;
 		if(ptr->d_type == DT_DIR){       //DT_DIR目录    DT_REG常规文件
 			string ss = path + '/' + ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
-			names.push_back(ss);
+			cout<<ss<<endl;
+			// names.push_back(ss);
 		}
 	}
 	closedir(dir);

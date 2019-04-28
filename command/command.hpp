@@ -44,7 +44,6 @@ using namespace cv;
 
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
-
 //摄像头类
 VideoCapture capture;
 //摄像头帧
