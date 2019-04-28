@@ -157,7 +157,7 @@ std::vector<float> extract_feature(Mat src){
     closedir(dir);
    } */
 void getFiles_train(string path, vector<string> & files){
-	// int count_train = 0;
+	m=0;
 	int person_id = 0;
 	struct dirent * ptr, * ptr1;
 	DIR * dir, * dir1;
@@ -169,24 +169,21 @@ void getFiles_train(string path, vector<string> & files){
 		   "Thumbs.db")      //去掉当前文件夹目录和
 			                 // Thumbs.db这个windows下保存图片就会产生的文件
 			continue;
-		string ss = path + '/' + ptr->d_name +
-					'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
-		dir1 = opendir(ss.c_str());
-		while((ptr1 = readdir(dir1)) != NULL){
-			if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
-				continue;
-			string sss = ss + ptr1->d_name; //
-			files.push_back(sss);           //返回图片路径
-			// count_train++;                  //训练数量++
-			train_labels_ori.push_back(person_id); // vector<int> train_labels_ori;添加标签
-			// if(count_train == training_face_num_per_person)  //训练数量结束
-			// {
-				// count_train = 0;
-				// break;
-			// }
+		if(ptr->d_type == DT_DIR){ 
+			m++;
+			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
+			dir1 = opendir(ss.c_str());
+			while((ptr1 = readdir(dir1)) != NULL){
+				if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
+					continue;
+				
+				string sss = ss + ptr1->d_name; //
+				files.push_back(sss);           //返回图片路径
+				train_labels_ori.push_back(person_id); // vector<int> train_labels_ori;添加标签
+			}
+			closedir(dir1);
+			person_id++; //下一个文件夹 下一个人的标签++			
 		}
-		closedir(dir1);
-		person_id++; //下一个文件夹 下一个人的标签++
 	}
 	closedir(dir);
 }
