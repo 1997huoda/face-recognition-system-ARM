@@ -9,6 +9,16 @@ void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 		read_parameter(write_beta,beta[i]);
 	}
 }
+void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+	for(int i = 0; i < model_num; i++){
+		string write_w = "W"+to_string(i)+".txt";
+		write_parameter(write_w,W[i]);
+		string write_b = "b"+to_string(i)+".txt";
+		write_parameter(write_b,b[i]);
+		string write_beta = "beta"+to_string(i)+".txt";
+		write_parameter(write_beta,beta[i]);
+	}
+}
 void eve_init(){
 	global_init();
 	//开启摄像头
@@ -22,21 +32,11 @@ void eve_init(){
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	// MatrixXd W[model_num], b[model_num], beta[model_num];
 	//训练参数  W b beta
 	MatrixXd feature;
 	feature = ELM_in_ELM_face_training_matrix_from_files();
 	T = generate_training_labels();
 	ELM_training(feature, W, b, beta);
-
-	for(int i = 0; i < model_num; i++){
-		string write_w = "W"+to_string(i)+".txt";
-		write_parameter(write_w,W[i]);
-		string write_b = "b"+to_string(i)+".txt";
-		write_parameter(write_b,b[i]);
-		string write_beta = "beta"+to_string(i)+".txt";
-		write_parameter(write_beta,beta[i]);
-	}
 }
 
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta){

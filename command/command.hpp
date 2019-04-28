@@ -67,6 +67,7 @@ Mat rec_img;
 
 void eve_init();
 void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
+void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 
 Mat process_once();
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
