@@ -44,7 +44,7 @@ int main(){
 	while(true){
 		//接收命令
 		command = recv_msg(socket);
-		cout << command << endl;
+		cout << "command : 	"command << endl;
 		if(!strcmp(command.c_str(), "send_picture")){
 
 			//单次人脸识别
@@ -76,7 +76,7 @@ int main(){
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
-			
+
 			//备用发送 未测试
 			// for(vector<location>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
 			// 	send_pic(socket, (*iter);

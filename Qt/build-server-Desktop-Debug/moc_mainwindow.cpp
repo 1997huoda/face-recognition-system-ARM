@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[8];
-    char stringdata0[116];
+    char stringdata0[115];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,19 +32,18 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 16), // "on_cmd_1_clicked"
-QT_MOC_LITERAL(2, 28, 0), // ""
-QT_MOC_LITERAL(3, 29, 16), // "on_cmd_2_clicked"
-QT_MOC_LITERAL(4, 46, 16), // "on_cmd_3_clicked"
-QT_MOC_LITERAL(5, 63, 16), // "on_cmd_4_clicked"
-QT_MOC_LITERAL(6, 80, 22), // "on_cmd_connect_clicked"
-QT_MOC_LITERAL(7, 103, 12) // "TimerTimeOut"
+QT_MOC_LITERAL(1, 11, 11), // "timerUpdate"
+QT_MOC_LITERAL(2, 23, 0), // ""
+QT_MOC_LITERAL(3, 24, 16), // "on_cmd_1_clicked"
+QT_MOC_LITERAL(4, 41, 16), // "on_cmd_2_clicked"
+QT_MOC_LITERAL(5, 58, 16), // "on_cmd_3_clicked"
+QT_MOC_LITERAL(6, 75, 16), // "on_cmd_4_clicked"
+QT_MOC_LITERAL(7, 92, 22) // "on_cmd_connect_clicked"
 
     },
-    "MainWindow\0on_cmd_1_clicked\0\0"
+    "MainWindow\0timerUpdate\0\0on_cmd_1_clicked\0"
     "on_cmd_2_clicked\0on_cmd_3_clicked\0"
-    "on_cmd_4_clicked\0on_cmd_connect_clicked\0"
-    "TimerTimeOut"
+    "on_cmd_4_clicked\0on_cmd_connect_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -86,12 +85,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_cmd_1_clicked(); break;
-        case 1: _t->on_cmd_2_clicked(); break;
-        case 2: _t->on_cmd_3_clicked(); break;
-        case 3: _t->on_cmd_4_clicked(); break;
-        case 4: _t->on_cmd_connect_clicked(); break;
-        case 5: _t->TimerTimeOut(); break;
+        case 0: _t->timerUpdate(); break;
+        case 1: _t->on_cmd_1_clicked(); break;
+        case 2: _t->on_cmd_2_clicked(); break;
+        case 3: _t->on_cmd_3_clicked(); break;
+        case 4: _t->on_cmd_4_clicked(); break;
+        case 5: _t->on_cmd_connect_clicked(); break;
         default: ;
         }
     }

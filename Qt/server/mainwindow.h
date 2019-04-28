@@ -82,7 +82,7 @@ class thr : public QThread
         }
     // run();
 
-     
+
     }
 };
 

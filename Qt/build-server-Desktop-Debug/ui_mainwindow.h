@@ -128,31 +128,43 @@ public:
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
         face_1 = new QLabel(horizontalLayoutWidget);
         face_1->setObjectName(QString::fromUtf8("face_1"));
+        face_1->setMinimumSize(QSize(100, 100));
+        face_1->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_1);
 
         face_2 = new QLabel(horizontalLayoutWidget);
         face_2->setObjectName(QString::fromUtf8("face_2"));
+        face_2->setMinimumSize(QSize(100, 100));
+        face_2->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_2);
 
         face_3 = new QLabel(horizontalLayoutWidget);
         face_3->setObjectName(QString::fromUtf8("face_3"));
+        face_3->setMinimumSize(QSize(100, 100));
+        face_3->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_3);
 
         face_4 = new QLabel(horizontalLayoutWidget);
         face_4->setObjectName(QString::fromUtf8("face_4"));
+        face_4->setMinimumSize(QSize(100, 100));
+        face_4->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_4);
 
         face_5 = new QLabel(horizontalLayoutWidget);
         face_5->setObjectName(QString::fromUtf8("face_5"));
+        face_5->setMinimumSize(QSize(100, 100));
+        face_5->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_5);
 
         face_6 = new QLabel(horizontalLayoutWidget);
         face_6->setObjectName(QString::fromUtf8("face_6"));
+        face_6->setMinimumSize(QSize(100, 100));
+        face_6->setMaximumSize(QSize(100, 100));
 
         horizontalLayout->addWidget(face_6);
 
@@ -203,7 +215,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         cmd_connect->setText(QApplication::translate("MainWindow", "\350\277\236\346\216\245", nullptr));
-        cap->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
+        cap->setText(QApplication::translate("MainWindow", "cap", nullptr));
         cmd_1->setText(QApplication::translate("MainWindow", "\344\272\272\350\204\270\350\257\206\345\210\253", nullptr));
         cmd_2->setText(QApplication::translate("MainWindow", "\350\256\255\347\273\203\346\250\241\345\236\213", nullptr));
         cmd_3->setText(QApplication::translate("MainWindow", "\346\233\264\346\226\260\345\233\276\347\211\207", nullptr));
@@ -211,18 +223,18 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "command:", nullptr));
         cmd_state->setText(QApplication::translate("MainWindow", "tmp", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_1->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_2->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_3->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_4->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_5->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        face_6->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_1->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_2->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_3->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_4->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_5->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        name_6->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
+        face_1->setText(QApplication::translate("MainWindow", "face_1", nullptr));
+        face_2->setText(QApplication::translate("MainWindow", "face_2", nullptr));
+        face_3->setText(QApplication::translate("MainWindow", "face_3", nullptr));
+        face_4->setText(QApplication::translate("MainWindow", "face_4", nullptr));
+        face_5->setText(QApplication::translate("MainWindow", "face_5", nullptr));
+        face_6->setText(QApplication::translate("MainWindow", "face_6", nullptr));
+        name_1->setText(QApplication::translate("MainWindow", "name_1", nullptr));
+        name_2->setText(QApplication::translate("MainWindow", "name_2", nullptr));
+        name_3->setText(QApplication::translate("MainWindow", "name_3", nullptr));
+        name_4->setText(QApplication::translate("MainWindow", "name_4", nullptr));
+        name_5->setText(QApplication::translate("MainWindow", "name_5", nullptr));
+        name_6->setText(QApplication::translate("MainWindow", "name_6", nullptr));
     } // retranslateUi
 
 };
