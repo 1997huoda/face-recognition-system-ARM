@@ -157,7 +157,7 @@ std::vector<float> extract_feature(Mat src){
     closedir(dir);
    } */
 void getFiles_train(string path, vector<string> & files){
-	int count_train = 0;
+	// int count_train = 0;
 	int person_id = 0;
 	struct dirent * ptr, * ptr1;
 	DIR * dir, * dir1;
@@ -177,14 +177,13 @@ void getFiles_train(string path, vector<string> & files){
 				continue;
 			string sss = ss + ptr1->d_name; //
 			files.push_back(sss);           //返回图片路径
-			count_train++;                  //训练数量++
-			train_labels_ori.push_back(
-				person_id); // vector<int> train_labels_ori;添加标签
-			if(count_train == training_face_num_per_person)  //训练数量结束
-			{
-				count_train = 0;
-				break;
-			}
+			// count_train++;                  //训练数量++
+			train_labels_ori.push_back(person_id); // vector<int> train_labels_ori;添加标签
+			// if(count_train == training_face_num_per_person)  //训练数量结束
+			// {
+				// count_train = 0;
+				// break;
+			// }
 		}
 		closedir(dir1);
 		person_id++; //下一个文件夹 下一个人的标签++
@@ -224,8 +223,7 @@ void getFiles_test(string path, vector<string> & files){
 			files.push_back(sss);
 			count_test++;
 			test_labels_ori.push_back(person_id);
-			if(count_test >=
-			   (testing_face_num_per_person))  //(training_face_num_per_person+testing_face_num_per_person))
+			if(count_test >=   (testing_face_num_per_person))  //(training_face_num_per_person+testing_face_num_per_person))
 			{
 				count_test = 0;
 				break;
@@ -614,14 +612,14 @@ void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	tm.stop();
 	std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
 
-	for(int i = 0; i < model_num; i++){
-		string write_w = "W"+to_string(i)+".txt";
-		write_parameter(write_w,W[i]);
-		string write_b = "b"+to_string(i)+".txt";
-		write_parameter(write_b,b[i]);
-		string write_beta = "beta"+to_string(i)+".txt";
-		write_parameter(write_beta,beta[i]);
-	}
+	// for(int i = 0; i < model_num; i++){
+	// 	string write_w = "W"+to_string(i)+".txt";
+	// 	write_parameter(write_w,W[i]);
+	// 	string write_b = "b"+to_string(i)+".txt";
+	// 	write_parameter(write_b,b[i]);
+	// 	string write_beta = "beta"+to_string(i)+".txt";
+	// 	write_parameter(write_beta,beta[i]);
+	// }
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){

@@ -22,6 +22,8 @@ void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 }
 
 void eve_init(){
+	//修改全局变量
+	trainfile_path="../A";
 	global_init();
 	//开启摄像头
 	capture.open(0);
@@ -32,7 +34,7 @@ void eve_init(){
 	}else{
 		cout<<"open cap(0) -->"<<endl;
 	}
-    get_filename("../A",names);
+    get_filename(trainfile_path,names);
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -41,6 +43,7 @@ void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	feature = ELM_in_ELM_face_training_matrix_from_files();
 	T = generate_training_labels();
 	ELM_training(feature, W, b, beta);
+	cout<<"train elm-in-elm end\n";
 }
 
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -120,7 +123,7 @@ Mat process_once()
 	Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
 	capture >> origin;
 	if(origin.empty())
-		cout << "" << endl;
+		cout << "cap empty" << endl;
 	// return ;
 	//bak_gray为原图的灰度图
 	cvtColor(origin, bak_gray, CV_BGR2GRAY);
@@ -181,10 +184,10 @@ Mat process_once()
 	}
 
 
-	// for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
-	// 	imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
-	// 	imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
-	// }
+	for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+		imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
+		imwrite("face" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
+	}
 
 	imshow("point", frame); //显示当前帧
 	waitKey(5); //延时5ms

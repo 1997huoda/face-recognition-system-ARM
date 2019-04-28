@@ -25,7 +25,7 @@
 
 int main(){
 	eve_init();
-	//main 函数变量
+	//main 函数变量		MatrixXd
 	MatrixXd W[model_num], b[model_num], beta[model_num];
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了 也就不用写参数了
 	// train_elm(W,b,beta);
