@@ -1,5 +1,14 @@
 #include "command.hpp"
-
+void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+	for(int i = 0; i < model_num; i++){
+		string write_w = "W"+to_string(i)+".txt";
+		string write_b = "b"+to_string(i)+".txt";
+		string write_beta = "beta"+to_string(i)+".txt";
+		read_parameter(write_w,W[i]);
+		read_parameter(write_b,b[i]);
+		read_parameter(write_beta,beta[i]);
+	}
+}
 void eve_init(){
 	global_init();
 	//开启摄像头
@@ -9,7 +18,7 @@ void eve_init(){
 		cout << "failed open capture" << endl;		
 		return;
 	}
-    get_filename(trainfile_path,names);
+//     get_filename(“../A”,names);
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -29,35 +38,8 @@ void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 		write_parameter(write_beta,beta[i]);
 	}
 }
-void test_elm(Mat mat,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	// MatrixXd W[model_num], b[model_num], beta[model_num];
-    //
-	for(int i = 0; i < model_num; i++){
-		string write_w = "W"+to_string(i)+".txt";
-		string write_b = "b"+to_string(i)+".txt";
-		string write_beta = "beta"+to_string(i)+".txt";
-		read_parameter(write_w,W[i]);
-		read_parameter(write_b,b[i]);
-		read_parameter(write_beta,beta[i]);
-	}
-	//将整个 alignment vector送进来 产生测试数据集
-	MatrixXd feature, feature1;
-	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat);
-	ELM_testing(feature1, W, b, beta);
-	//name为识别结果字符串
-	name = show_once();
-}
+
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	// MatrixXd W[model_num], b[model_num], beta[model_num];
-    //
-	for(int i = 0; i < model_num; i++){
-		string write_w = "W"+to_string(i)+".txt";
-		string write_b = "b"+to_string(i)+".txt";
-		string write_beta = "beta"+to_string(i)+".txt";
-		read_parameter(write_w,W[i]);
-		read_parameter(write_b,b[i]);
-		read_parameter(write_beta,beta[i]);
-	}
 	//将整个 alignment vector送进来 产生测试数据集
 	MatrixXd feature, feature1;
 	feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
@@ -118,10 +100,12 @@ Mat process_once()
 		cout << "failed open capture" << endl;
 	// return ;
 
+	//将识别结果清空
 	final_location.clear();
 	alignment_face_recall.clear();
+	name="";
 
-	Mat origin,frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+	Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
 	capture >> origin;
 	if(origin.empty())
 		cout << "" << endl;
@@ -185,10 +169,10 @@ Mat process_once()
 	}
 
 
-	for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
-		imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
-		imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
-	}
+	// for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+	// 	imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
+	// 	imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
+	// }
 
 	imshow("point", frame); //显示当前帧
 	waitKey(5); //延时5ms

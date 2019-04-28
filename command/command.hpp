@@ -45,8 +45,11 @@ using namespace cv;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
 
-//
+//摄像头类
 VideoCapture capture;
+//摄像头帧
+Mat origin;
+
 //发送人脸数量
 int face_num;
 //人 名字 标签
@@ -63,9 +66,11 @@ std::string picture_name;
 Mat rec_img;
 
 void eve_init();
+void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
+
 Mat process_once();
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
-void test_elm(Mat mat,MatrixXd * W, MatrixXd * b, MatrixXd * beta);
+
 void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 string show_once();
 void mkdir_human_name(string human_name, vector<string> & names);

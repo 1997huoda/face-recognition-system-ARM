@@ -25,8 +25,8 @@
 
 int main(){
 	eve_init();
-    //main 函数变量
-    MatrixXd W[model_num], b[model_num], beta[model_num];
+  	  //main 函数变量
+   	 MatrixXd W[model_num], b[model_num], beta[model_num];
 
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);
@@ -48,8 +48,8 @@ int main(){
 
 			//单次人脸识别
 			Mat frame = process_once();
-            //alignment-->string name
-            test_elm(alignment_face_recall,W,b,beta);
+			//alignment-->string name
+			// test_elm(alignment_face_recall,W,b,beta);
 
 			//发人脸数量
 			// std::string face_num = std::to_string(1);
@@ -63,20 +63,17 @@ int main(){
 			socket.recv(&received);
 
 			//发图片
-			//摄像头 带标记图像
+			//摄像头 
 			send_pic(socket, frame);
 			socket.recv(&received);
 
 			//face_num个人脸的图像
-			// VideoCapture capture(0);
-			Mat next;
-			capture >> next;
-			int x_b = cvRound(next.cols / nor.width); int y_b = cvRound(next.rows / nor.height);
+			int x_b = cvRound(origin.cols / nor.width); int y_b = cvRound(origin.rows / nor.height);
 			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 				int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y);
 				int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
 				Rect rect(x, y, w, h);
-				Mat send = (next(rect));
+				Mat send = (origin(rect));
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
