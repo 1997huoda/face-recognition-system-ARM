@@ -25,8 +25,10 @@
 
 int main(){
 	eve_init();
-  	  //main 函数变量
-   	 MatrixXd W[model_num], b[model_num], beta[model_num];
+	//main 函数变量
+	MatrixXd W[model_num], b[model_num], beta[model_num];
+	//读取txt中的matrixxd
+	// read_Matrix((W,b,beta);
 
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);
@@ -34,10 +36,9 @@ int main(){
 	std::cout << "waiting connetting" << std::endl;
 	socket.connect("tcp://localhost:5555");
 
-	// cv::Mat img = cv::imread("../pic/1.png");
 	zmq::message_t msg;
 	zmq::message_t received;
-	// std::string command;
+
 	send_msg(socket, "xxxx");
 
 	while(true){
@@ -52,8 +53,6 @@ int main(){
 			// test_elm(alignment_face_recall,W,b,beta);
 
 			//发人脸数量
-			// std::string face_num = std::to_string(1);
-			// int face_num = 1;
 			send_msg(socket, to_string(face_num));
 			socket.recv(&received);
 
@@ -77,6 +76,11 @@ int main(){
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
+			//备用发送 未测试
+			// for(vector<location>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+			// 	send_pic(socket, (*iter);
+			// 	socket.recv(&received);
+			// }
 
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
