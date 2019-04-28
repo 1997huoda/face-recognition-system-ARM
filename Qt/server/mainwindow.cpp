@@ -7,6 +7,9 @@ zmq::socket_t socket(context, ZMQ_REP);
 zmq::message_t reply;
 zmq::message_t request;
 
+string name;
+string human_name;
+
 MainWindow::MainWindow(QWidget * parent)
 	: QMainWindow(parent), ui(new Ui::MainWindow){
 	ui->setupUi(this);
@@ -91,4 +94,30 @@ void MainWindow::update_ui(){
 	QPixmap face6("face5.jpg");
 	ui->face_6->setPixmap(face6);
 	ui->face_6->show();
+
+    vector<string> name_label;
+//    string receive = "lajfl/asjdflkjdsf/ajkflsdfjs/gbhg/renming/";
+    string tmp;
+    for (int i = 0; i < name.size(); i++) {
+        if (name[i] != '/') {
+            tmp.push_back(name[i]);
+        } else {
+            name_label.push_back(tmp);
+            tmp.clear();
+        }
+    }
+    if(name_label.size()>=1)
+    ui->name_1->setText(QString::fromStdString(name_label[0]));
+    if(name_label.size()>=2)
+    ui->name_2->setText(QString::fromStdString(name_label[1]));
+    if(name_label.size()>=3)
+    ui->name_3->setText(QString::fromStdString(name_label[2]));
+    if(name_label.size()>=4)
+    ui->name_4->setText(QString::fromStdString(name_label[3]));
+    if(name_label.size()>=5)
+    ui->name_5->setText(QString::fromStdString(name_label[4]));
+    if(name_label.size()>=6)
+    ui->name_6->setText(QString::fromStdString(name_label[5]));
+
+
 }

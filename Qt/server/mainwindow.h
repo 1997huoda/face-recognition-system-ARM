@@ -14,6 +14,12 @@ extern zmq::socket_t socket;
 extern zmq::message_t reply;
 extern zmq::message_t request;
 
+extern string name;
+extern string human_name;
+//str = qstr.toStdString();
+//QString qstr;
+//qstr = QString::fromStdString(str);
+
 class thr : public QThread {
     Q_OBJECT
   signals:
@@ -35,8 +41,7 @@ class thr : public QThread {
                 send_msg(socket, "received_face_num");
                 //人脸名字
                 socket.recv(&request);
-                std::string name =
-                    std::string((char *)request.data(), request.size());
+                 name =  std::string((char *)request.data(), request.size());
                 send_msg(socket, "received_face_name");
                 //收图片
                 cv::Mat img;
@@ -68,15 +73,11 @@ class thr : public QThread {
             } else if (!strcmp(command.c_str(), "change_train_set")) {
                 socket.recv(&request);
                 //发人名
-                std::string human_name = "hhh";
+                human_name = "hhh";
                 send_msg(socket, human_name);
                 //收
                 socket.recv(&request);
-                //发照片名字
-                //             std::string picture_name = "1.jpg";
-                //             send_msg(socket, picture_name);
-                //收
-                //             socket.recv(&request);
+
                 //发送图片
                 send_pic(socket, "../pic/1.png");
                 //收
