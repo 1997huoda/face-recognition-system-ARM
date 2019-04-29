@@ -3,10 +3,10 @@
 
 #include "libzmq.hpp"
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QThread>
 #include <QTimer>
 #include <qt/QtCore/QCoreApplication>
- #include <QMessageBox>
 #include <string>
 
 // using namespace std;
@@ -18,9 +18,10 @@ extern zmq::message_t request;
 extern string name;
 extern string human_name;
 extern Mat change_mat;
-//human_name = qstr.toStdString();
-//QString qstr;
-//qstr = QString::fromStdString(str);
+bool flag;
+// human_name = qstr.toStdString();
+// QString qstr;
+// qstr = QString::fromStdString(str);
 
 class thr : public QThread {
     Q_OBJECT
@@ -34,6 +35,11 @@ class thr : public QThread {
     void run() override {
 
         while (1) {
+            if (flag) {
+                sleep(1);
+                continue;
+            }
+
             cout << "hello" << endl;
             std::cout << "command: " << command << std::endl;
             send_msg(socket, command);
@@ -47,7 +53,7 @@ class thr : public QThread {
                 send_msg(socket, "received_face_num");
                 //人脸名字
                 socket.recv(&request);
-                 name =  std::string((char *)request.data(), request.size());
+                name = std::string((char *)request.data(), request.size());
                 send_msg(socket, "received_face_name");
                 //收图片
                 cv::Mat img;
@@ -78,18 +84,18 @@ class thr : public QThread {
                 socket.recv(&request);
 
                 //只执行一次命令 自动切换
-                command="none";
+                command = "none";
             } else if (!strcmp(command.c_str(), "change_train_set")) {
                 socket.recv(&request);
                 //发人名
-//                human_name = "hhh";
+                //                human_name = "hhh";
                 send_msg(socket, human_name);
                 //收
                 socket.recv(&request);
 
                 //发送图片
-//                cvtColor(change_mat,change_mat,COLOR_BGR2GRAY);
-//                equalizeHist(change_mat, change_mat);
+                //                cvtColor(change_mat,change_mat,COLOR_BGR2GRAY);
+                //                equalizeHist(change_mat, change_mat);
                 send_pic(socket, change_mat);
                 //收
                 socket.recv(&request);
@@ -97,7 +103,7 @@ class thr : public QThread {
                 this->change_over();
 
                 //防止重复发送 执行完change_train_set 下一个命令自己切换
-                command="none";
+                command = "none";
             } else {
                 std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
             }
@@ -145,7 +151,7 @@ class MainWindow : public QMainWindow {
 
     void on_change_12_clicked();
 
-private:
+  private:
     Ui::MainWindow *ui;
     thr t;
 };
