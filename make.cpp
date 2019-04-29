@@ -69,8 +69,7 @@ int main() {
             // face_num个人脸的图像
             int x_b = cvRound(origin.cols / nor.width);
             int y_b = cvRound(origin.rows / nor.height);
-            for (vector<location>::iterator iter = final_location.begin();
-                 iter != final_location.end(); iter++) {
+            for (vector<location>::iterator iter = final_location.begin();iter != final_location.end(); iter++) {
                 int x = cvRound(x_b * (*iter).x);
                 int y = cvRound(y_b * (*iter).y);
                 int w = cvRound(x_b * (*iter).w);
@@ -100,16 +99,14 @@ int main() {
             std::string tmp = "start_training";
             send_msg(socket, tmp);
         } else if (!strcmp(command.c_str(), "change_train_set")) {
-
+            std::string tmp = "change_train_set";
+            send_msg(socket, tmp);
             //收人名
-            // socket.recv(&received);
-            // std::string human_name =    std::string((char *)received.data(),
-            // received.size());
             human_name = recv_msg(socket);
             //检测文件夹是否存在 没有就创建一个
-            mkdir_human_name(human_name, names);
+            mkdir_human_name(human_name);
 
-            std::string tmp = "received_human_name";
+            tmp = "received_human_name";
             send_msg(socket, tmp);
 
             //收照片名字        好像不需要了
@@ -126,13 +123,17 @@ int main() {
             std::vector<uchar> img_data(received.size());
             memcpy(img_data.data(), received.data(), received.size());
             rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-            string sss = trainfile_path + "/" + human_name + ".jpg";
-            imwrite(sss, rec_img);
+            cvtColor(rec_img,rec_img,COLOR_BGR2GRAY);
+            alignment_face_recall.clear();
+            face_alignment(rec_img);
+            RNG rng;//opencv 随机数
+            int N64 = rng.next();   //下一个    64位随机数
+            // int NN64 = rng.next();  
+            string sss = trainfile_path + "/" + human_name +"/"+to_string(N64)+ ".jpg";
+            imwrite(sss, alignment_face_recall[0]);
             tmp = "received_picture";
             send_msg(socket, tmp);
-
-            tmp = "change_train_set";
-            send_msg(socket, tmp);
+            alignment_face_recall.clear();
 
         } else {
             std::cout << "GGGGGGGGGGGGGGGGGGGG" << std::endl;

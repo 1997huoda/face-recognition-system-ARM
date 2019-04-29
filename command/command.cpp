@@ -65,20 +65,20 @@ string show_once(){
 	return output_name;
 }
 
-void mkdir_human_name(string human_name, vector<string> & names){
-	for(vector<string>::iterator iter = names.begin(); iter != names.end(); iter++){
-		if(!human_name.compare((*iter))){
-			cout << "human_name  exist" << endl;
-			return;
-		}else
-		{
-			string filename = trainfile_path + "/" +  human_name;
-			mode_t mode = umask(0);
-			if(0 == mkdir(filename.c_str(), 0777))
-				cout << filename << "  mkdir OK!" << endl;
-			umask(mode);
-			return;
-		}
+void mkdir_human_name(string human_name){
+	string filename = trainfile_path + "/" +  human_name;
+	DIR * dir;
+	dir = opendir(filename.c_str()); 
+	if(!dir)
+	{
+		mode_t mode = umask(0);
+		if(0 == mkdir(filename.c_str(), 0777))
+			cout << filename << "  mkdir OK!" << endl;
+		umask(mode);
+		cout<<"创建"<<filename<<"成功\n";
+		return;
+	}else{
+		cout<<filename<<"已经存在\n";
 	}
 }
 
@@ -125,7 +125,7 @@ Mat process_once()
 	cvtColor(origin, bak_gray, CV_BGR2GRAY);
 	// capture >> frame;
 	resize(origin, frame, nor, 0, 0, INTER_LINEAR);
-    	if(frame.empty())
+		if(frame.empty())
 		cout << "" << endl;
 
 	process_image(frame);

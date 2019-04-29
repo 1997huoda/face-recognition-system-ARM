@@ -9,11 +9,15 @@ zmq::message_t request;
 
 string name;
 string human_name;
+Mat change_mat;
 
 MainWindow::MainWindow(QWidget * parent)
 	: QMainWindow(parent), ui(new Ui::MainWindow){
 	ui->setupUi(this);
 	QObject::connect(&t, &thr::update_signal, this, &MainWindow::update_ui);
+    QObject::connect(&t, &thr::cmd_st, this, &MainWindow::cmd_up);
+    QObject::connect(&t, &thr::change_over, this, &MainWindow::change_send_success);
+
 	if(t.isRunning() == true)
 		t.exit();
 }
@@ -71,7 +75,9 @@ void MainWindow::on_cmd_connect_clicked(){
 	// timer->start(1000);
 	t.start();
 }
-
+void MainWindow::cmd_up(){
+    ui->cmd_state->setText(QString::fromStdString(command));
+}
 void MainWindow::update_ui(){
 	QPixmap cap("cap.jpg");
 	ui->cap->setPixmap(cap);
@@ -121,3 +127,110 @@ void MainWindow::update_ui(){
 
 
 }
+
+void MainWindow::on_change_7_clicked()
+{
+    QString qstr = ui->text_1->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face0.jpg");
+    command = "change_train_set";
+}
+
+void MainWindow::on_change_8_clicked()
+{
+    QString qstr = ui->text_2->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face1.jpg");
+    command = "change_train_set";
+}
+
+void MainWindow::on_change_9_clicked()
+{
+    QString qstr = ui->text_3->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face2.jpg");
+    command = "change_train_set";
+}
+
+void MainWindow::on_change_10_clicked()
+{
+    QString qstr = ui->text_4->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face3.jpg");
+    command = "change_train_set";
+}
+
+void MainWindow::on_change_11_clicked()
+{
+    QString qstr = ui->text_5->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face4.jpg");
+    command = "change_train_set";
+}
+
+void MainWindow::on_change_12_clicked()
+{
+    QString qstr = ui->text_6->toPlainText();
+    if(qstr.isEmpty()){
+        QMessageBox::critical(this,"ERROR","更改后的名字不能为空",QMessageBox::Yes);
+        return ;
+    }
+    human_name = qstr.toStdString();
+    change_mat=imread("face5.jpg");
+    command = "change_train_set";
+}
+void MainWindow::change_send_success(){
+    QString qstr = ui->text_1->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_1->setText(qstr);
+        ui->text_1->setText(QString::fromStdString(""));
+    }
+    qstr = ui->text_2->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_2->setText(qstr);
+        ui->text_2->setText(QString::fromStdString(""));
+    }
+    qstr = ui->text_3->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_3->setText(qstr);
+        ui->text_3->setText(QString::fromStdString(""));
+    }
+    qstr = ui->text_4->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_4->setText(qstr);
+        ui->text_4->setText(QString::fromStdString(""));
+    }
+    qstr = ui->text_5->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_5->setText(qstr);
+        ui->text_5->setText(QString::fromStdString(""));
+    }
+    qstr = ui->text_6->toPlainText();
+    if(!qstr.isEmpty()){
+        ui->name_6->setText(qstr);
+        ui->text_6->setText(QString::fromStdString(""));
+    }
+
+
+}
+

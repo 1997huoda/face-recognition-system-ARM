@@ -6,6 +6,7 @@
 #include <QThread>
 #include <QTimer>
 #include <qt/QtCore/QCoreApplication>
+ #include <QMessageBox>
 #include <string>
 
 // using namespace std;
@@ -16,7 +17,8 @@ extern zmq::message_t request;
 
 extern string name;
 extern string human_name;
-//str = qstr.toStdString();
+extern Mat change_mat;
+//human_name = qstr.toStdString();
 //QString qstr;
 //qstr = QString::fromStdString(str);
 
@@ -24,6 +26,9 @@ class thr : public QThread {
     Q_OBJECT
   signals:
     void update_signal();
+    void cmd_st();
+    void get_text();
+    void change_over();
 
   public:
     void run() override {
@@ -32,6 +37,7 @@ class thr : public QThread {
             cout << "hello" << endl;
             std::cout << "command: " << command << std::endl;
             send_msg(socket, command);
+            this->cmd_st();
             if (!strcmp(command.c_str(), "send_picture")) {
                 //下位机发图，上位机收图
                 //收人脸数
@@ -70,18 +76,28 @@ class thr : public QThread {
             } else if (!strcmp(command.c_str(), "start_traning")) {
                 //收
                 socket.recv(&request);
+
+                //只执行一次命令 自动切换
+                command="none";
             } else if (!strcmp(command.c_str(), "change_train_set")) {
                 socket.recv(&request);
                 //发人名
-                human_name = "hhh";
+//                human_name = "hhh";
                 send_msg(socket, human_name);
                 //收
                 socket.recv(&request);
 
                 //发送图片
-                send_pic(socket, "../pic/1.png");
+//                cvtColor(change_mat,change_mat,COLOR_BGR2GRAY);
+//                equalizeHist(change_mat, change_mat);
+                send_pic(socket, change_mat);
                 //收
                 socket.recv(&request);
+
+                this->change_over();
+
+                //防止重复发送 执行完change_train_set 下一个命令自己切换
+                command="none";
             } else {
                 std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
             }
@@ -114,8 +130,22 @@ class MainWindow : public QMainWindow {
     void on_cmd_connect_clicked();
 
     void update_ui();
+    void cmd_up();
+    void change_send_success();
 
-  private:
+    void on_change_7_clicked();
+
+    void on_change_8_clicked();
+
+    void on_change_9_clicked();
+
+    void on_change_10_clicked();
+
+    void on_change_11_clicked();
+
+    void on_change_12_clicked();
+
+private:
     Ui::MainWindow *ui;
     thr t;
 };

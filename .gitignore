@@ -11,3 +11,5 @@ libzmq/build
 */build
 */*/build
 */*/*/build
+
+\.vscode/

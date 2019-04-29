@@ -1,0 +1,47 @@
+[
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibpico_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/home/huoda/Desktop/pico+elm -I/home/huoda/Desktop/pico+elm/native/dlib/.. -isystem /usr/include/opencv4   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DDLIB_GIF_SUPPORT -Wreturn-type -std=c++11 -o CMakeFiles/libpico.dir/native/test.cpp.o -c /home/huoda/Desktop/pico+elm/native/test.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/native/test.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibzmq_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/home/huoda/Desktop/pico+elm -isystem /usr/include/opencv4   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libzmq.dir/libzmq/libzmq_.cpp.o -c \"/home/huoda/Desktop/pico+elm/libzmq/libzmq .cpp\"",
+  "file": "/home/huoda/Desktop/pico+elm/libzmq/libzmq .cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibelm_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/home/huoda/Desktop/pico+elm -isystem /usr/include/opencv4   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libelm.dir/elm/elm.cpp.o -c /home/huoda/Desktop/pico+elm/elm/elm.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/elm/elm.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibcom_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/home/huoda/Desktop/pico+elm -I/home/huoda/Desktop/pico+elm/native/dlib/.. -isystem /usr/include/opencv4   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DDLIB_GIF_SUPPORT -Wreturn-type -std=c++11 -o CMakeFiles/libcom.dir/command/command.cpp.o -c /home/huoda/Desktop/pico+elm/command/command.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/command/command.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibfacedetection_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico+elm   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-floatdata.cpp.o -c /home/huoda/Desktop/pico+elm/src/facedetectcnn-floatdata.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/src/facedetectcnn-floatdata.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibfacedetection_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico+elm   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-int8data.cpp.o -c /home/huoda/Desktop/pico+elm/src/facedetectcnn-int8data.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/src/facedetectcnn-int8data.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibfacedetection_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico+elm   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-model.cpp.o -c /home/huoda/Desktop/pico+elm/src/facedetectcnn-model.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/src/facedetectcnn-model.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -Dlibfacedetection_EXPORTS -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico+elm   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG -fPIC   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn.cpp.o -c /home/huoda/Desktop/pico+elm/src/facedetectcnn.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/src/facedetectcnn.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico+elm/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -D_ENABLE_INT8 -I/home/huoda/Desktop/pico+elm/src -I/home/huoda/Desktop/pico+elm/elm -I/home/huoda/Desktop/pico+elm/native -I/home/huoda/Desktop/pico+elm/libzmq -I/home/huoda/Desktop/pico+elm/command -I/usr/include/eigen3 -I/home/huoda/Desktop/pico+elm -I/home/huoda/Desktop/pico+elm/native/dlib/.. -isystem /usr/include/opencv4   -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -fopenmp -g -pthread -O3 -mavx2 -mfma -o3 -fopenmp -g -pthread -O3 -O3 -DNDEBUG   -fPIC -pthread -fopenmp -fPIC -fPIC -pthread -fopenmp -fPIC -pthread -fopenmp -DDLIB_JPEG_SUPPORT -DDLIB_USE_BLAS -DDLIB_USE_LAPACK -DDLIB_PNG_SUPPORT -DDLIB_GIF_SUPPORT -Wreturn-type -std=c++11 -o CMakeFiles/pro.dir/make.cpp.o -c /home/huoda/Desktop/pico+elm/make.cpp",
+  "file": "/home/huoda/Desktop/pico+elm/make.cpp"
+}
+]
