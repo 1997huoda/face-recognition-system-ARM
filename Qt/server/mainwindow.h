@@ -18,7 +18,7 @@ extern zmq::message_t request;
 extern string name;
 extern string human_name;
 extern Mat change_mat;
-bool flag;
+extern bool flag;
 // human_name = qstr.toStdString();
 // QString qstr;
 // qstr = QString::fromStdString(str);
@@ -30,6 +30,7 @@ class thr : public QThread {
     void cmd_st();
     void get_text();
     void change_over();
+    void stop_sig();
 
   public:
     void run() override {
@@ -84,7 +85,8 @@ class thr : public QThread {
                 socket.recv(&request);
 
                 //只执行一次命令 自动切换
-                command = "none";
+                // command = "none";
+                this->stop_sig();
             } else if (!strcmp(command.c_str(), "change_train_set")) {
                 socket.recv(&request);
                 //发人名
@@ -103,7 +105,8 @@ class thr : public QThread {
                 this->change_over();
 
                 //防止重复发送 执行完change_train_set 下一个命令自己切换
-                command = "none";
+                // command = "none";
+                this->stop_sig();
             } else {
                 std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
             }
@@ -122,6 +125,8 @@ class MainWindow : public QMainWindow {
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    
 
   private slots:
     void timerUpdate();

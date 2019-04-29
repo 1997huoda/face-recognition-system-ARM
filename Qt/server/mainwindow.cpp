@@ -10,14 +10,16 @@ zmq::message_t request;
 string name;
 string human_name;
 Mat change_mat;
+bool flag;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     QObject::connect(&t, &thr::update_signal, this, &MainWindow::update_ui);
     QObject::connect(&t, &thr::cmd_st, this, &MainWindow::cmd_up);
-    QObject::connect(&t, &thr::change_over, this,
-                     &MainWindow::change_send_success);
+    QObject::connect(&t, &thr::change_over, this,   &MainWindow::change_send_success);
+    QObject::connect(&t, &thr::stop_sig, this, &MainWindow::on_cmd_4_clicked);
+
     flag = false;
     if (t.isRunning() == true)
         t.exit();
@@ -58,8 +60,19 @@ void MainWindow::on_cmd_3_clicked() {
 
 void MainWindow::on_cmd_4_clicked() {
     //空
-    command = "none";
+    if(flag){
+        command = "send_picture";
+    }else {
+        command = "none";
+    }
     flag = !flag;
+    if(!flag){
+        ui->cmd_4->setText(QString::fromStdString("暂停"));
+    }else{
+        //
+        ui->cmd_4->setText(QString::fromStdString("继续"));
+    }
+    
     // run();
 }
 
