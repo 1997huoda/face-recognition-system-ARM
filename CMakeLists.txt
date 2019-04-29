@@ -39,4 +39,7 @@ add_executable(pro ${SRC})
 
 target_link_libraries(pro libcom libzmq libelm libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/native/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+# cmake  -DCMAKE_BUILD_TYPE=Release ..

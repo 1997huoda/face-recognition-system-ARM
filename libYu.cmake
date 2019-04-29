@@ -33,7 +33,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 INCLUDE_DIRECTORIES(${fdt_inc_dir})
 
-# Create a shared library (.so)    
+# Create a shared library (.so)
 ADD_LIBRARY(libfacedetection SHARED ${fdt_source_files})
 
 if (GSTREAMER)
@@ -64,3 +64,4 @@ if (GSTREAMER)
     )
 
 endif()
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")

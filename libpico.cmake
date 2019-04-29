@@ -30,3 +30,4 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/native/dlib dlib_build)
 add_library(libpico SHARED ${SRC})
 
 target_link_libraries(libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")

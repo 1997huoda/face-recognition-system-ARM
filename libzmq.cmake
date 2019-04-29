@@ -25,3 +25,4 @@ add_library(libzmq SHARED ${SRC})
 
 target_link_libraries(libzmq ${LIBRARY})
 
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
