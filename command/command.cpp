@@ -51,7 +51,8 @@ string show_once(){
 		}else if(truth < 0.2){
 			name_plus = "(unpredictable)";
 		}
-		output_name = names[jj] + name_plus + "/";
+		output_name += names[jj] + name_plus + "/";
+		cout << output_name << endl;
 	}
 	return output_name;
 }
