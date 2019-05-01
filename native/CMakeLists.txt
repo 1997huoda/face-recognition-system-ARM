@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(OpenCV REQUIRED)
 find_package(OpenMP)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(OPENMP_FOUND)
     message("OPENMP FOUND")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")

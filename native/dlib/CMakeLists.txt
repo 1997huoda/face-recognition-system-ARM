@@ -3,7 +3,7 @@
 # information about it at http://www.cmake.org
 #
 
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 cmake_minimum_required(VERSION 2.8.12)
 
 if(POLICY CMP0048)
