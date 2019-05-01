@@ -50,6 +50,7 @@ void face_alignment(Mat image_roi){
 	dlib::full_object_detection shape = sp(img, dlibRect);
 	tm.stop();
 	std::cout << "alignment 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
+    // shapes[0].part(i).x(), shapes[0].part(i).y()         //第几个点的xy坐标
 
 	shapes.push_back(shape);
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
