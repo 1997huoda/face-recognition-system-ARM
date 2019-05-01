@@ -65,13 +65,11 @@ std::string picture_name;
 Mat rec_img;
 
 void eve_init();
-void read_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
-void write_Matrix(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 
 Mat process_once();
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 
-void test_elm(vector<Mat> mat_v,MatrixXd * W, MatrixXd * b, MatrixXd * beta);
+void test_elm(vector<Mat> mat_v, MatrixXd * W, MatrixXd * b, MatrixXd * beta);
 string show_once();
 void mkdir_human_name(string human_name);
 void get_filename(string path, vector<string> & names);
