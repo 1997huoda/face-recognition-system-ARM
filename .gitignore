@@ -4,7 +4,7 @@ native/build/
 native-dlib/build/
 
 elm/build/
-
+elm-data-test/build/
 exe/build
 zmq/build
 libzmq/build

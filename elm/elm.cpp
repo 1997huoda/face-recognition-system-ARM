@@ -400,8 +400,7 @@ void init_stdio(){
  */
 
 #if 1
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,
-			   MatrixXd & output, int L, int m, int n, int N){
+void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output, int L, int m, int n, int N){
 	MatrixXd b, R, Tem, H;
 	W = MatrixXd::Random(n, L);
 	b_1 = MatrixXd::Random(1, L);
@@ -450,7 +449,7 @@ void print_matrix(MatrixXd & T){
 /*void load_MatrixXd(MatrixXd &T,string filename) {
         char *text=get_file_text(filename.c_str());
         vector<double> vec;
-   }*/
+	}*/
 
 cv::Mat face_align(const char * filename){
 
