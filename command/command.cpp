@@ -117,14 +117,14 @@ void get_filename(string path, vector<string> &names) {
 Mat process_once() {
     // VideoCapture capture(0);
     // captrue.open(0);
-    if (!capture.isOpened()) //没有打开摄像头的话，就返回。
-        cout << "failed open capture" << endl;
+    // if (!capture.isOpened()) //没有打开摄像头的话，就返回。
+    //     cout << "failed open capture" << endl;
     // return ;
 
     //将识别结果清空
     final_location.clear();
     alignment_face_recall.clear();
-    name = "";
+    name.clear();
 
     Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
@@ -141,12 +141,10 @@ Mat process_once() {
     process_image(frame);
 
     //                  算法稳定仍然需要去重
-    for (vector<location>::iterator iter = final_location.begin();
-         iter != final_location.end(); iter++) {
+    for (vector<location>::iterator iter = final_location.begin();  iter != final_location.end(); iter++) {
         if (iter + 1 == final_location.end())
             break;
-        for (vector<location>::iterator it = iter + 1;
-             it != final_location.end();) {
+        for (vector<location>::iterator it = iter + 1;  it != final_location.end();) {
             if ((*it) < (*iter)) {
                 it = final_location.erase(it);
                 iter = final_location.begin();
@@ -180,8 +178,7 @@ Mat process_once() {
         face_alignment(image);
     }
 
-    for (vector<location>::iterator iter = final_location.begin();
-         iter != final_location.end(); iter++) {
+    for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
         int x = (*iter).x;
         int y = (*iter).y;
         int w = (*iter).w;
