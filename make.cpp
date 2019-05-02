@@ -1,22 +1,4 @@
 #include "make.hpp"
-//研究思路 ::
-//读取人脸识别参数  --<没有数据就训练-->训练参数写入txt
-// 接受数据
-// case1：更改训练数据  change_train_set:--> human_name  picture_name    img
-//收到命令 再将命令字符串 返回发送到主机
-//查找有无  human_name 文件夹，没有则创建
-//将    picture_name.jpg    发送到  human_name
-// case2：开始训练   start_traning :
-//收到命令 再将命令字符串 返回发送到主机
-//开始训练 训练结束后将参数写入txt
-
-// case3：摄像头     send_picture:-->face_num    name    img
-//收到命令 再将命令字符串 返回发送到主机
-//摄像头
-//得到人脸对齐之后的图像
-//矩阵乘法 得到识别结果     -->需要数字标签与字符串对应关系获得预测结果
-//发送结果
-
 // int main(int argc, char* argv[])
 // {
 //  return 0;
@@ -46,6 +28,7 @@ int main(){
 		command = recv_msg(socket);
 		cout << "command : 	" << command << endl;
 		if(!strcmp(command.c_str(), "send_picture")){
+			//清空输出name字符串
 			name.clear();
 			//单次人脸识别
 			Mat frame = process_once();
@@ -96,7 +79,6 @@ int main(){
 			send_msg(socket, tmp);
 		} else if(!strcmp(command.c_str(), "start_traning")){
 			train_elm(W, b, beta);
-			get_filename(trainfile_path, names);
 			std::string tmp = "start_training";
 			send_msg(socket, tmp);
 		} else if(!strcmp(command.c_str(), "change_train_set")){
@@ -127,14 +109,13 @@ int main(){
 			cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();
 			face_alignment(rec_img);
-			RNG rng;//opencv 随机数
-			int N64 = rng.next();   //下一个    64位随机数
+			int N64 =rand()+rand();
 			// int NN64 = rng.next();
 			string sss = trainfile_path + "/" + human_name + "/" + to_string(N64) + ".jpg";
 			imwrite(sss, alignment_face_recall[0]);
 			tmp = "received_picture";
 			send_msg(socket, tmp);
-			alignment_face_recall.clear();
+			// alignment_face_recall.clear();
 
 		} else {
 			std::cout << "GGGGGGGGGGGGGGGGGGGG" << std::endl;

@@ -10,7 +10,9 @@
 #include <string>
 
 // using namespace std;
+//command in libzmq
 extern std::string command;
+
 extern zmq::socket_t socket;
 extern zmq::message_t reply;
 extern zmq::message_t request;
@@ -18,28 +20,32 @@ extern zmq::message_t request;
 extern string name;
 extern string human_name;
 extern Mat change_mat;
-extern bool flag;
+// extern bool flag;
+extern Mat recieve_mat[];
+extern Mat cap;
 // human_name = qstr.toStdString();
 // QString qstr;
 // qstr = QString::fromStdString(str);
 
 class thr : public QThread {
     Q_OBJECT
-  signals:
+signals:
     void update_signal();
     void cmd_st();
     void get_text();
     void change_over();
     void stop_sig();
+    void after();
+    void check_cmd_st();
 
-  public:
+public:
     void run() override {
-
         while (1) {
-            if (flag) {
-                sleep(1);
-                continue;
-            }
+            this->check_cmd_st();
+            // if (flag) {
+            //     sleep(100);
+            //     continue;
+            // }
 
             cout << "hello" << endl;
             std::cout << "command: " << command << std::endl;
@@ -49,8 +55,9 @@ class thr : public QThread {
                 //下位机发图，上位机收图
                 //收人脸数
                 socket.recv(&request);
-                int face_num = std::stoi(
-                    std::string((char *)request.data(), request.size()));
+                string a =recv_msg(socket);
+                // std::string a = ((char *)request.data(), request.size());
+                int face_num = std::atoi(a.c_str() );
                 send_msg(socket, "received_face_num");
                 //人脸名字
                 socket.recv(&request);
@@ -63,16 +70,20 @@ class thr : public QThread {
                 std::vector<uchar> img_data(request.size());
                 memcpy(img_data.data(), request.data(), request.size());
                 img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-                imwrite("cap.jpg", img);
+                // imwrite("cap.jpg", img);
+                cap=img;
                 send_msg(socket, "reveice_picture_i");
 
                 for (int i = 0; i < face_num; i++) {
+                    if(i>5)
+                        continue;   
                     socket.recv(&request);
                     std::vector<uchar> img_data(request.size());
                     memcpy(img_data.data(), request.data(), request.size());
                     img = cv::imdecode(img_data, cv::IMREAD_COLOR);
                     resize(img, img, cv::Size(100, 100), 0, 0, INTER_LINEAR);
-                    imwrite("face" + to_string(i) + ".jpg", img);
+                    recieve_mat[i]=img.clone();
+                    // imwrite("face" + to_string(i) + ".jpg", img);
                     send_msg(socket, "reveice_picture_i");
                 }
                 this->update_signal();
@@ -85,8 +96,9 @@ class thr : public QThread {
                 socket.recv(&request);
 
                 //只执行一次命令 自动切换
-                // command = "none";
-                this->stop_sig();
+                // flag=true;
+                command="send_picture";
+                // this->after();
             } else if (!strcmp(command.c_str(), "change_train_set")) {
                 socket.recv(&request);
                 //发人名
@@ -96,8 +108,6 @@ class thr : public QThread {
                 socket.recv(&request);
 
                 //发送图片
-                //                cvtColor(change_mat,change_mat,COLOR_BGR2GRAY);
-                //                equalizeHist(change_mat, change_mat);
                 send_pic(socket, change_mat);
                 //收
                 socket.recv(&request);
@@ -105,8 +115,10 @@ class thr : public QThread {
                 this->change_over();
 
                 //防止重复发送 执行完change_train_set 下一个命令自己切换
-                // command = "none";
-                this->stop_sig();
+                // flag =true;
+                command = "send_picture";
+                // command="send_picture";
+                // this->after();
             } else {
                 std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
             }
@@ -122,13 +134,14 @@ class MainWindow;
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
-  public:
+public:
+    void LabelDisplayMat(QLabel *label, cv::Mat &mat);
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     
 
-  private slots:
+private slots:
     void timerUpdate();
     void on_cmd_1_clicked();
 
@@ -137,7 +150,7 @@ class MainWindow : public QMainWindow {
     void on_cmd_3_clicked();
 
     void on_cmd_4_clicked();
-
+    void stop_after();
     void on_cmd_connect_clicked();
 
     void update_ui();

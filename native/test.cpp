@@ -51,14 +51,14 @@ void face_alignment(Mat image_roi){
 	tm.stop();
 	std::cout << "alignment 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
     // shapes[0].part(i).x(), shapes[0].part(i).y()         //shape[0]是第一个人 第i个点的xy坐标
-cout<<"36:"<<shape.part(36).x()<<","<<shape.part(36).y()<<endl;
-cout<<"45:"<<shape.part(45).x()<<","<<shape.part(45).y()<<endl;
-cout<<"48:"<<shape.part(48).x()<<","<<shape.part(48).y()<<endl;
-cout<<"54:"<<shape.part(54).x()<<","<<shape.part(54).y()<<endl;
-        Point2f p36(20,41);
-        Point2f p45(72,41);
-        Point2f p48(30,77);
-        Point2f p54(63,77);
+// cout<<"36:"<<shape.part(36).x()<<","<<shape.part(36).y()<<endl;
+// cout<<"45:"<<shape.part(45).x()<<","<<shape.part(45).y()<<endl;
+// cout<<"48:"<<shape.part(48).x()<<","<<shape.part(48).y()<<endl;
+// cout<<"54:"<<shape.part(54).x()<<","<<shape.part(54).y()<<endl;
+//         Point2f p36(20,41);
+//         Point2f p45(72,41);
+//         Point2f p48(30,77);
+//         Point2f p54(63,77);
         /********right*************/
         // Point2f p36(20,29);
         // Point2f p45(80,29);
@@ -72,14 +72,14 @@ cout<<"54:"<<shape.part(54).x()<<","<<shape.part(54).y()<<endl;
 	dlib::equalize_histogram(face_chips[0], equ);
 
 	Mat eve = dlib::toMat(equ);
-    Point2f a36(shape.part(36).x(),shape.part(36).y());
-    Point2f a45(shape.part(45).x(),shape.part(45).y());
-    Point2f a48(shape.part(48).x(),shape.part(48).y());
-    Point2f a54(shape.part(54).x(),shape.part(54).y());
-    vector<Point2f> src={a36,/*a27,*/a45,/*a31,a35*/a48,a54};	
-    vector<Point2f>dst={p36,/*p27,*/p45,/*p31,p35*/p48,p54 }; 	
-    Mat M=estimateRigidTransform(src,dst,false);	
-    warpAffine(eve, eve, M,size_box,0,0,INTER_LINEAR);	
+    // Point2f a36(shape.part(36).x(),shape.part(36).y());
+    // Point2f a45(shape.part(45).x(),shape.part(45).y());
+    // Point2f a48(shape.part(48).x(),shape.part(48).y());
+    // Point2f a54(shape.part(54).x(),shape.part(54).y());
+    // vector<Point2f> src={a36,/*a27,*/a45,/*a31,a35*/a48,a54};	
+    // vector<Point2f>dst={p36,/*p27,*/p45,/*p31,p35*/p48,p54 }; 	
+    // Mat M=estimateRigidTransform(src,dst,false);	
+    // warpAffine(eve, eve, M,size_box,0,0,INTER_LINEAR);	
 
 	alignment_face_recall.push_back(eve);
 
@@ -110,7 +110,7 @@ void process_image(Mat mat)
 		int w = p[2];
 		int h = p[3];
 		int neighbors = p[4];
-		int angle = p[5];
+		// int angle = p[5];
 		if((((pResults ? *pResults : 0) > 1) && (neighbors < 90)) || (x < 0) || (y < 0) || (w <= 0) || (h <= 0) || (y + h >= mat.rows) || (x + w >= mat.cols)){//根源杜绝 mat超边界
 
 		}else{

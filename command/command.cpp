@@ -13,7 +13,7 @@ void eve_init(){
 	}else{
 		cout << "open cap(0) -->" << endl;
 	}
-	get_filename(trainfile_path, names);
+	// get_filename(trainfile_path, names);
 }
 
 void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -23,6 +23,8 @@ void train_elm(MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	T = generate_training_labels();
 	ELM_training(feature, W, b, beta);
 	cout << "train elm-in-elm end\n";
+	get_filename(trainfile_path, names);
+	cout << "update file name \n";
 }
 
 void test_elm(vector<Mat> mat_v, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -41,15 +43,15 @@ string show_once(){
 		std::string name_plus;
 		double truth = output.row(i).maxCoeff(&ii, &jj);
 		if(truth > 0.8){
-			name_plus = "(similar)";
+			name_plus = "\n(similar)";
 		}else if(truth > 0.6){
-			name_plus = "(possible)";
+			name_plus = "\n(possible)";
 		}else if(truth > 0.4){
-			name_plus = "(doubtful)";
+			name_plus = "\n(doubtful)";
 		}else if(truth > 0.2){
-			name_plus = "(uncertain)";
+			name_plus = "\n(uncertain)";
 		}else if(truth < 0.2){
-			name_plus = "(unpredictable)";
+			name_plus = "\n(unpredictable)";
 		}
 		output_name += names[jj] + name_plus + "/";
 		cout << output_name << endl;
@@ -75,8 +77,8 @@ void mkdir_human_name(string human_name){
 }
 
 void get_filename(string path, vector<string> & names){
-	struct dirent * ptr;
-	DIR * dir;
+	struct dirent * ptr, * ptr1;
+	DIR * dir, * dir1;
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	if(!dir){
 		cout << "dir fail" << endl;
@@ -88,8 +90,21 @@ void get_filename(string path, vector<string> & names){
 			continue;
 		if(ptr->d_type == DT_DIR){       //DT_DIR目录    DT_REG常规文件
 			string ss =  ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
+			string path_ss=path+'/'+ss;
+			dir1 = opendir(path_ss.c_str());
+			int exit_flag =0 ;
+			while((ptr1 = readdir(dir1)) != NULL){
+				if(strncmp(ptr1->d_name, ".", 1) == 0)   //去掉本级目录	去掉上级目录	去掉隐藏文件
+					{continue;}
+				else{
+					exit_flag=1;
+					break;
+				}
+			}
+			if(exit_flag==1){
 			cout << "push_back" << ss << endl;
 			names.push_back(ss);
+			}
 		}
 	}
 	closedir(dir);

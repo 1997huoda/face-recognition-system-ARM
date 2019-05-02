@@ -107,6 +107,12 @@ std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols){
 /******extract_feature: put one image into a vector(convert to gray image
  * firstly)*****/
 /*********************************************/
+template<typename _Tp>
+vector<_Tp> convertMat2Vector(const Mat &mat)
+{
+	return (vector<_Tp>)(mat.reshape(1, 1));//通道数不变，按行转为一行
+}
+
 std::vector<float> extract_feature(Mat src){
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
@@ -114,7 +120,11 @@ std::vector<float> extract_feature(Mat src){
 	for(int i = 0; i < src.rows; i++)
 		for(int j = 0; j < src.cols; j++)
 			feature.push_back(dst.at<uchar>(i, j));
-	return feature;
+	Mat SrcImage1 = Mat(feature, true);
+	PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1000);
+	Mat get_back = pca.project(SrcImage1);//映射新空间
+	std::vector<float> back = convertMat2Vector<float>(get_back);
+	return back;
 }
 
 /**time**/
@@ -396,7 +406,7 @@ void init_stdio(){
                                 label(i) = traindata[i][j];
                 }
         }
-   }
+	}
  */
 
 #if 1
@@ -601,7 +611,6 @@ MatrixXd generate_training_labels(){
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	struct timeval start, end;
 	TickMeter tm;
 	tm.start();
 	ELM_in_ELM(feature, W, b, beta, F, output, L, m, n, N, model_num);
@@ -619,7 +628,6 @@ void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	struct timeval start1, end1;
 	MatrixXd out_all, R, Tem, H;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 	TickMeter tm;
