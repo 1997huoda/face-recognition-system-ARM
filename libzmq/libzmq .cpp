@@ -17,7 +17,7 @@ std::string recv_msg(zmq::socket_t &socket) {
 void send_pic(zmq::socket_t &socket, cv::Mat img) {
     // cv::Mat img = cv::imread("../pic/1.png");
     std::vector<uchar> img_data;
-    cv::imencode(".png", img, img_data);
+    cv::imencode(".jpg", img, img_data);
     zmq::message_t pic(img_data.size());
     zmq::message_t msg(img_data.size());
     memcpy(pic.data(), img_data.data(), img_data.size());
