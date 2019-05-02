@@ -55,9 +55,7 @@ public:
                 //下位机发图，上位机收图
                 //收人脸数
                 socket.recv(&request);
-                string a =recv_msg(socket);
-                // std::string a = ((char *)request.data(), request.size());
-                int face_num = std::atoi(a.c_str() );
+                int face_num = std::atoi( std::string((char *)request.data(), request.size()).c_str());
                 send_msg(socket, "received_face_num");
                 //人脸名字
                 socket.recv(&request);

@@ -114,17 +114,37 @@ vector<_Tp> convertMat2Vector(const Mat &mat)
 }
 
 std::vector<float> extract_feature(Mat src){
+
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
 	std::vector<float> feature;
 	for(int i = 0; i < src.rows; i++)
 		for(int j = 0; j < src.cols; j++)
 			feature.push_back(dst.at<uchar>(i, j));
+/*
+PCA(InputArray data, InputArray mean, int flags, int maxComponents = 0);
+PCA(InputArray data, InputArray mean, int flags, double retainedVariance);
+
+参数说明：
+data：需要PCA的数据，每一行（列）表示一个样本；
+mean：平均值；如果矩阵是空的（noArray()），则从数据计算； 
+flags：操作标志，具体参数如下：
+                            DATA_AS_ROW ：每一行表示一个样本；
+                            DATA_AS_COL ：每一列表示一个样本；
+maxComponents ：PCA应保留的最大组件数；默认情况下，所有组件都保留；
+retainedVariance：PCA应保留的方差百分比。使用这个参数将让PCA决定保留多少组件，但它将始终保持至少2。
+*/
 	Mat SrcImage1 = Mat(feature, true);
-	PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1000);
+	TickMeter tm;
+	tm.start();
+	PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1500);//按照圆的面积参数应该是0.785 
 	Mat get_back = pca.project(SrcImage1);//映射新空间
+	tm.stop();
+	std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 	std::vector<float> back = convertMat2Vector<float>(get_back);
 	return back;
+	// return feature;
+
 }
 
 /**time**/
@@ -174,17 +194,17 @@ void getFiles_train(string path, vector<string> & files){
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
-		if(ptr->d_name[0] == '.' ||
-		   ptr->d_name ==
-		   "Thumbs.db")      //去掉当前文件夹目录和
+		// if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
 			                 // Thumbs.db这个windows下保存图片就会产生的文件
+		if(strncmp(ptr->d_name, ".", 1) == 0)
 			continue;
 		if(ptr->d_type == DT_DIR){ 
 			m++;
 			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
 			dir1 = opendir(ss.c_str());
 			while((ptr1 = readdir(dir1)) != NULL){
-				if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
+					// if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
+					if(strncmp(ptr1->d_name, ".", 1) == 0)
 					continue;
 				
 				string sss = ss + ptr1->d_name; //
@@ -206,7 +226,8 @@ void getFiles_test(string path, vector<string> & files){
 	dir = opendir(path.c_str());
 	while((ptr = readdir(dir)) != NULL)  //一级目录
 	{
-		if(ptr->d_name[0] == '.' || ptr->d_name == "Thumbs.db")
+		// if(ptr->d_name[0] == '.' || ptr->d_name == "Thumbs.db")
+		if(strncmp(ptr->d_name, ".", 1) == 0)
 			continue;
 		string ss = path + '/' + ptr->d_name + '/';
 		dir1 = opendir(ss.c_str());
@@ -221,7 +242,9 @@ void getFiles_test(string path, vector<string> & files){
 			//              continue;
 			//          }
 
-			if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db"){
+			// if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
+			if(strncmp(ptr1->d_name, ".", 1) == 0)
+			{
 				cout << "***" << ss + ptr1->d_name << endl;
 				continue;
 			}
