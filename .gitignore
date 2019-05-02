@@ -8,6 +8,7 @@ elm-data-test/build/
 exe/build
 zmq/build
 libzmq/build
+Qt/build-server-Desktop-Debug
 */build
 */*/build
 */*/*/build
