@@ -61,36 +61,21 @@ void MainWindow::on_cmd_3_clicked() {
 }
 
 void MainWindow::stop_after() {
-    // if(!flag){
-    //     ui->cmd_4->setText(QString::fromStdString("暂停"));
-    // }else
-    // {
-    //     ui->cmd_4->setText(QString::fromStdString("继续"));
-    // }
     if(strcmp(command.c_str(), "none")){
         ui->cmd_4->setText(QString::fromStdString("暂停"));
     }else
     {
         ui->cmd_4->setText(QString::fromStdString("继续"));
     }
-    
 }
 
 void MainWindow::on_cmd_4_clicked() {
-    //空
-    // if(flag){
-    //     command = "send_picture";
-    // }else{
-    //     command="none";
-    // }
-    // flag = !flag;
+
     if(strcmp(command.c_str(), "none")){
         command="none";
-        // ui->cmd_4->setText(QString::fromStdString("暂停"));
     }else
     {
         command="send_picture";
-        // ui->cmd_4->setText(QString::fromStdString("继续"));
     }
 
 }
@@ -121,7 +106,6 @@ LabelDisplayMat(ui->face_6,recieve_mat[5]);
 
 
     vector<string> name_label;
-    //    string receive = "lajfl/asjdflkjdsf/ajkflsdfjs/gbhg/renming/";
     string tmp;
     for (int i = 0; i < name.size(); i++) {
         if (name[i] != '/') {

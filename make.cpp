@@ -4,11 +4,11 @@
 //  return 0;
 // }
 // extern int model_num;
-MatrixXd W[5], b[5], beta[5];
+// MatrixXd W[5], b[5], beta[5];
 int main(){
 	eve_init();
 	// main 函数变量		MatrixXd
-	// MatrixXd W[model_num], b[model_num], beta[model_num];
+	MatrixXd W[model_num], b[model_num], beta[model_num];
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了
 	//也就不用写参数了
 	train_elm(W, b, beta);
@@ -93,20 +93,9 @@ int main(){
 			tmp = "received_human_name";
 			send_msg(socket, tmp);
 
-			//收照片名字        好像不需要了
-			// socket.recv(&received);
-			// std::string picture_name = std::string((char *)received.data(),
-			// received.size());
-
-			// std::string picture_name = recv_msg(socket);
-			// tmp = "received_picture_name";
-			// send_msg(socket, tmp);
+			//收照片名字        不需要了
 
 			//收图
-			// socket.recv(&received);
-			// std::vector<uchar> img_data(received.size());
-			// memcpy(img_data.data(), received.data(), received.size());
-			// rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
 			rec_img = receive_pic(socket);
 			cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();

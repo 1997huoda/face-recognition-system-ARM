@@ -115,11 +115,9 @@ void get_filename(string path, vector<string> &names) {
 }
 
 Mat process_once() {
-    // VideoCapture capture(0);
-    // captrue.open(0);
-    // if (!capture.isOpened()) //没有打开摄像头的话，就返回。
-    //     cout << "failed open capture" << endl;
-    // return ;
+
+    if (!capture.isOpened()) //没有打开摄像头的话，就返回。
+        cout << "failed open capture" << endl;
 
     //将识别结果清空
     final_location.clear();
@@ -162,8 +160,7 @@ Mat process_once() {
 
     int x_b = cvRound(bak_gray.cols / nor.width);
     int y_b = cvRound(bak_gray.rows / nor.height);
-    for (vector<location>::iterator iter = final_location.begin();
-         iter != final_location.end(); iter++) {
+    for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
 
         int x = cvRound(x_b * (*iter).x);
         int y = cvRound(y_b * (*iter).y);
@@ -197,17 +194,6 @@ Mat process_once() {
         // cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0,
         // 255, 255), thickness, 8, 0);
     }
-
-    // for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter !=
-    // alignment_face_recall.end(); iter++){
-    //  imshow("show" + to_string(iter - alignment_face_recall.begin()),
-    //  (*iter)); imwrite("face" + to_string(iter -
-    //  alignment_face_recall.begin()) + ".jpg", (*iter));
-    // }
-
-    // imshow("point", frame); //显示当前帧
-    // waitKey(5); //延时5ms
     return frame;
 }
 
-int main() { return 0; }

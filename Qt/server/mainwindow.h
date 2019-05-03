@@ -62,28 +62,14 @@ public:
                 name = std::string((char *)request.data(), request.size());
                 send_msg(socket, "received_face_name");
                 //收图片
-                cv::Mat img;
-
-                // socket.recv(&request);
-                // std::vector<uchar> img_data(request.size());
-                // memcpy(img_data.data(), request.data(), request.size());
-                // img = cv::imdecode(img_data, cv::IMREAD_COLOR);
-                // imwrite("cap.jpg", img);
-                // cap=img;
                 cap=receive_pic(socket);
                 send_msg(socket, "reveice_picture_i");
 
                 for (int i = 0; i < face_num; i++) {
                     if(i>5)
                         continue;   
-                    // socket.recv(&request);
-                    // std::vector<uchar> img_data(request.size());
-                    // memcpy(img_data.data(), request.data(), request.size());
-                    // img = cv::imdecode(img_data, cv::IMREAD_COLOR);
                     recieve_mat[i] = receive_pic(socket);
                     resize( recieve_mat[i],  recieve_mat[i], cv::Size(100, 100), 0, 0, INTER_LINEAR);
-                    // recieve_mat[i]=img.clone();
-                    // imwrite("face" + to_string(i) + ".jpg", img);
                     send_msg(socket, "reveice_picture_i");
                 }
                 this->update_signal();
@@ -169,7 +155,7 @@ private slots:
 
     void on_change_12_clicked();
 
-  private:
+private:
     Ui::MainWindow *ui;
     thr t;
 };
