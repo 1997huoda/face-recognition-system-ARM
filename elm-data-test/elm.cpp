@@ -9,11 +9,11 @@ int L = 600;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
-int training_face_num_per_person = 7; //训练集中每个人的人脸数
-int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
+int training_face_num_per_person = 11; //训练集中每个人的人脸数
+int testing_face_num_per_person = 10;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "/home/huoda/Desktop/1"; //路径
-string testfile_path = "/home/huoda/Desktop/1";
+string trainfile_path = "/home/huoda/Desktop/YALE"; //路径
+string testfile_path = "/home/huoda/Desktop/test";
 
 Mat trainingImages;
 Mat testingImages;
@@ -26,87 +26,16 @@ int N_test;
 MatrixXd F, output, T, temp_T;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
-void write_parameter(string path, MatrixXd output){
-	std::ofstream outfile(path.c_str()); // file name and the operation type. 
-	outfile << output.rows() << endl;
-	outfile << output.cols() << endl;
-	outfile << output << endl;
-	outfile.close();
-}
 
-void read_parameter(string path, MatrixXd & in){
-	std::ifstream infile(path.c_str());
-	int row, col;
-	infile >> row >> col;
-	MatrixXd input(row, col);
-	double fxck;
-	for(int i = 0; i < row; i++){
-		for(int j = 0; j < col; j++){
-			infile >> fxck;
-			input(row, col) = fxck;
-		}
-	}
-	in = input;
-}
-
-/******************LBP***********************/
-void LBP81(const Mat & src, Mat & dst){
-	dst = Mat::zeros(src.rows - 2, src.cols - 2, CV_8UC1);
-	for(int i = 1; i < src.rows - 1; i++){
-		for(int j = 1; j < src.cols - 1; j++){
-			uchar center = src.at<uchar>(i, j);
-			unsigned char code = 0, U2 = 0;
-			unsigned char a[8];
-			a[7] = (src.at<uchar>(i - 1, j - 1) > center);
-			a[6] = (src.at<uchar>(i - 1, j) > center);
-			a[5] = (src.at<uchar>(i - 1, j + 1) > center);
-			a[4] = (src.at<uchar>(i, j + 1) > center);
-			a[3] = (src.at<uchar>(i + 1, j + 1) > center);
-			a[2] = (src.at<uchar>(i + 1, j) > center);
-			a[1] = (src.at<uchar>(i + 1, j - 1) > center);
-			a[0] = (src.at<uchar>(i, j - 1) > center);
-			code |= a[7] << 7;
-			code |= a[6] << 6;
-			code |= a[5] << 5;
-			code |= a[4] << 4;
-			code |= a[3] << 3;
-			code |= a[2] << 2;
-			code |= a[1] << 1;
-			code |= a[0] << 0;
-			// Uniform LBP
-			U2 = abs(a[7] - a[0]);
-			for(int p = 1; p < 8; p++)
-				U2 += abs(a[p] - a[p - 1]);
-			if(U2 > 2)
-				code = 9;
-			dst.at<unsigned char>(i - 1, j - 1) = code;
-		}
-	}
-}
-/*********************************************/
-std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols){
-	Mat dst, dst1;
-	int lbp_81[243] = {0};
-	cvtColor(src, dst1, COLOR_BGR2GRAY);
-	std::vector<float> feature;
-	LBP81(dst1, dst);
-	// imshow("DDD",dst);
-	// waitKey();
-	for(int ii = 0; ii < dst.rows; ii++)
-		for(int jj = 0; jj < dst.cols; jj++)
-			lbp_81[table[dst.at<uchar>(ii, jj)]]++;
-
-	for(int kk = 0; kk < 59; kk++){
-		feature.push_back((float)lbp_81[kk] / (src_rows * src_cols));
-	}
-	/*for (int i=0;i<src.rows;i++)
-	        for (int j=0;j<src.cols;j++)
-	                        feature.push_back(dst.at<uchar>(i,j));*/
-	return feature;
-}
 /******extract_feature: put one image into a vector(convert to gray image
  * firstly)*****/
 /*********************************************/
+template<typename _Tp>
+vector<_Tp> convertMat2Vector(const Mat &mat)
+{
+	return (vector<_Tp>)(mat.reshape(1, 1));//通道数不变，按行转为一行
+}
+
 std::vector<float> extract_feature(Mat src){
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
@@ -115,6 +44,16 @@ std::vector<float> extract_feature(Mat src){
 		for(int j = 0; j < src.cols; j++)
 			feature.push_back(dst.at<uchar>(i, j));
 	return feature;
+	//不知道为什么 YALE 数据库 PCA 炸了
+	// Mat SrcImage1 = Mat(feature, true);
+	// TickMeter tm;
+	// tm.start();
+	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,200);//按照圆的面积参数应该是0.785 
+	// Mat get_back = pca.project(SrcImage1);//映射新空间
+	// tm.stop();
+	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
+	// std::vector<float> back = convertMat2Vector<float>(get_back);
+	// return back;
 }
 
 /**time**/
@@ -164,9 +103,7 @@ void getFiles_train(string path, vector<string> & files){
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
-		if(ptr->d_name[0] == '.' ||
-		   ptr->d_name ==
-		   "Thumbs.db")      //去掉当前文件夹目录和
+		if(ptr->d_name[0] == '.' ||  ptr->d_name ==   "Thumbs.db")      //去掉当前文件夹目录和
 			                 // Thumbs.db这个windows下保存图片就会产生的文件
 			continue;
 		if(ptr->d_type == DT_DIR){ 
@@ -279,28 +216,7 @@ void getFaces_train(string filePath, Mat & trainingImages,
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
-void getFaces_test(Mat SrcImage, Mat & trainingImages,
-				   vector<int> & trainingLabels){
-	//  SrcImage ->resize   ->拉直
-	resize(SrcImage, SrcImage, cv::Size(50, 50));
-	Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-	// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
-	Mat SrcImage2 = SrcImage1.t();
-	trainingImages.push_back(SrcImage2);
-	// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-	// trainingLabels.push_back(test_labels_ori.at(i));//人 标签  暂时注释掉
-	// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
-}
-void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
-	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
-		Mat SrcImage;
-		resize((*iter), SrcImage, cv::Size(50, 50));
-		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
-		Mat SrcImage2 = SrcImage1.t();
-		trainingImages.push_back(SrcImage2);
-	}
-}
+
 void getFaces_test(string filePath, Mat & trainingImages,
 				   vector<int> & trainingLabels){
 	vector<string> files;
@@ -544,30 +460,7 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	n = trainingImages.cols; // number of features //输出特征值
 	return feature;
 }
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有参数Mat
-	// loading test images
-	// cout << "Loading test Data..." << endl;
-	Mat testingImages;
-	getFaces_test(SrcImage, testingImages, testingLabels);
-	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	// VectorXd label1(testingLabels.size());
-	cv2eigen(testingImages, feature1);
-	// cv2eigen(Mat(testingLabels), label1);
-	N_test = testingImages.rows;
-	// cout << "Number of testing images:" << N_test << endl;
-	return feature1;
-}
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
-	// loading test images
-	// cout << "Loading test Data..." << endl;
-	Mat testingImages;
-	getFaces_test(mat_v, testingImages);
-	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	cv2eigen(testingImages, feature1);
-	N_test = testingImages.rows;
-	// cout << "Number of testing images:" << N_test << endl;
-	return feature1;
-}
+
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(){
 	// loading test images
 	cout << "Loading test Data..." << endl;

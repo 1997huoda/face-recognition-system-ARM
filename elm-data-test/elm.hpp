@@ -33,22 +33,6 @@ using namespace std;
 using namespace Eigen;
 using namespace cv;
 
-static const int table[256] = {
-	1,  2,  3,  4,  5,  0,  6,  7,  8, 0,  0,  0,  9,  0,  10, 11, 12, 0,  0,
-	0,  0,  0,  0,  0,  13, 0,  0,  0, 14, 0,  15, 16, 17, 0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  18, 0,  0,  0,  0,  0,  0,  0,  19,
-	0,  0,  0,  20, 0,  21, 22, 23, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  24, 0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0,  0,  0,  0,  0,  25, 0,
-	0,  0,  0,  0,  0,  0,  26, 0,  0, 0,  27, 0,  28, 29, 30, 31, 0,  32, 0,
-	0,  0,  33, 0,  0,  0,  0,  0,  0, 0,  34, 0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  35, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  36, 37, 38, 0,  39, 0,  0,  0, 40, 0,  0,  0,  0,  0,  0,  0,  41, 0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0,  0,  42, 43, 44, 0,  45,
-	0,  0,  0,  46, 0,  0,  0,  0,  0, 0,  0,  47, 48, 49, 0,  50, 0,  0,  0,
-	51, 52, 53, 0,  54, 55, 56, 57, 58};
-
 extern int k;
 extern int flag;                          // 没有人脸?
 // MatrixXd T;                           //存放训练集标签
@@ -74,12 +58,12 @@ extern MatrixXd F, output, T, temp_T;
 // static dlib::frontal_face_detector detector; // dlib face detector
 // static dlib::shape_predictor sp;             // dlib shape predictor
 
-void LBP81(const Mat & src, Mat & dst); // LBP_extractor
-std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols);
+// void LBP81(const Mat & src, Mat & dst); // LBP_extractor
+// std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols);
 std::vector<float> extract_feature(Mat src);
 
-void read_parameter(string path, MatrixXd & in);
-void write_parameter(string path, MatrixXd output);
+// void read_parameter(string path, MatrixXd & in);
+// void write_parameter(string path, MatrixXd output);
 
 // double difftimeval(const struct timeval *start,
 //                    const struct timeval *end); //计算时间间隔
@@ -89,8 +73,8 @@ void getFiles_test(string path, vector<string> & files); //从路径中获取测
 void getFaces_train(string filePath, Mat & trainingImages,
 					vector<int> & trainingLabels); //获取训练集图像
 void getFaces_test(string filePath, Mat & trainingImages,  vector<int> & trainingLabels); //获取测试集图像
-void getFaces_test(Mat SrcImage, Mat & trainingImages, vector<int> & trainingLabels); //重载单个Mat
-void getFaces_test(vector<Mat> mat_v, Mat & trainingImages);
+// void getFaces_test(Mat SrcImage, Mat & trainingImages, vector<int> & trainingLabels); //重载单个Mat
+// void getFaces_test(vector<Mat> mat_v, Mat & trainingImages);
 
 void init_stdio();                               //初始化IO
 void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,
@@ -107,8 +91,8 @@ void cout_current_settings();              //输出使用中的参数信息
 // void init_face_detector_dlib(    string face_landmark =    "shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(); //从文件夹中获取测试集矩阵
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage);
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);
+// MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage);
+// MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);
 
 MatrixXd generate_training_labels();                  //生成训练集标签
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b,
