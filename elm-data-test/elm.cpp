@@ -38,7 +38,11 @@ vector<_Tp> convertMat2Vector(const Mat &mat)
 
 std::vector<float> extract_feature(Mat src){
 	Mat dst;
+	if(src.channels()==3){
 	cvtColor(src, dst, COLOR_BGR2GRAY);
+	}	else {
+		dst=src;
+	}
 	std::vector<float> feature;
 	for(int i = 0; i < src.rows; i++)
 		for(int j = 0; j < src.cols; j++)
@@ -367,19 +371,66 @@ void print_matrix(MatrixXd & T){
         vector<double> vec;
 	}*/
 
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
+{
+	CV_Assert(src.data);
+	// accept only char type matrices
+	CV_Assert(src.depth() != sizeof(uchar));
+	// build look up table
+	unsigned char lut[256];
+	for( int i = 0; i < 256; i++ )
+	{
+		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+	}
+	dst = src.clone();
+	const int channels = dst.channels();
+	switch(channels)
+	{
+		case 1:
+			{
+				MatIterator_<uchar> it, end;
+				for( it = dst.begin<uchar>(), end = dst.end<uchar>(); it != end; it++ )
+					//*it = pow((float)(((*it))/255.0), fGamma) * 255.0;
+					*it = lut[(*it)];
+				break;
+			}
+		case 3: 
+			{
+				MatIterator_<Vec3b> it, end;
+				for( it = dst.begin<Vec3b>(), end = dst.end<Vec3b>(); it != end; it++ )
+				{
+					//(*it)[0] = pow((float)(((*it)[0])/255.0), fGamma) * 255.0;
+					//(*it)[1] = pow((float)(((*it)[1])/255.0), fGamma) * 255.0;
+					//(*it)[2] = pow((float)(((*it)[2])/255.0), fGamma) * 255.0;
+					(*it)[0] = lut[((*it)[0])];
+					(*it)[1] = lut[((*it)[1])];
+					(*it)[2] = lut[((*it)[2])];
+				}
+				break;
+			}
+	}
+}
 cv::Mat face_align(const char * filename){
 
-	Mat pic = imread(filename);
+	Mat pic = imread(filename,0);
+	// cout<<"channels:"<<pic.channels()<<endl;
+			// Mat dst;
+		// resize(pic, pic, cv::Size(50, 50),INTER_LINEAR);
+	// // pic= cvtColor(pic,COLOR_BGR2GRAY)
+
 	// if(pic.channels() == 3)
-		// cvtColor(pic, pic, CV_BGRA2GRAY);
+	// cvtColor(pic,dst,COLOR_BGRA2GRAY);
+
 	flag = 0;
-	if(pic.empty())
+	if((pic.empty()))
 	{
 		flag = 1;
 		cout << "pic  empty" << endl;
-		return cv::Mat::zeros(50, 50, CV_8UC3);
+		return cv::Mat::zeros(50, 50, CV_8UC1);
 	}
-	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
+	// if(pic.channels()!=1){}
+	// resize(dst, dst, cv::Size(50, 50), 0, 0, INTER_LINEAR);
+	// MyGammaCorrection(pic,dst,2.2f);
 	// equalizeHist(pic, pic);
 	return pic;
 

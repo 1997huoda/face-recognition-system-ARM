@@ -61,7 +61,7 @@ extern MatrixXd F, output, T, temp_T;
 // void LBP81(const Mat & src, Mat & dst); // LBP_extractor
 // std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols);
 std::vector<float> extract_feature(Mat src);
-
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma);
 // void read_parameter(string path, MatrixXd & in);
 // void write_parameter(string path, MatrixXd output);
 
