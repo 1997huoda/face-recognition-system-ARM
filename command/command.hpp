@@ -43,7 +43,7 @@ using namespace Eigen;
 using namespace cv;
 
 // MatrixXd W[model_num], b[model_num], beta[model_num];
-
+string ip1,ip2;
 //摄像头类
 VideoCapture capture;
 //摄像头帧
@@ -63,7 +63,7 @@ std::string human_name;
 std::string picture_name;
 //收到的图
 Mat rec_img;
-
+int read_arg(int argc, char * argv[]);
 void eve_init();
 
 Mat process_once();

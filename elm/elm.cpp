@@ -639,15 +639,6 @@ void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	ELM_in_ELM(feature, W, b, beta, F, output, L, m, n, N, model_num);
 	tm.stop();
 	std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
-
-	// for(int i = 0; i < model_num; i++){
-	// 	string write_w = "W"+to_string(i)+".txt";
-	// 	write_parameter(write_w,W[i]);
-	// 	string write_b = "b"+to_string(i)+".txt";
-	// 	write_parameter(write_b,b[i]);
-	// 	string write_beta = "beta"+to_string(i)+".txt";
-	// 	write_parameter(write_beta,beta[i]);
-	// }
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){

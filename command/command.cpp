@@ -1,8 +1,46 @@
 #include "command.hpp"
+int read_arg(int argc, char * argv[]){
+	int arg = 1;
+	while(arg < argc)
+	{
 
+		if(0 == strcmp("-ip1", argv[arg]))
+		{
+			if(arg + 1 < argc)
+			{
+				sscanf(argv[arg + 1], "%s", ip1);
+				arg = arg + 2;
+			}
+			else
+			{
+				printf("# missing argument after '%s'\n", argv[arg]);
+				return 1;
+			}
+		}else if(0 == strcmp("-ip2", argv[arg]))
+		{
+			if(arg + 1 < argc)
+			{
+				sscanf(argv[arg + 1], "%s", ip2);
+				arg = arg + 2;
+			}
+			else
+			{
+				printf("# missing argument after '%s'\n", argv[arg]);
+				return 1;
+			}
+		}
+		else
+		{
+			printf("# invalid command line argument '%s'\n", argv[arg]);
+			return 1;
+		}
+	}
+	return 0;
+}
 void eve_init() {
     //修改全局变量
     trainfile_path = "../A";
+    ip1="localhost";
     global_init();
     //开启摄像头
     capture.open(0);

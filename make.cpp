@@ -5,8 +5,13 @@
 // }
 // extern int model_num;
 // MatrixXd W[5], b[5], beta[5];
-int main(){
+int main(int argc, char* argv[]){
+	//先参数初始化
 	eve_init();
+	//再修改参数
+	int in = read_arg(argc, argv);
+	if(argc <= 1)
+		cout << "Using default settings!\n";
 	// main 函数变量		MatrixXd
 	MatrixXd W[model_num], b[model_num], beta[model_num];
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了
@@ -17,7 +22,7 @@ int main(){
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
 	std::cout << "waiting connetting" << std::endl;
-	socket.connect("tcp://localhost:5555");
+	socket.connect("tcp://"+ip1+":5555");
 
 	zmq::message_t msg;
 	zmq::message_t received;
