@@ -103,10 +103,11 @@ int main(){
 			// send_msg(socket, tmp);
 
 			//收图
-			socket.recv(&received);
-			std::vector<uchar> img_data(received.size());
-			memcpy(img_data.data(), received.data(), received.size());
-			rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+			// socket.recv(&received);
+			// std::vector<uchar> img_data(received.size());
+			// memcpy(img_data.data(), received.data(), received.size());
+			// rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+			rec_img = receive_pic(socket);
 			cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();
 			face_alignment(rec_img);

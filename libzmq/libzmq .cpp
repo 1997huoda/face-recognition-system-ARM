@@ -27,4 +27,13 @@ void send_pic(zmq::socket_t &socket, std::string path) {
     cv::Mat img = cv::imread(path);
     send_pic(socket, img);
 }
+Mat receive_pic(zmq::socket_t &socket){
+            Mat rec_img;
+            zmq::message_t received;
+            socket.recv(&received);
+			std::vector<uchar> img_data(received.size());
+			memcpy(img_data.data(), received.data(), received.size());
+			rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
+            return rec_img;
+}
 

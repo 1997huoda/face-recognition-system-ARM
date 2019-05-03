@@ -19,6 +19,7 @@ void send_pic(zmq::socket_t & socket, cv::Mat img);
 
 void send_pic(zmq::socket_t & socket, std::string path);
 
+Mat receive_pic(zmq::socket_t &socket);
 
 
 #endif /* _LIBZMQ_H */
