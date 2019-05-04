@@ -19,10 +19,14 @@ Mat trainingImages;
 Mat testingImages;
 vector<int> trainingLabels;
 vector<int> testingLabels;
-
+double gamma_value=0.2f;
+double accuracy[200];
+int mode = 0;
+int pca_num=2000;
 int N;
 int n;
 int N_test;
+int all_num =0;
 MatrixXd F, output, T, temp_T;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
@@ -52,7 +56,7 @@ std::vector<float> extract_feature(Mat src){
 	// Mat SrcImage1 = Mat(feature, true);
 	// TickMeter tm;
 	// tm.start();
-	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,200);//按照圆的面积参数应该是0.785 
+	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,pca_num);//按照圆的面积参数应该是0.785 
 	// Mat get_back = pca.project(SrcImage1);//映射新空间
 	// tm.stop();
 	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
@@ -216,13 +220,15 @@ void getFaces_train(string filePath, Mat & trainingImages,
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
 		Mat SrcImage2 = SrcImage1.t();
+		// PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,pca_num);//按照圆的面积参数应该是0.785 
+		// Mat get_back = pca.project(SrcImage2);//映射新空间
+		// trainingImages.push_back(get_back);
 		trainingImages.push_back(SrcImage2);
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
 
-void getFaces_test(string filePath, Mat & trainingImages,
-				   vector<int> & trainingLabels){
+void getFaces_test(string filePath, Mat & trainingImages,	   vector<int> & trainingLabels){
 	vector<string> files;
 	getFiles_test(filePath, files);
 	int number = files.size();
@@ -239,10 +245,11 @@ void getFaces_test(string filePath, Mat & trainingImages,
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
 		Mat SrcImage2 = SrcImage1.t();
+		// PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,pca_num);//按照圆的面积参数应该是0.785 
+		// Mat get_back = pca.project(SrcImage2);//映射新空间
+		// trainingImages.push_back(get_back);
 		trainingImages.push_back(SrcImage2);
-		// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
 		trainingLabels.push_back(test_labels_ori.at(i));
-		// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
 	}
 }
 
@@ -257,12 +264,7 @@ bool pseudoInverse(
 		typename _Matrix_Type_::Scalar tolerance =
 			epsilon * std::max(a.cols(), a.rows()) *
 			svd.singularValues().array().abs()(0);
-		result = svd.matrixV() *
-				 (svd.singularValues().array().abs() > tolerance)
-				 .select(svd.singularValues().array().inverse(), 0)
-				 .matrix()
-				 .asDiagonal() *
-				 svd.matrixU().adjoint();
+		result = svd.matrixV() *(svd.singularValues().array().abs() > tolerance) .select(svd.singularValues().array().inverse(), 0).matrix() .asDiagonal() * svd.matrixU().adjoint();
 	}
 	// return false;
 	else {
@@ -410,17 +412,28 @@ void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 			}
 	}
 }
+
+cv::Mat logTransform3(Mat srcImage, float c)  
+{  
+    // 输入图像判断
+    if(srcImage.empty())
+        std::cout<< "No data!" <<std::endl;
+    cv::Mat resultImage = 
+      cv::Mat::zeros(srcImage.size(), srcImage.type());  
+    srcImage.convertTo(resultImage,CV_32F);
+    resultImage = resultImage + 1;
+    cv::log(resultImage,resultImage);
+    resultImage = c * resultImage;
+    cv::normalize(resultImage,resultImage,0,255,cv::NORM_MINMAX);
+    cv::convertScaleAbs(resultImage,resultImage);
+    return resultImage; 
+}
+
 cv::Mat face_align(const char * filename){
 
 	Mat pic = imread(filename,0);
-	// cout<<"channels:"<<pic.channels()<<endl;
-			// Mat dst;
-		// resize(pic, pic, cv::Size(50, 50),INTER_LINEAR);
-	// // pic= cvtColor(pic,COLOR_BGR2GRAY)
 
-	// if(pic.channels() == 3)
-	// cvtColor(pic,dst,COLOR_BGRA2GRAY);
-
+	Mat dst;
 	flag = 0;
 	if((pic.empty()))
 	{
@@ -428,12 +441,44 @@ cv::Mat face_align(const char * filename){
 		cout << "pic  empty" << endl;
 		return cv::Mat::zeros(50, 50, CV_8UC1);
 	}
-	// if(pic.channels()!=1){}
-	// resize(dst, dst, cv::Size(50, 50), 0, 0, INTER_LINEAR);
-	// MyGammaCorrection(pic,dst,2.2f);
-	// equalizeHist(pic, pic);
+if(mode==0){
 	return pic;
-
+}else if(mode==1)
+{
+	equalizeHist(pic, dst);
+	return dst;
+}else if(mode ==2){
+	MyGammaCorrection(pic,dst,0.4f);
+	return dst;
+}else if(mode ==3){
+	MyGammaCorrection(pic,dst,1.2f);
+	return dst;
+}else if(mode ==4){
+	MyGammaCorrection(pic,dst,gamma_value);
+	return dst;
+}else if(mode ==5){
+	MyGammaCorrection(pic,dst,0.4f);
+	equalizeHist(dst, dst);
+	return dst;
+}else if(mode ==6){
+	dst=logTransform3(pic,0.2f);
+	return dst;
+}else if(mode ==7){
+	dst=logTransform3(pic,20.0f);
+	return dst;
+}else if(mode ==8){	
+	dst=logTransform3(pic,1.0f);
+	return dst;
+}else if(mode ==9){	
+	dst=logTransform3(pic,1.2f);
+	return dst;
+}else if(mode ==10){	
+	dst=logTransform3(pic,5.0f);
+	return dst;
+}else if(mode==11)
+{
+	return pic;
+}
 }
 /**********************************************************************************/
 int my_parse_args(int argc, char * argv[]){
@@ -452,19 +497,26 @@ int my_parse_args(int argc, char * argv[]){
 				cout << "Setting number of models ..." << endl;
 				model_num = atoi(argv[k++]);
 			} else if(*p == 't'){
-				cout << "Setting number of faces per training person ..."
-					 << endl;
+				cout << "Setting number of faces per training person ..."	 << endl;
 				training_face_num_per_person = atoi(argv[k++]);
 			} else if(*p == 's'){
-				cout << "Setting number of faces per testing person ..."
-					 << endl;
+				cout << "Setting number of faces per testing person ..."	 << endl;
 				testing_face_num_per_person = atoi(argv[k++]);
+			} else if(*p == 'g'){
+				cout << "Setting gamma value ..."	 << endl;
+				gamma_value = atoi(argv[k++]);
 			} else if(*p == 'r'){
 				cout << "Setting training path ..." << endl;
 				trainfile_path = argv[k++];
 			} else if(*p == 'e'){
 				cout << "Setting testing path ..." << endl;
 				testfile_path = argv[k++];
+			} else if(*p == 'a'){
+				cout << "Setting pca ..." << endl;
+				pca_num = atoi(argv[k++]);
+			} else if(*p == 'z'){
+				cout << "Setting all_num ..." << endl;
+				all_num = atoi(argv[k++]);
 			} else {
 				cout << "-o: Setting number of hidden nodes\n";
 				cout << "-p: Setting number of training people\n";
@@ -584,24 +636,18 @@ void show_testing_results(){
 	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test << endl;
 	int count = 0;
 
-	std::string fileName = "my.txt";
-	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	outfile << output.rows() << endl;
-	outfile << output.cols() << endl;
-	outfile << output << endl;
-	outfile.close();
-
 	for(int i = 0; i < N_test; i++){
 		//             cout<<i<<endl;
 		int ii, jj;
 		//             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
 		double truth = output.row(i).maxCoeff(&ii, &jj);
-		cout << truth << endl;
-		cout << jj << ',' << testingLabels.at(i) << endl;
+		// cout << truth << endl;
+		// cout << jj << ',' << testingLabels.at(i) << endl;
 		if(jj == testingLabels.at(i))
 			count++;
 	}
 	cout << "accuracy:" << (double)count / (double)N_test << endl;
+	accuracy[mode]= (double)count / (double)N_test;
 }
 
 int main(int argc, char * * argv){
@@ -614,13 +660,27 @@ int main(int argc, char * * argv){
 		return 0;
 	// init_face_detector_dlib();
 	// time
-	MatrixXd W[model_num], b[model_num], beta[model_num];
-	MatrixXd feature, feature1;
-	feature = ELM_in_ELM_face_training_matrix_from_files();
-	feature1 = ELM_in_ELM_face_testing_matrix_from_files();
-	T = generate_training_labels();
-	ELM_training(feature, W, b, beta);
-	ELM_testing(feature1, W, b, beta);
-	show_testing_results();
+	// for(int all_num=0;all_num<10,all_num++){
+		// system("echo 'h'");
+
+		for(mode=0;mode <=11;mode++){
+			// system("echo 'h'");
+			MatrixXd W[model_num], b[model_num], beta[model_num];
+			MatrixXd feature, feature1;
+			feature = ELM_in_ELM_face_training_matrix_from_files();
+			feature1 = ELM_in_ELM_face_testing_matrix_from_files();
+			T = generate_training_labels();
+			ELM_training(feature, W, b, beta);
+			ELM_testing(feature1, W, b, beta);
+			show_testing_results();
+		}
+		std::string fileName = to_string(1)+".txt";
+		std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+		for(mode=0;mode <=11;mode++){
+			// outfile << "mode : " <<mode<< "	accuracy:	"<<accuracy[mode]<< endl;
+				outfile << accuracy[mode]<< endl;
+		}
+		outfile.close();
+	// }
 	return 0;
 }
