@@ -438,9 +438,9 @@ cv::Mat face_align(const char * filename){
 	final_location.clear();
 	alignment_face_recall.clear();
 	Mat  frame, bak_gray;
+	process_image(pic);
+	// resize(pic, frame, nor, 0, 0, INTER_LINEAR);
 	cvtColor(pic, bak_gray, CV_BGR2GRAY);
-	resize(pic, frame, nor, 0, 0, INTER_LINEAR);
-	process_image(frame);
 			//                  算法稳定仍然需要去重
 		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 			if(iter + 1 == final_location.end()) break;
@@ -459,25 +459,28 @@ cv::Mat face_align(const char * filename){
 		cout << "检测到的人脸的个数    " << final_location.size() << "个" << endl;
 		int x_b = cvRound(bak_gray.cols / nor.width); int y_b = cvRound(bak_gray.rows / nor.height);
 		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+			vector<location>::iterator iter = final_location.begin();
 			int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y); int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
+			// int x = cvRound( (*iter).x); int y = cvRound((*iter).y); int w = cvRound((*iter).w); int h = cvRound ((*iter).h);
 								x-=0;if(x<0)x=0;
                 y-=0;if(y<0)y=0;
                 w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
                 h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
 			Rect rect(x, y, w, h);
+			// dst = (pic(rect));
 			Mat image = (bak_gray(rect));
 			// resize 将长方形的人脸 resize 成标准方形
-			// if((image.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
+			if((image.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
 			resize(image, image, size_box, 0, 0, INTER_LINEAR);
 			face_alignment(bak_gray);
 		}
 		dst= alignment_face_recall[0].clone();
 		//接下来以PIE多做几个实验吧 好吧
-		// cvtColor(dst, dst, CV_BGR2GRAY);
+		cvtColor(dst, dst, CV_BGR2GRAY);
 		// Mat for_end;
 		// MyGammaCorrection(dst,for_end,gamma_value);
 		// for_end=logTransform3(dst,gamma_value);
-	equalizeHist(dst, dst);
+	// equalizeHist(dst, dst);
 	// equalizeHist(pic, dst);
 	// for_end.convertTo(for_end,CV_8U);
 	// equalizeHist(for_end,for_end);
