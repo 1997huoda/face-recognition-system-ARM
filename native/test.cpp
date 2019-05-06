@@ -55,11 +55,14 @@ void face_alignment(Mat image_roi){
 	
 	shapes.push_back(shape);
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
-	dlib::array2d<dlib::rgb_pixel> equ;//图像格式
+	// dlib::array2d<dlib::rgb_pixel> equ;//图像格式
 	
-	dlib::equalize_histogram(face_chips[0], equ);
+	// dlib::equalize_histogram(face_chips[0], equ);
+	dlib::array2d<unsigned char> img_gray;
+	dlib::assign_image(img_gray, face_chips[0]);
 	// transform_image (equ,equ);
-	Mat eve = dlib::toMat(equ);
+	// Mat eve = dlib::toMat(equ);
+	Mat eve = dlib::toMat(img_gray);
 	// Mat eve = dlib::toMat(face_chips[0]);
 
 	alignment_face_recall.push_back(eve);

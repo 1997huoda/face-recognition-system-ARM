@@ -435,7 +435,7 @@ cv::Mat logTransform3(Mat srcImage, float c)
 cv::Mat face_align(const char * filename){
 	Mat pic = imread(filename);/*彩色图检测人脸*/	Mat dst;	flag = 0;
 	if((pic.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
-	/*final_location.clear();
+	final_location.clear();
 	alignment_face_recall.clear();
 	Mat  frame, bak_gray;
 	cvtColor(pic, bak_gray, CV_BGR2GRAY);
@@ -471,13 +471,13 @@ cv::Mat face_align(const char * filename){
 			resize(image, image, size_box, 0, 0, INTER_LINEAR);
 			face_alignment(bak_gray);
 		}
-		dst= alignment_face_recall[0];*/ 
+		dst= alignment_face_recall[0].clone();
 		//接下来以PIE多做几个实验吧 好吧
 		// cvtColor(dst, dst, CV_BGR2GRAY);
 		// Mat for_end;
 		// MyGammaCorrection(dst,for_end,gamma_value);
 		// for_end=logTransform3(dst,gamma_value);
-	// equalizeHist(dst, dst);
+	equalizeHist(dst, dst);
 	// equalizeHist(pic, dst);
 	// for_end.convertTo(for_end,CV_8U);
 	// equalizeHist(for_end,for_end);
