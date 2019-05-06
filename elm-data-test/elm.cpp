@@ -12,7 +12,7 @@ int model_num = 5;                    //子ELM模型的数量
 int training_face_num_per_person = 999; //训练集中每个人的人脸数
 int testing_face_num_per_person = 999;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "/home/huoda/Desktop/FERET"; //路径
+string trainfile_path = "/home/huoda/Desktop/imm"; //路径
 string testfile_path = "/home/huoda/Desktop/test";
 
 Mat trainingImages;
@@ -435,38 +435,43 @@ cv::Mat logTransform3(Mat srcImage, float c)
 cv::Mat face_align(const char * filename){
 	Mat pic = imread(filename);/*彩色图检测人脸*/	Mat dst;	flag = 0;
 	if((pic.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
-	// final_location.clear();
+	final_location.clear();
 	alignment_face_recall.clear();
 	Mat  frame, bak_gray;
 	cvtColor(pic, bak_gray, CV_BGR2GRAY);
 	resize(pic, frame, nor, 0, 0, INTER_LINEAR);
-	// process_image(frame);
+	process_image(frame);
 			//                  算法稳定仍然需要去重
-		// for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-		// 	if(iter + 1 == final_location.end()) break;
-		// 	for(vector<location>::iterator it = iter + 1; it != final_location.end(); ){
-		// 		if((*it) < (*iter)){
-		// 			it = final_location.erase(it);
-		// 			iter = final_location.begin();
-		// 			cout << "     这里有重复人脸框" << endl;
-		// 		}
-		// 		else
-		// 			it++;
-		// 	}
-		// }
-		// if(final_location.size()==0){	flag = 1;		cout << "face  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);}
-		// sort(final_location.begin(), final_location.end(), cmp);//按照x从小到大排序
-		// cout << "检测到的人脸的个数    " << final_location.size() << "个" << endl;
-		// int x_b = cvRound(bak_gray.cols / nor.width); int y_b = cvRound(bak_gray.rows / nor.height);
-		// for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-			// int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y); int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
-			// Rect rect(x, y, w, h);
-			// Mat image = (bak_gray(rect));
-			//resize 将长方形的人脸 resize 成标准方形
-			// resize(image, image, size_box, 0, 0, INTER_LINEAR);
+		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+			if(iter + 1 == final_location.end()) break;
+			for(vector<location>::iterator it = iter + 1; it != final_location.end(); ){
+				if((*it) < (*iter)){
+					it = final_location.erase(it);
+					iter = final_location.begin();
+					cout << "     这里有重复人脸框" << endl;
+				}
+				else
+					it++;
+			}
+		}
+		if(final_location.size()==0){	flag = 1;		cout << "face  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);}
+		sort(final_location.begin(), final_location.end(), cmp);//按照x从小到大排序
+		cout << "检测到的人脸的个数    " << final_location.size() << "个" << endl;
+		int x_b = cvRound(bak_gray.cols / nor.width); int y_b = cvRound(bak_gray.rows / nor.height);
+		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+			int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y); int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
+								x-=0;if(x<0)x=0;
+                y-=0;if(y<0)y=0;
+                w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
+                h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
+			Rect rect(x, y, w, h);
+			Mat image = (bak_gray(rect));
+			// resize 将长方形的人脸 resize 成标准方形
+			// if((image.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
+			resize(image, image, size_box, 0, 0, INTER_LINEAR);
 			face_alignment(bak_gray);
-		// }
-		dst= alignment_face_recall[0].clone();
+		}
+		dst= alignment_face_recall[0];
 		// cvtColor(dst, dst, CV_BGR2GRAY);
 		// Mat for_end;
 		// MyGammaCorrection(dst,for_end,gamma_value);
