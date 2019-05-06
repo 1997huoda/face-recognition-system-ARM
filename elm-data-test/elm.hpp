@@ -28,6 +28,7 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include"test.hpp"
 
 using namespace std;
 using namespace Eigen;

@@ -42,7 +42,7 @@ void face_alignment(Mat image_roi){
 	dlib::cv_image<unsigned char> img(image_roi);       //灰度图
 
 	std::vector<dlib::full_object_detection> shapes;//shape的向量
-	dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
+	dlib::array<dlib::array2d<dlib::bgr_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
 	dlib::rectangle dlibRect(0, 0, image_roi.cols, image_roi.rows);
 
 	TickMeter tm;
@@ -68,10 +68,12 @@ void face_alignment(Mat image_roi){
         /**********end**********/
 	shapes.push_back(shape);
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
-	dlib::array2d<dlib::rgb_pixel> equ;//图像格式
+	dlib::array2d<dlib::bgr_pixel> equ;//图像格式
+	
 	dlib::equalize_histogram(face_chips[0], equ);
 
 	Mat eve = dlib::toMat(equ);
+	// Mat eve = dlib::toMat(face_chips[0]);
     // Point2f a36(shape.part(36).x(),shape.part(36).y());
     // Point2f a45(shape.part(45).x(),shape.part(45).y());
     // Point2f a48(shape.part(48).x(),shape.part(48).y());
@@ -110,14 +112,14 @@ void process_image(Mat mat)
 		int w = p[2];
 		int h = p[3];
 		int neighbors = p[4];
-		// int angle = p[5];
+		int angle = p[5];
 		if((((pResults ? *pResults : 0) > 1) && (neighbors < 90)) || (x < 0) || (y < 0) || (w <= 0) || (h <= 0) || (y + h >= mat.rows) || (x + w >= mat.cols)){//根源杜绝 mat超边界
 
 		}else{
 			location good = {x, y, w, h, neighbors};
 			final_location.push_back(good);
 		}
-		// printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
+		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
 	}
 	free(pBuffer);
 }
@@ -132,7 +134,6 @@ void process_webcam_frames()
 	{
 		final_location.clear();
 		alignment_face_recall.clear();
-
 		Mat origin, frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
 		capture >> origin;
 		if(origin.empty())
@@ -143,9 +144,7 @@ void process_webcam_frames()
 		resize(origin, frame, nor, 0, 0, INTER_LINEAR);//320 160//256 144 //192*172
 		if(frame.empty())
 			break;
-
 		process_image(frame);
-
 		//                  算法稳定仍然需要去重
 		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 			if(iter + 1 == final_location.end()) break;
@@ -161,23 +160,16 @@ void process_webcam_frames()
 		}
 
 		sort(final_location.begin(), final_location.end(), cmp);//按照x从小到大排序
-
 		cout << "检测到的人脸的个数    " << final_location.size() << "个" << endl;
-
-
 		int x_b = cvRound(bak_gray.cols / nor.width); int y_b = cvRound(bak_gray.rows / nor.height);
 		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-
 			int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y); int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
-
 //                 x-=0;if(x<0)x=0;
 //                 y-=0;if(y<0)y=0;
 //                 w+=0;if(x+w>bak_gray.cols)w=bak_gray.cols-x;
 //                 h+=0;if(y+h>bak_gray.rows)h=bak_gray.rows-y;
-
 			Rect rect(x, y, w, h);
 			Mat image = (bak_gray(rect));
-
 			//resize 将长方形的人脸 resize 成标准方形
 			resize(image, image, size_box, 0, 0, INTER_LINEAR);
 			face_alignment(image);

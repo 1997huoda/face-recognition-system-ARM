@@ -9,10 +9,10 @@ int L = 600;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
-int training_face_num_per_person = 11; //训练集中每个人的人脸数
-int testing_face_num_per_person = 10;  // 测试集中每个人的人脸数
+int training_face_num_per_person = 999; //训练集中每个人的人脸数
+int testing_face_num_per_person = 999;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "/home/huoda/Desktop/YALE"; //路径
+string trainfile_path = "/home/huoda/Desktop/FERET"; //路径
 string testfile_path = "/home/huoda/Desktop/test";
 
 Mat trainingImages;
@@ -418,67 +418,68 @@ cv::Mat logTransform3(Mat srcImage, float c)
     // 输入图像判断
     if(srcImage.empty())
         std::cout<< "No data!" <<std::endl;
-    cv::Mat resultImage = 
-      cv::Mat::zeros(srcImage.size(), srcImage.type());  
-    srcImage.convertTo(resultImage,CV_32F);
+    // cv::Mat resultImage =     cv::Mat::zeros(srcImage.size(), srcImage.type());  
+		Mat resultImage =srcImage.clone();
+    resultImage.convertTo(resultImage,CV_32F);
     resultImage = resultImage + 1;
     cv::log(resultImage,resultImage);
-    resultImage = c * resultImage;
+    resultImage = c * resultImage; 
+		// resultImage = resultImage-c; //灰度图 0是黑色 255是白色
     cv::normalize(resultImage,resultImage,0,255,cv::NORM_MINMAX);
+		// equalizeHist(resultImage, resultImage);
     cv::convertScaleAbs(resultImage,resultImage);
+		// resultImage.convertTo(resultImage,CV_8U);
     return resultImage; 
 }
 
 cv::Mat face_align(const char * filename){
-
-	Mat pic = imread(filename,0);
-
-	Mat dst;
-	flag = 0;
-	if((pic.empty()))
-	{
-		flag = 1;
-		cout << "pic  empty" << endl;
-		return cv::Mat::zeros(50, 50, CV_8UC1);
-	}
-if(mode==0){
-	return pic;
-}else if(mode==1)
-{
-	equalizeHist(pic, dst);
+	Mat pic = imread(filename);/*彩色图检测人脸*/	Mat dst;	flag = 0;
+	if((pic.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
+	// final_location.clear();
+	alignment_face_recall.clear();
+	Mat  frame, bak_gray;
+	cvtColor(pic, bak_gray, CV_BGR2GRAY);
+	resize(pic, frame, nor, 0, 0, INTER_LINEAR);
+	// process_image(frame);
+			//                  算法稳定仍然需要去重
+		// for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+		// 	if(iter + 1 == final_location.end()) break;
+		// 	for(vector<location>::iterator it = iter + 1; it != final_location.end(); ){
+		// 		if((*it) < (*iter)){
+		// 			it = final_location.erase(it);
+		// 			iter = final_location.begin();
+		// 			cout << "     这里有重复人脸框" << endl;
+		// 		}
+		// 		else
+		// 			it++;
+		// 	}
+		// }
+		// if(final_location.size()==0){	flag = 1;		cout << "face  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);}
+		// sort(final_location.begin(), final_location.end(), cmp);//按照x从小到大排序
+		// cout << "检测到的人脸的个数    " << final_location.size() << "个" << endl;
+		// int x_b = cvRound(bak_gray.cols / nor.width); int y_b = cvRound(bak_gray.rows / nor.height);
+		// for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+			// int x = cvRound(x_b * (*iter).x); int y = cvRound(y_b * (*iter).y); int w = cvRound(x_b * (*iter).w); int h = cvRound(y_b * (*iter).h);
+			// Rect rect(x, y, w, h);
+			// Mat image = (bak_gray(rect));
+			//resize 将长方形的人脸 resize 成标准方形
+			// resize(image, image, size_box, 0, 0, INTER_LINEAR);
+			face_alignment(bak_gray);
+		// }
+		dst= alignment_face_recall[0].clone();
+		// cvtColor(dst, dst, CV_BGR2GRAY);
+		// Mat for_end;
+		// MyGammaCorrection(dst,for_end,gamma_value);
+		// for_end=logTransform3(dst,gamma_value);
+	// equalizeHist(dst, dst);
+	// equalizeHist(pic, dst);
+	// for_end.convertTo(for_end,CV_8U);
+	// equalizeHist(for_end,for_end);
+	// face_alignment(pic);
+	// dst=alignment_face_recall[0];
 	return dst;
-}else if(mode ==2){
-	MyGammaCorrection(pic,dst,0.4f);
-	return dst;
-}else if(mode ==3){
-	MyGammaCorrection(pic,dst,1.2f);
-	return dst;
-}else if(mode ==4){
-	MyGammaCorrection(pic,dst,gamma_value);
-	return dst;
-}else if(mode ==5){
-	MyGammaCorrection(pic,dst,0.4f);
-	equalizeHist(dst, dst);
-	return dst;
-}else if(mode ==6){
-	dst=logTransform3(pic,0.2f);
-	return dst;
-}else if(mode ==7){
-	dst=logTransform3(pic,20.0f);
-	return dst;
-}else if(mode ==8){	
-	dst=logTransform3(pic,1.0f);
-	return dst;
-}else if(mode ==9){	
-	dst=logTransform3(pic,1.2f);
-	return dst;
-}else if(mode ==10){	
-	dst=logTransform3(pic,5.0f);
-	return dst;
-}else if(mode==11)
-{
-	return pic;
-}
+		// return pic;
+		// return for_end;
 }
 /**********************************************************************************/
 int my_parse_args(int argc, char * argv[]){
@@ -504,7 +505,7 @@ int my_parse_args(int argc, char * argv[]){
 				testing_face_num_per_person = atoi(argv[k++]);
 			} else if(*p == 'g'){
 				cout << "Setting gamma value ..."	 << endl;
-				gamma_value = atoi(argv[k++]);
+				gamma_value = atof(argv[k++]);
 			} else if(*p == 'r'){
 				cout << "Setting training path ..." << endl;
 				trainfile_path = argv[k++];
@@ -615,7 +616,7 @@ void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	struct timeval start1, end1;
+	// struct timeval start1, end1;
 	MatrixXd out_all, R, Tem, H;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 	TickMeter tm;
@@ -652,6 +653,7 @@ void show_testing_results(){
 
 int main(int argc, char * * argv){
 	init_stdio();
+	init_face_detector_dlib();
 	int in = my_parse_args(argc, argv);
 	if(argc <= 1)
 		cout << "Using default settings!\n";
@@ -663,7 +665,7 @@ int main(int argc, char * * argv){
 	// for(int all_num=0;all_num<10,all_num++){
 		// system("echo 'h'");
 
-		for(mode=0;mode <=11;mode++){
+		// for(mode=0;mode <=13;mode++){
 			// system("echo 'h'");
 			MatrixXd W[model_num], b[model_num], beta[model_num];
 			MatrixXd feature, feature1;
@@ -673,13 +675,13 @@ int main(int argc, char * * argv){
 			ELM_training(feature, W, b, beta);
 			ELM_testing(feature1, W, b, beta);
 			show_testing_results();
-		}
+		// }
 		std::string fileName = to_string(1)+".txt";
 		std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-		for(mode=0;mode <=11;mode++){
-			// outfile << "mode : " <<mode<< "	accuracy:	"<<accuracy[mode]<< endl;
-				outfile << accuracy[mode]<< endl;
-		}
+		// for(mode=0;mode <=13;mode++){
+			outfile << "mode : " <<mode<< "	accuracy:	"<<accuracy[mode]<< endl;
+				// outfile << accuracy[mode]<< endl;
+		// }
 		outfile.close();
 	// }
 	return 0;

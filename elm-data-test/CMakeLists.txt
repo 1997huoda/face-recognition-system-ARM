@@ -16,10 +16,12 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 
 include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(../native)
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_LIST_DIR})
-
-
+# add_subdirectory(../native/dlib dlib_build)
+include_directories(../src)
+include(../libpico.cmake)
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 # add_subdirectory(../native-dlib/dlib dlib_build)
@@ -28,5 +30,5 @@ link_directories(${OpenCV_LIBRARY_DIRS})
 add_executable(elm ${SRC})
 #add_library(libelm SHARED ${SRC})
 
-target_link_libraries(elm  ${OpenCV_LIBS})
+target_link_libraries(elm  libpico libfacedetection dlib::dlib  ${OpenCV_LIBS})
 # dlib::dlib
