@@ -188,8 +188,24 @@ void getFiles_train(string path, vector<string> & files){
         trainingLabels.push_back(i/faces_per_person);
      }
    }*/
-void getFaces_train(string filePath, Mat & trainingImages,
-					vector<int> & trainingLabels){
+cv::Mat face_align(const char * filename){
+
+	Mat pic = imread(filename);
+	// if(pic.channels() == 3)
+		// cvtColor(pic, pic, CV_BGRA2GRAY);
+	flag = 0;
+	if(pic.empty())
+	{
+		flag = 1;
+		cout << "pic  empty" << endl;
+		return cv::Mat::zeros(50, 50, CV_8UC3);
+	}
+	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
+	// equalizeHist(pic, pic);
+	return pic;
+
+}
+void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels){
 	vector<string> files;
 	getFiles_train(filePath, files);
 	int number = files.size();
@@ -362,23 +378,7 @@ void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/
         vector<double> vec;
 	}*/
 
-cv::Mat face_align(const char * filename){
 
-	Mat pic = imread(filename);
-	// if(pic.channels() == 3)
-		// cvtColor(pic, pic, CV_BGRA2GRAY);
-	flag = 0;
-	if(pic.empty())
-	{
-		flag = 1;
-		cout << "pic  empty" << endl;
-		return cv::Mat::zeros(50, 50, CV_8UC3);
-	}
-	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
-	// equalizeHist(pic, pic);
-	return pic;
-
-}
 /**********************************************************************************/
 int my_parse_args(int argc, char * argv[]){
 	if(argc > 1)
@@ -422,16 +422,16 @@ int my_parse_args(int argc, char * argv[]){
 	return 0;
 }
 
-void cout_current_settings(){
-	cout << "*****************************" << endl;
-	cout << "Current settings:\n";
-	cout << "Hidden nodes=" << L << ',' << "People=" << m << ','
-		 << "model_num=" << model_num << endl;
-	// cout << "training_face_num_per_person=" << training_face_num_per_person	 << ',' << "testing_face_num_per_person=" << testing_face_num_per_person		 << endl;
-	cout << "trainfile_path=" << trainfile_path << endl;
-	// cout << "testfile_path=" << testfile_path << endl;
-	cout << "*****************************" << endl;
-}
+// void cout_current_settings(){
+// 	cout << "*****************************" << endl;
+// 	cout << "Current settings:\n";
+// 	cout << "Hidden nodes=" << L << ',' << "People=" << m << ','
+// 		 << "model_num=" << model_num << endl;
+// 	// cout << "training_face_num_per_person=" << training_face_num_per_person	 << ',' << "testing_face_num_per_person=" << testing_face_num_per_person		 << endl;
+// 	cout << "trainfile_path=" << trainfile_path << endl;
+// 	// cout << "testfile_path=" << testfile_path << endl;
+// 	cout << "*****************************" << endl;
+// }
 
 // void init_face_detector_dlib(string face_landmark) {
 //     detector = dlib::get_frontal_face_detector();
@@ -511,7 +511,7 @@ MatrixXd generate_training_labels(){
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	TickMeter tm;
 	tm.start();
-	ELM_in_ELM(feature, W, b, beta,/*  F, */ /* output, */ L, m, n, N, model_num);
+	ELM_in_ELM(feature, W, b, beta/* , F, */ /* output, */ /* L, m, n, N, model_num */);
 	tm.stop();
 	std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
 }

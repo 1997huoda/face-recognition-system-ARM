@@ -60,26 +60,31 @@ extern MatrixXd F, output, T/* , temp_T */;
 
 // void LBP81(const Mat & src, Mat & dst); // LBP_extractor
 // std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols);
-std::vector<float> extract_feature(Mat src);
+/************不需要声明*****************************/
+// std::vector<float> extract_feature(Mat src);
 
 // double difftimeval(const struct timeval *start,
 //                    const struct timeval *end); //计算时间间隔
-void getFiles_train(string path,vector<string> & files); //从路径中获取训练集图像的路径
+/***********************不需要定义********************************/
+// void getFiles_train(string path,vector<string> & files); //从路径中获取训练集图像的路径
 // void getFiles_test(string path, vector<string> & files); //从路径中获取测试集图像的路径
-void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels); //获取训练集图像
+/*********************不需要定义*********************************/
+// void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels); //获取训练集图像
 // void getFaces_test(string filePath, Mat & trainingImages,  vector<int> & trainingLabels); //获取测试集图像
 // void getFaces_test(Mat SrcImage, Mat & trainingImages, vector<int> & trainingLabels); //重载单个Mat
-void getFaces_test(vector<Mat> mat_v, Mat & trainingImages);
+/***不需要声明**getFaces_test*****在使用之前定义*********************/
+// void getFaces_test(vector<Mat> mat_v, Mat & trainingImages);
 
 void init_stdio();                               //初始化IO
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,  MatrixXd & output_basic/* , int L, int m, int n, int N */); //原始ELM训练函数
+/*****************不需要声明***********ELM_basic*********/
+// void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,  MatrixXd & output_basic/* , int L, int m, int n, int N */); //原始ELM训练函数
 void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/* ,MatrixXd & F, *//*  MatrixXd & output,  *//* int L, int m, int n, int N,int model_num */);            // ELM-in-ELM训练函数
 // void pr(string msg, MatrixXd & T);          //输出MatrixXd
 // void pr(string msg, VectorXd & T);          //输出VectorXd
 // void print_matrix(MatrixXd & T);            //输出矩阵
-cv::Mat face_align(const char * filename);  //人脸对齐
+// cv::Mat face_align(const char * filename);  //人脸对齐
 int my_parse_args(int argc, char * argv[]); //设定初始参数函数
-void cout_current_settings();              //输出使用中的参数信息
+// void cout_current_settings();              //输出使用中的参数信息
 // void init_face_detector_dlib(    string face_landmark =    "shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 // MatrixXd ELM_in_ELM_face_testing_matrix_from_files(); //从文件夹中获取测试集矩阵
