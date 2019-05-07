@@ -102,11 +102,10 @@ void face_alignment(Mat image_roi){
 	Mat eve = dlib::toMat(equ);
 	// Mat eve = dlib::toMat(img_gray);
 	// Mat eve = dlib::toMat(face_chips[0]);
-	cvtColor(eve, eve, CV_BGR2GRAY);
-	MyGammaCorrection(eve,eve,1.5f);
-	equalizeHist(eve, eve);
+	// cvtColor(eve, eve, CV_BGR2GRAY);
+	// MyGammaCorrection(eve,eve,1.5f);
+	// equalizeHist(eve, eve);
 	alignment_face_recall.push_back(eve);
-
 }
 
 void process_image(Mat mat)

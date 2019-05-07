@@ -26,84 +26,6 @@ int N_test;
 MatrixXd F, output, T, temp_T;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
-void write_parameter(string path, MatrixXd output){
-	std::ofstream outfile(path.c_str()); // file name and the operation type. 
-	outfile << output.rows() << endl;
-	outfile << output.cols() << endl;
-	outfile << output << endl;
-	outfile.close();
-}
-
-void read_parameter(string path, MatrixXd & in){
-	std::ifstream infile(path.c_str());
-	int row, col;
-	infile >> row >> col;
-	MatrixXd input(row, col);
-	double fxck;
-	for(int i = 0; i < row; i++){
-		for(int j = 0; j < col; j++){
-			infile >> fxck;
-			input(row, col) = fxck;
-		}
-	}
-	in = input;
-}
-
-/******************LBP***********************/
-void LBP81(const Mat & src, Mat & dst){
-	dst = Mat::zeros(src.rows - 2, src.cols - 2, CV_8UC1);
-	for(int i = 1; i < src.rows - 1; i++){
-		for(int j = 1; j < src.cols - 1; j++){
-			uchar center = src.at<uchar>(i, j);
-			unsigned char code = 0, U2 = 0;
-			unsigned char a[8];
-			a[7] = (src.at<uchar>(i - 1, j - 1) > center);
-			a[6] = (src.at<uchar>(i - 1, j) > center);
-			a[5] = (src.at<uchar>(i - 1, j + 1) > center);
-			a[4] = (src.at<uchar>(i, j + 1) > center);
-			a[3] = (src.at<uchar>(i + 1, j + 1) > center);
-			a[2] = (src.at<uchar>(i + 1, j) > center);
-			a[1] = (src.at<uchar>(i + 1, j - 1) > center);
-			a[0] = (src.at<uchar>(i, j - 1) > center);
-			code |= a[7] << 7;
-			code |= a[6] << 6;
-			code |= a[5] << 5;
-			code |= a[4] << 4;
-			code |= a[3] << 3;
-			code |= a[2] << 2;
-			code |= a[1] << 1;
-			code |= a[0] << 0;
-			// Uniform LBP
-			U2 = abs(a[7] - a[0]);
-			for(int p = 1; p < 8; p++)
-				U2 += abs(a[p] - a[p - 1]);
-			if(U2 > 2)
-				code = 9;
-			dst.at<unsigned char>(i - 1, j - 1) = code;
-		}
-	}
-}
-/*********************************************/
-std::vector<float> extract_feature_LBP(Mat src, int src_rows, int src_cols){
-	Mat dst, dst1;
-	int lbp_81[243] = {0};
-	cvtColor(src, dst1, COLOR_BGR2GRAY);
-	std::vector<float> feature;
-	LBP81(dst1, dst);
-	// imshow("DDD",dst);
-	// waitKey();
-	for(int ii = 0; ii < dst.rows; ii++)
-		for(int jj = 0; jj < dst.cols; jj++)
-			lbp_81[table[dst.at<uchar>(ii, jj)]]++;
-
-	for(int kk = 0; kk < 59; kk++){
-		feature.push_back((float)lbp_81[kk] / (src_rows * src_cols));
-	}
-	/*for (int i=0;i<src.rows;i++)
-	        for (int j=0;j<src.cols;j++)
-	                        feature.push_back(dst.at<uchar>(i,j));*/
-	return feature;
-}
 /******extract_feature: put one image into a vector(convert to gray image
  * firstly)*****/
 /*********************************************/
@@ -134,16 +56,16 @@ flags：操作标志，具体参数如下：
 maxComponents ：PCA应保留的最大组件数；默认情况下，所有组件都保留；
 retainedVariance：PCA应保留的方差百分比。使用这个参数将让PCA决定保留多少组件，但它将始终保持至少2。
 */
-	Mat SrcImage1 = Mat(feature, true);
-	TickMeter tm;
-	tm.start();
-	PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1500);//按照圆的面积参数应该是0.785 
-	Mat get_back = pca.project(SrcImage1);//映射新空间
-	tm.stop();
-	std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
-	std::vector<float> back = convertMat2Vector<float>(get_back);
-	return back;
-	// return feature;
+	// Mat SrcImage1 = Mat(feature, true);
+	// // TickMeter tm;
+	// // tm.start();
+	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1500);//按照圆的面积参数应该是0.785 
+	// Mat get_back = pca.project(SrcImage1);//映射新空间
+	// // tm.stop();
+	// // std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
+	// std::vector<float> back = convertMat2Vector<float>(get_back);
+	// return back;
+	return feature;
 
 }
 
@@ -463,21 +385,7 @@ void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,
 }
 #endif
 
-void pr(string msg, MatrixXd & T){
-	cout << msg << endl << T << endl;
-}
-void pr(string msg, VectorXd & T){
-	cout << msg << endl << T << endl;
-}
 
-void print_matrix(MatrixXd & T){
-	for(int i = 0; i < T.cols(); i++)
-		cout << T(i, 0) << " ";
-	cout << endl;
-	//~ for (int i = 0; i < N; i++)
-	//~ cout << output(i, 0) << " ";
-	//~ cout<<endl;
-}
 
 /*void load_MatrixXd(MatrixXd &T,string filename) {
         char *text=get_file_text(filename.c_str());

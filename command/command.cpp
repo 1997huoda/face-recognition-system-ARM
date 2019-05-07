@@ -43,7 +43,8 @@ void eve_init() {
     ip1="localhost";
     global_init();
     //开启摄像头
-    capture.open(0);
+    if (!capture.isOpened())
+        capture.open(0);
     if (!capture.isOpened()) //没有打开摄像头的话，就返回。
     {
         cout << "failed open capture" << endl;
@@ -67,6 +68,7 @@ void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
 
 void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     //将整个 alignment vector送进来 产生测试数据集
+    // name="";
     MatrixXd feature, feature1;
     feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
     ELM_testing(feature1, W, b, beta);
@@ -74,25 +76,18 @@ void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     name = show_once();
 }
 string show_once() {
-    string output_name;
+    string output_name="";
     for (int i = 0; i < N_test; i++) {
         int ii, jj;
         // cout << output.row(i).maxCoeff(&ii, &jj) << endl;
-        std::string name_plus;
-        double truth = output.row(i).maxCoeff(&ii, &jj);
-        if (truth > 0.8) {
-            name_plus = "\n(similar)";
-        } else if (truth > 0.6) {
-            name_plus = "\n(possible)";
-        } else if (truth > 0.4) {
-            name_plus = "\n(doubtful)";
-        } else if (truth > 0.2) {
-            name_plus = "\n(uncertain)";
-        } else if (truth < 0.2) {
-            name_plus = "\n(unpredictable)";
-        }
-        output_name += names[jj] + name_plus + "/";
-        cout << output_name << endl;
+        // std::string name_plus;
+        cout<<"i"<<i<<endl;
+        // Matrixxd new_x= output.row(i);
+        // double truth =new_x.maxCoeff(&ii, &jj);
+        // double truth = output.row(i).maxCoeff(&ii, &jj);
+        // double truth = output.rowwise(i).maxCoeff( &jj);
+        output_name += names[jj]+"\n"+to_string(truth)  + "/";
+        cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
     }
     return output_name;
 }
@@ -153,7 +148,8 @@ void get_filename(string path, vector<string> &names) {
 }
 
 Mat process_once() {
-
+    if (!capture.isOpened())
+        capture.open(0);
     if (!capture.isOpened()) //没有打开摄像头的话，就返回。
         cout << "failed open capture" << endl;
 
@@ -161,18 +157,21 @@ Mat process_once() {
     final_location.clear();
     alignment_face_recall.clear();
     name.clear();
+    origin.release();    
 
     Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
-    if (origin.empty())
+    if (origin.empty()){
         cout << "cap empty" << endl;
+        // return cv::Mat::zeros(nor, CV_8UC3);
+    }
     // return ;
     // bak_gray为原图的灰度图
     cvtColor(origin, bak_gray, CV_BGR2GRAY);
     // capture >> frame;
     resize(origin, frame, nor, 0, 0, INTER_LINEAR);
     if (frame.empty())
-        cout << "" << endl;
+        cout << "frame empty" << endl;
 
     process_image(frame);
 
@@ -232,6 +231,7 @@ Mat process_once() {
         // cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0,
         // 255, 255), thickness, 8, 0);
     }
+    // waitKey(5);
     return frame;
 }
 

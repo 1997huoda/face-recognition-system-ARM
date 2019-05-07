@@ -1,7 +1,7 @@
 # CMakeLists for libfacedetectcnn
 
-add_definitions(-fPIC)
-
+add_definitions(-fPIC  -pthread )
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" ON)
@@ -64,4 +64,4 @@ if (GSTREAMER)
     )
 
 endif()
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+

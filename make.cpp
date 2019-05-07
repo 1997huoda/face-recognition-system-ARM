@@ -17,31 +17,29 @@ int main(int argc, char* argv[]){
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了
 	//也就不用写参数了
 	train_elm(W, b, beta);
-
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
 	std::cout << "waiting connetting" << std::endl;
 	socket.connect("tcp://"+ip1+":5555");
-
 	zmq::message_t msg;
 	zmq::message_t received;
-
 	send_msg(socket, "xxxx");
-
 	while(true){
 		//接收命令
 		command = recv_msg(socket);
 		cout << "command : 	" << command << endl;
 		if(!strcmp(command.c_str(), "send_picture")){
 			//清空输出name字符串
-			name.clear();
+			// name.clear();//在process——once里面写了清空
 			//单次人脸识别
 			Mat frame = process_once();
 			// alignment-->string name
-			if(alignment_face_recall.size() != 0)
+			if(alignment_face_recall.size() == 0)
+				name="空/";
+			if(alignment_face_recall.size() != 0){
 				test_elm(alignment_face_recall, W, b, beta);
-
+			}
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
 			socket.recv(&received);

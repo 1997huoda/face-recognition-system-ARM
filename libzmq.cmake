@@ -9,7 +9,7 @@ PROJECT(transmit)
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/libzmq)
 
 add_definitions(-fPIC -pthread -fopenmp)
-
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #set(CMAKE_MODULE_PATH ./)
 FIND_PACKAGE(ZMQ REQUIRED)
@@ -25,4 +25,4 @@ add_library(libzmq SHARED ${SRC})
 
 target_link_libraries(libzmq ${LIBRARY})
 
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
