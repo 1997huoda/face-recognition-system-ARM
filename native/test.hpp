@@ -47,14 +47,14 @@ void global_init();//参数初始化 模型加载
 void face_alignment(Mat image_roi);//人脸矫正 直到误差小于等于3度 最后结果标准化输出
 void process_image(Mat mat);//角度检测函数
 
-void process_webcam_frames();//演示函数
-void pic_scan(string pic_name);
+// void process_webcam_frames();//演示函数
+// void pic_scan(string pic_name);
 
 bool cmp(const location & m1, const location & m2);
 bool big(const location & m1, const location & m2);
 
-Mat contrastStretch(cv::Mat srcImage);      //灰度值归一化
-void cap_save(Mat src, string out_name);
+// Mat contrastStretch(cv::Mat srcImage);      //灰度值归一化
+// void cap_save(Mat src, string out_name);
 
 static dlib::frontal_face_detector detector;    //dlib face detector
 static dlib::shape_predictor sp;               // dlib shape predictor

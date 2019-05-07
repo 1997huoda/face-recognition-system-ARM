@@ -222,25 +222,24 @@ void process_webcam_frames()
 		waitKey(5); //延时5ms
 	}
 }
-void pic_scan(string pic_name){
 
+// void pic_scan(string pic_name){
+// }
 
-}
+// void cap_save(Mat src, string out_name){
+// 	for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+// 		float x = (*iter).x; float y = (*iter).y; float w = (*iter).w; float h = (*iter).h;
+// 		x -= 12; y -= 12; w += 24; h += 24;
+// 		if(x < 0) x = 0;
+// 		if(y < 0) y = 0;
+// 		if(x + w > src.cols) w = src.cols - x;
+// 		if(y + h > src.rows) h = src.rows - y;
 
-void cap_save(Mat src, string out_name){
-	for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-		float x = (*iter).x; float y = (*iter).y; float w = (*iter).w; float h = (*iter).h;
-		x -= 12; y -= 12; w += 24; h += 24;
-		if(x < 0) x = 0;
-		if(y < 0) y = 0;
-		if(x + w > src.cols) w = src.cols - x;
-		if(y + h > src.rows) h = src.rows - y;
-
-		Rect rect(x, y, w, h);
-		Mat image2 = (src(rect));
-		imwrite(out_name + to_string(iter - final_location.begin()) + ".jpg", image2);
-	}
-}
+// 		Rect rect(x, y, w, h);
+// 		Mat image2 = (src(rect));
+// 		imwrite(out_name + to_string(iter - final_location.begin()) + ".jpg", image2);
+// 	}
+// }
 
 void init_face_detector_dlib(string face_landmark)
 {
@@ -248,7 +247,7 @@ void init_face_detector_dlib(string face_landmark)
 	dlib::deserialize(face_landmark) >> sp;
 }
 
-
+/*
 int main(int argc, char * argv[])
 {
 	printf("START OK  \n");
@@ -289,3 +288,4 @@ int main(int argc, char * argv[])
 	}
 	return 0;
 }
+*/
