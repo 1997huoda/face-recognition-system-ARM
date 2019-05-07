@@ -10,15 +10,15 @@ int m = 50;                           //训练集以及测试集人数		//后期
 int model_num = 5;                    //子ELM模型的数量
 
 // int training_face_num_per_person = 7; //训练集中每个人的人脸数
-int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
+// int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path = "/home/huoda/Desktop/1"; //路径
-string testfile_path = "/home/huoda/Desktop/1";
+// string testfile_path = "/home/huoda/Desktop/1";
 
 Mat trainingImages;
 Mat testingImages;
 vector<int> trainingLabels;
-vector<int> testingLabels;
+// vector<int> testingLabels;
 
 int N;
 int n;
@@ -114,7 +114,7 @@ void getFiles_train(string path, vector<string> & files){
 	closedir(dir);
 }
 
-void getFiles_test(string path, vector<string> & files){
+/*void getFiles_test(string path, vector<string> & files){
 	int count_test = 0;
 	int person_id = 0;
 	struct dirent * ptr, * ptr1;
@@ -160,7 +160,7 @@ void getFiles_test(string path, vector<string> & files){
 	}
 	// cout<<test_labels_ori<<endl;
 	closedir(dir);
-}
+}*/
 
 /**********************************************/
 /**getTrainfile: put all the faces in filepath into Mat trainingImages and
@@ -208,18 +208,17 @@ void getFaces_train(string filePath, Mat & trainingImages,
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
-void getFaces_test(Mat SrcImage, Mat & trainingImages,
-				   vector<int> & trainingLabels){
-	//  SrcImage ->resize   ->拉直
-	resize(SrcImage, SrcImage, cv::Size(50, 50));
-	Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-	// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
-	Mat SrcImage2 = SrcImage1.t();
-	trainingImages.push_back(SrcImage2);
-	// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-	// trainingLabels.push_back(test_labels_ori.at(i));//人 标签  暂时注释掉
-	// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
-}
+// void getFaces_test(Mat SrcImage, Mat & trainingImages,   vector<int> & trainingLabels){
+// 	//  SrcImage ->resize   ->拉直
+// 	resize(SrcImage, SrcImage, cv::Size(50, 50));
+// 	Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
+// 	// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
+// 	Mat SrcImage2 = SrcImage1.t();
+// 	trainingImages.push_back(SrcImage2);
+// 	// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
+// 	// trainingLabels.push_back(test_labels_ori.at(i));//人 标签  暂时注释掉
+// 	// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
+// }
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
 		Mat SrcImage;
@@ -230,29 +229,29 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 		trainingImages.push_back(SrcImage2);
 	}
 }
-void getFaces_test(string filePath, Mat & trainingImages, vector<int> & trainingLabels){
-	vector<string> files;
-	getFiles_test(filePath, files);
-	int number = files.size();
-	cout << "TEST start num: " << number << endl;
-	cout << test_labels_ori.size() << ',' << number << endl;
-	for(int i = 0; i < number; i++){
-		Mat SrcImage = face_align(files[i].c_str());
-		if(flag){
-			flag = 0;
-			cout << "No face in this file:" << files[i].c_str() << endl;
-			continue;
-		}
-		resize(SrcImage, SrcImage, cv::Size(50, 50));
-		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
-		Mat SrcImage2 = SrcImage1.t();
-		trainingImages.push_back(SrcImage2);
-		// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
-		trainingLabels.push_back(test_labels_ori.at(i));
-		// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
-	}
-}
+// void getFaces_test(string filePath, Mat & trainingImages, vector<int> & trainingLabels){
+// 	vector<string> files;
+// 	getFiles_test(filePath, files);
+// 	int number = files.size();
+// 	cout << "TEST start num: " << number << endl;
+// 	cout << test_labels_ori.size() << ',' << number << endl;
+// 	for(int i = 0; i < number; i++){
+// 		Mat SrcImage = face_align(files[i].c_str());
+// 		if(flag){
+// 			flag = 0;
+// 			cout << "No face in this file:" << files[i].c_str() << endl;
+// 			continue;
+// 		}
+// 		resize(SrcImage, SrcImage, cv::Size(50, 50));
+// 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
+// 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
+// 		Mat SrcImage2 = SrcImage1.t();
+// 		trainingImages.push_back(SrcImage2);
+// 		// cout<<test_labels_ori.at(i)<<':'<<files[i].c_str()<<endl;
+// 		trainingLabels.push_back(test_labels_ori.at(i));
+// 		// cout<<i<<':'<<test_labels_ori.at(i)<<endl;
+// 	}
+// }
 
 template<typename _Matrix_Type_>
 bool pseudoInverse(
@@ -328,7 +327,7 @@ void init_stdio(){
  */
 
 #if 1
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output_basic, int L, int m, int n, int N){
+void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output_basic/* , int L, int m, int n, int N */){
 	MatrixXd b, R, Tem, H;
 	W = MatrixXd::Random(n, L);
 	b_1 = MatrixXd::Random(1, L);
@@ -342,11 +341,11 @@ void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta
 	beta = result * T;
 	output_basic = H * beta;
 }
-void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,/* MatrixXd & F, *//*  MatrixXd & output,  */int L, int m, int n, int N,int model_num){
+void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/* ,MatrixXd & F, *//*  MatrixXd & output,  *//* int L, int m, int n, int N,int model_num */){
 	MatrixXd Hg, temp_out;
 	Hg = MatrixXd::Zero(N, m * model_num);
 	for(int i = 0; i < model_num; i++){
-		ELM_basic(feature, W[i], b[i], beta[i], temp_out, L, m, n, N);
+		ELM_basic(feature, W[i], b[i], beta[i], temp_out/* , L, m, n, N */);
 		Hg.block(0, m * i, N, m) = temp_out;
 	}
 	MatrixXd Hg1;
@@ -405,9 +404,9 @@ int my_parse_args(int argc, char * argv[]){
 			} else if(*p == 'r'){
 				cout << "Setting training path ..." << endl;
 				trainfile_path = argv[k++];
-			} else if(*p == 'e'){
-				cout << "Setting testing path ..." << endl;
-				testfile_path = argv[k++];
+			// } else if(*p == 'e'){
+			// 	cout << "Setting testing path ..." << endl;
+			// 	testfile_path = argv[k++];
 			} else {
 				cout << "-o: Setting number of hidden nodes\n";
 				cout << "-p: Setting number of training people\n";
@@ -430,7 +429,7 @@ void cout_current_settings(){
 		 << "model_num=" << model_num << endl;
 	// cout << "training_face_num_per_person=" << training_face_num_per_person	 << ',' << "testing_face_num_per_person=" << testing_face_num_per_person		 << endl;
 	cout << "trainfile_path=" << trainfile_path << endl;
-	cout << "testfile_path=" << testfile_path << endl;
+	// cout << "testfile_path=" << testfile_path << endl;
 	cout << "*****************************" << endl;
 }
 
@@ -452,19 +451,19 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	n = trainingImages.cols; // number of features //输出特征值
 	return feature;
 }
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有参数Mat
-	// loading test images
-	// cout << "Loading test Data..." << endl;
-	Mat testingImages;
-	getFaces_test(SrcImage, testingImages, testingLabels);
-	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	// VectorXd label1(testingLabels.size());
-	cv2eigen(testingImages, feature1);
-	// cv2eigen(Mat(testingLabels), label1);
-	N_test = testingImages.rows;
-	// cout << "Number of testing images:" << N_test << endl;
-	return feature1;
-}
+// MatrixXd ELM_in_ELM_face_testing_matrix_from_files(Mat SrcImage){ //重载 有参数Mat
+// 	// loading test images
+// 	// cout << "Loading test Data..." << endl;
+// 	Mat testingImages;
+// 	getFaces_test(SrcImage, testingImages, testingLabels);
+// 	MatrixXd feature1(testingImages.rows, testingImages.cols);
+// 	// VectorXd label1(testingLabels.size());
+// 	cv2eigen(testingImages, feature1);
+// 	// cv2eigen(Mat(testingLabels), label1);
+// 	N_test = testingImages.rows;
+// 	// cout << "Number of testing images:" << N_test << endl;
+// 	return feature1;
+// }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 	// loading test images
 	// cout << "Loading test Data..." << endl;
@@ -476,19 +475,19 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 
 	// cout << "Number of testing images:" << N_test << endl;
 	return feature1;
 }
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(){
-	// loading test images
-	cout << "Loading test Data..." << endl;
-	Mat testingImages;
-	getFaces_test(testfile_path, testingImages, testingLabels);
-	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	// VectorXd label1(testingLabels.size());
-	cv2eigen(testingImages, feature1);
-	// cv2eigen(Mat(testingLabels), label1);
-	N_test = testingImages.rows;
-	cout << "Number of testing images:" << N_test << endl;
-	return feature1;
-}
+// MatrixXd ELM_in_ELM_face_testing_matrix_from_files(){
+// 	// loading test images
+// 	cout << "Loading test Data..." << endl;
+// 	Mat testingImages;
+// 	getFaces_test(testfile_path, testingImages, testingLabels);
+// 	MatrixXd feature1(testingImages.rows, testingImages.cols);
+// 	// VectorXd label1(testingLabels.size());
+// 	cv2eigen(testingImages, feature1);
+// 	// cv2eigen(Mat(testingLabels), label1);
+// 	N_test = testingImages.rows;
+// 	cout << "Number of testing images:" << N_test << endl;
+// 	return feature1;
+// }
 
 MatrixXd generate_training_labels(){
 	N = trainingImages.rows;
@@ -533,48 +532,48 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	std::cout << "Testing time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 }
 // calculate accuracy
-void show_testing_results(){
-	cout << "testing results(ELM,real):" << endl;
-	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test << endl;
-	int count = 0;
+// void show_testing_results(){
+// 	cout << "testing results(ELM,real):" << endl;
+// 	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test << endl;
+// 	int count = 0;
 
-	// std::string fileName = "my.txt";
-	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	// outfile << output.rows() << endl;
-	// outfile << output.cols() << endl;
-	// outfile << output << endl;
-	// outfile.close();
+// 	// std::string fileName = "my.txt";
+// 	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+// 	// outfile << output.rows() << endl;
+// 	// outfile << output.cols() << endl;
+// 	// outfile << output << endl;
+// 	// outfile.close();
 
-	for(int i = 0; i < N_test; i++){
-		//             cout<<i<<endl;
-		int ii, jj;
-		//             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
-		double truth = output.row(i).maxCoeff(&ii, &jj);
-		cout << truth << endl;
-		cout << jj << ',' << testingLabels.at(i) << endl;
-		if(jj == testingLabels.at(i))
-			count++;
-	}
-	cout << "accuracy:" << (double)count / (double)N_test << endl;
-}
+// 	for(int i = 0; i < N_test; i++){
+// 		//             cout<<i<<endl;
+// 		int ii, jj;
+// 		//             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
+// 		double truth = output.row(i).maxCoeff(&ii, &jj);
+// 		cout << truth << endl;
+// 		cout << jj << ',' << testingLabels.at(i) << endl;
+// 		if(jj == testingLabels.at(i))
+// 			count++;
+// 	}
+// 	cout << "accuracy:" << (double)count / (double)N_test << endl;
+// }
 
-int main(int argc, char * * argv){
-	init_stdio();
-	int in = my_parse_args(argc, argv);
-	if(argc <= 1)
-		cout << "Using default settings!\n";
-	cout_current_settings();
-	if(in != 0)
-		return 0;
-	// init_face_detector_dlib();
-	// time
-	MatrixXd W[model_num], b[model_num], beta[model_num];
-	MatrixXd feature, feature1;
-	feature = ELM_in_ELM_face_training_matrix_from_files();
-	feature1 = ELM_in_ELM_face_testing_matrix_from_files();
-	T = generate_training_labels();
-	ELM_training(feature, W, b, beta);
-	ELM_testing(feature1, W, b, beta);
-	show_testing_results();
-	return 0;
-}
+// int main(int argc, char * * argv){
+// 	init_stdio();
+// 	int in = my_parse_args(argc, argv);
+// 	if(argc <= 1)
+// 		cout << "Using default settings!\n";
+// 	cout_current_settings();
+// 	if(in != 0)
+// 		return 0;
+// 	// init_face_detector_dlib();
+// 	// time
+// 	MatrixXd W[model_num], b[model_num], beta[model_num];
+// 	MatrixXd feature, feature1;
+// 	feature = ELM_in_ELM_face_training_matrix_from_files();
+// 	feature1 = ELM_in_ELM_face_testing_matrix_from_files();
+// 	T = generate_training_labels();
+// 	ELM_training(feature, W, b, beta);
+// 	ELM_testing(feature1, W, b, beta);
+// 	show_testing_results();
+// 	return 0;
+// }
