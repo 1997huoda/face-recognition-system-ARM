@@ -13,7 +13,45 @@ cv::Size nor(160, 120);//160 120// 320 160 // 128 96 //
 vector<location> final_location;
 vector<Mat> alignment_face_recall;
 
-
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
+{
+	CV_Assert(src.data);
+	// accept only char type matrices
+	CV_Assert(src.depth() != sizeof(uchar));
+	// build look up table
+	unsigned char lut[256];
+	for( int i = 0; i < 256; i++ )
+	{
+		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+	}
+	dst = src.clone();
+	const int channels = dst.channels();
+	switch(channels)
+	{
+		case 1:
+			{
+				MatIterator_<uchar> it, end;
+				for( it = dst.begin<uchar>(), end = dst.end<uchar>(); it != end; it++ )
+					//*it = pow((float)(((*it))/255.0), fGamma) * 255.0;
+					*it = lut[(*it)];
+				break;
+			}
+		case 3: 
+			{
+				MatIterator_<Vec3b> it, end;
+				for( it = dst.begin<Vec3b>(), end = dst.end<Vec3b>(); it != end; it++ )
+				{
+					//(*it)[0] = pow((float)(((*it)[0])/255.0), fGamma) * 255.0;
+					//(*it)[1] = pow((float)(((*it)[1])/255.0), fGamma) * 255.0;
+					//(*it)[2] = pow((float)(((*it)[2])/255.0), fGamma) * 255.0;
+					(*it)[0] = lut[((*it)[0])];
+					(*it)[1] = lut[((*it)[1])];
+					(*it)[2] = lut[((*it)[2])];
+				}
+				break;
+			}
+	}
+}
 
 // //define the buffer size. Do not change the size!
 // #define DETECT_BUFFER_SIZE 0x20000
@@ -64,7 +102,9 @@ void face_alignment(Mat image_roi){
 	Mat eve = dlib::toMat(equ);
 	// Mat eve = dlib::toMat(img_gray);
 	// Mat eve = dlib::toMat(face_chips[0]);
-
+	cvtColor(eve, eve, CV_BGR2GRAY);
+	MyGammaCorrection(eve,eve,1.5f);
+	equalizeHist(eve, eve);
 	alignment_face_recall.push_back(eve);
 
 }

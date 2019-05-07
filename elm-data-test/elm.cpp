@@ -12,7 +12,7 @@ int model_num = 5;                    //子ELM模型的数量
 int training_face_num_per_person = 999; //训练集中每个人的人脸数
 int testing_face_num_per_person = 999;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "/home/huoda/Desktop/imm"; //路径
+string trainfile_path = "/home/huoda/Desktop/PIE"; //路径
 string testfile_path = "/home/huoda/Desktop/test";
 
 Mat trainingImages;
@@ -22,7 +22,7 @@ vector<int> testingLabels;
 double gamma_value=0.2f;
 double accuracy[200];
 int mode = 0;
-int pca_num=2000;
+int pca_num=1500;
 int N;
 int n;
 int N_test;
@@ -56,11 +56,12 @@ std::vector<float> extract_feature(Mat src){
 	// Mat SrcImage1 = Mat(feature, true);
 	// TickMeter tm;
 	// tm.start();
-	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,pca_num);//按照圆的面积参数应该是0.785 
+	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_ROW,500);//按照圆的面积参数应该是0.785 
 	// Mat get_back = pca.project(SrcImage1);//映射新空间
 	// tm.stop();
 	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 	// std::vector<float> back = convertMat2Vector<float>(get_back);
+	// std::vector<float> back = convertMat2Vector<float>(SrcImage1);
 	// return back;
 }
 
@@ -220,10 +221,10 @@ void getFaces_train(string filePath, Mat & trainingImages,
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
 		Mat SrcImage2 = SrcImage1.t();
-		// PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,pca_num);//按照圆的面积参数应该是0.785 
-		// Mat get_back = pca.project(SrcImage2);//映射新空间
-		// trainingImages.push_back(get_back);
-		trainingImages.push_back(SrcImage2);
+		PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,500);//按照圆的面积参数应该是0.785 
+		Mat get_back = pca.project(SrcImage2);//映射新空间
+		trainingImages.push_back(get_back);
+		// trainingImages.push_back(SrcImage2);
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
@@ -245,10 +246,10 @@ void getFaces_test(string filePath, Mat & trainingImages,	   vector<int> & train
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
 		Mat SrcImage2 = SrcImage1.t();
-		// PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,pca_num);//按照圆的面积参数应该是0.785 
-		// Mat get_back = pca.project(SrcImage2);//映射新空间
-		// trainingImages.push_back(get_back);
-		trainingImages.push_back(SrcImage2);
+		PCA pca(SrcImage2 ,Mat(),CV_PCA_DATA_AS_ROW,500);//按照圆的面积参数应该是0.785 
+		Mat get_back = pca.project(SrcImage2);//映射新空间
+		trainingImages.push_back(get_back);
+		// trainingImages.push_back(SrcImage2);
 		trainingLabels.push_back(test_labels_ori.at(i));
 	}
 }
@@ -433,9 +434,9 @@ cv::Mat logTransform3(Mat srcImage, float c)
 }
 
 cv::Mat face_align(const char * filename){
-	Mat pic = imread(filename);/*彩色图检测人脸*/	Mat dst;	flag = 0;
+	Mat pic = imread(filename,0);/*彩色图检测人脸*/	Mat dst;	flag = 0;
 	if((pic.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
-	final_location.clear();
+	/*final_location.clear();
 	alignment_face_recall.clear();
 	Mat  frame, bak_gray;
 	process_image(pic);
@@ -474,21 +475,31 @@ cv::Mat face_align(const char * filename){
 			resize(image, image, size_box, 0, 0, INTER_LINEAR);
 			face_alignment(bak_gray);
 		}
-		dst= alignment_face_recall[0].clone();
+		dst= alignment_face_recall[0].clone();*/
 		//接下来以PIE多做几个实验吧 好吧
-		cvtColor(dst, dst, CV_BGR2GRAY);
-		// Mat for_end;
-		// MyGammaCorrection(dst,for_end,gamma_value);
+		// cvtColor(dst, dst, CV_BGR2GRAY);
+		Mat for_end;
+			TickMeter tm;
+	tm.start();
+		MyGammaCorrection(pic,for_end,gamma_value);
+	tm.stop();
+	// std::cout << "gamma time:    " << tm.getTimeSec()*1000 << "  ms" << endl;
+
 		// for_end=logTransform3(dst,gamma_value);
 	// equalizeHist(dst, dst);
+	tm.start();
 	// equalizeHist(pic, dst);
+		equalizeHist(for_end,for_end);
+		tm.stop();
+	// std::cout << "equalize time:    " << tm.getTimeSec()*1000 << "  ms" << endl;
 	// for_end.convertTo(for_end,CV_8U);
-	// equalizeHist(for_end,for_end);
+
+
 	// face_alignment(pic);
 	// dst=alignment_face_recall[0];
-	return dst;
+	// return dst;
 		// return pic;
-		// return for_end;
+		return for_end;
 }
 /**********************************************************************************/
 int my_parse_args(int argc, char * argv[]){
@@ -651,8 +662,8 @@ void show_testing_results(){
 		int ii, jj;
 		//             cout<<output.row(i).maxCoeff(&ii,&jj)<<endl;
 		double truth = output.row(i).maxCoeff(&ii, &jj);
-		// cout << truth << endl;
-		// cout << jj << ',' << testingLabels.at(i) << endl;
+		cout << truth << endl;
+		cout << jj << ',' << testingLabels.at(i) << endl;
 		if(jj == testingLabels.at(i))
 			count++;
 	}
@@ -660,7 +671,7 @@ void show_testing_results(){
 	accuracy[mode]= (double)count / (double)N_test;
 }
 
-int main(int argc, char * * argv){
+int main(int argc, char * * argv){/*
 	init_stdio();
 	init_face_detector_dlib();
 	int in = my_parse_args(argc, argv);
@@ -693,5 +704,31 @@ int main(int argc, char * * argv){
 		// }
 		outfile.close();
 	// }
-	return 0;
+	return 0;*/
+	
+	vector<float> xy;
+	xy.push_back(1);
+	xy.push_back(2);
+	xy.push_back(4);
+	xy.push_back(8);
+	xy.push_back(16);
+	xy.push_back(32);
+	xy.push_back(64);
+	xy.push_back(128);
+	Mat yy=Mat(xy,true);
+	cout<<"yy:"<<endl;
+	cout<<yy<<endl;
+		// Mat SrcImage1 = Mat(feature, true);
+	// TickMeter tm;
+	// tm.start();
+	PCA pca(yy,Mat(),CV_PCA_DATA_AS_COL,8);//按照圆的面积参数应该是0.785 
+	Mat get_back = pca.project(yy);//映射新空间
+	cout<<"get_back:"<<endl;
+	cout<<get_back<<endl;
+	// tm.stop();
+	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
+	// std::vector<float> back = convertMat2Vector<float>(get_back);
+	// std::vector<float> back = convertMat2Vector<float>(SrcImage1);
+	// return back;
+
 }

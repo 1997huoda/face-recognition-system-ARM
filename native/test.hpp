@@ -59,5 +59,5 @@ void cap_save(Mat src, string out_name);
 static dlib::frontal_face_detector detector;    //dlib face detector
 static dlib::shape_predictor sp;               // dlib shape predictor
 void init_face_detector_dlib(string face_landmark = "shape_predictor_68_face_landmarks.dat"); //初始化dlib人脸检测器
-
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma);
 #endif /* _TEST_H */
