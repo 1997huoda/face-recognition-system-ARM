@@ -9,7 +9,7 @@ int L = 600;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
-int training_face_num_per_person = 7; //训练集中每个人的人脸数
+// int training_face_num_per_person = 7; //训练集中每个人的人脸数
 int testing_face_num_per_person = 3;  // 测试集中每个人的人脸数
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path = "/home/huoda/Desktop/1"; //路径
@@ -23,7 +23,7 @@ vector<int> testingLabels;
 int N;
 int n;
 int N_test;
-MatrixXd F, output, T, temp_T;
+MatrixXd F, output, T/* , temp_T */;
 // MatrixXd W[model_num], b[model_num], beta[model_num];
 
 /******extract_feature: put one image into a vector(convert to gray image
@@ -82,32 +82,6 @@ retainedVariance：PCA应保留的方差百分比。使用这个参数将让PCA�
 //     return d;
 // }
 
-/**********************************************/
-/**getFiles: put the filename in all subfolders in the path**/ //(just two
-                                                               // cascades)
-/**********************************************/
-/*void getFiles( string path, vector<string>& files )
-   {
-     struct dirent *ptr,*ptr1;
-     DIR *dir,*dir1;
-    dir=opendir(path.c_str());
-    while((ptr=readdir(dir))!=NULL)
-    {
-        if(ptr->d_name[0] == '.'||ptr->d_name=="Thumbs.db")
-            continue;
-        string ss=path+'/'+ptr->d_name+'/';
-        dir1=opendir(ss.c_str());
-        while((ptr1=readdir(dir1))!=NULL)
-        {
-        if(ptr1->d_name[0] == '.'||ptr1->d_name[0]=='T')
-            continue;
-        string sss=ss+ptr1->d_name;
-        files.push_back(sss);
-        }
-        closedir(dir1);
-    }
-    closedir(dir);
-   } */
 void getFiles_train(string path, vector<string> & files){
 	m=0;
 	int person_id = 0;
@@ -256,8 +230,7 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 		trainingImages.push_back(SrcImage2);
 	}
 }
-void getFaces_test(string filePath, Mat & trainingImages,
-				   vector<int> & trainingLabels){
+void getFaces_test(string filePath, Mat & trainingImages, vector<int> & trainingLabels){
 	vector<string> files;
 	getFiles_test(filePath, files);
 	int number = files.size();
@@ -355,7 +328,7 @@ void init_stdio(){
  */
 
 #if 1
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output, int L, int m, int n, int N){
+void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output_basic, int L, int m, int n, int N){
 	MatrixXd b, R, Tem, H;
 	W = MatrixXd::Random(n, L);
 	b_1 = MatrixXd::Random(1, L);
@@ -367,11 +340,9 @@ void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta
 	MatrixXd result(L, N);
 	pseudoInverse(H, result);
 	beta = result * T;
-	output = H * beta;
+	output_basic = H * beta;
 }
-void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,
-				MatrixXd & F, MatrixXd & output, int L, int m, int n, int N,
-				int model_num){
+void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,/* MatrixXd & F, *//*  MatrixXd & output,  */int L, int m, int n, int N,int model_num){
 	MatrixXd Hg, temp_out;
 	Hg = MatrixXd::Zero(N, m * model_num);
 	for(int i = 0; i < model_num; i++){
@@ -381,7 +352,7 @@ void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,
 	MatrixXd Hg1;
 	pseudoInverse(Hg, Hg1);
 	F = Hg1 * T;
-	output = Hg * F;
+	// output = Hg * F;
 }
 #endif
 
@@ -425,14 +396,12 @@ int my_parse_args(int argc, char * argv[]){
 			} else if(*p == 'n'){
 				cout << "Setting number of models ..." << endl;
 				model_num = atoi(argv[k++]);
-			} else if(*p == 't'){
-				cout << "Setting number of faces per training person ..."
-					 << endl;
-				training_face_num_per_person = atoi(argv[k++]);
-			} else if(*p == 's'){
-				cout << "Setting number of faces per testing person ..."
-					 << endl;
-				testing_face_num_per_person = atoi(argv[k++]);
+			// } else if(*p == 't'){
+			// 	cout << "Setting number of faces per training person ..."			 << endl;
+			// 	training_face_num_per_person = atoi(argv[k++]);
+			// } else if(*p == 's'){
+			// 	cout << "Setting number of faces per testing person ..."					 << endl;
+			// 	testing_face_num_per_person = atoi(argv[k++]);
 			} else if(*p == 'r'){
 				cout << "Setting training path ..." << endl;
 				trainfile_path = argv[k++];
@@ -459,9 +428,7 @@ void cout_current_settings(){
 	cout << "Current settings:\n";
 	cout << "Hidden nodes=" << L << ',' << "People=" << m << ','
 		 << "model_num=" << model_num << endl;
-	cout << "training_face_num_per_person=" << training_face_num_per_person
-		 << ',' << "testing_face_num_per_person=" << testing_face_num_per_person
-		 << endl;
+	// cout << "training_face_num_per_person=" << training_face_num_per_person	 << ',' << "testing_face_num_per_person=" << testing_face_num_per_person		 << endl;
 	cout << "trainfile_path=" << trainfile_path << endl;
 	cout << "testfile_path=" << testfile_path << endl;
 	cout << "*****************************" << endl;
@@ -536,15 +503,16 @@ MatrixXd generate_training_labels(){
 				temp_T(i, jj) = 0;
 		}
 	}
-	T = temp_T;
-	return T;
+	// T = temp_T;
+	// return T;
+	return temp_T;
 }
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	TickMeter tm;
 	tm.start();
-	ELM_in_ELM(feature, W, b, beta, F, output, L, m, n, N, model_num);
+	ELM_in_ELM(feature, W, b, beta,/*  F, */ /* output, */ L, m, n, N, model_num);
 	tm.stop();
 	std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
 }
@@ -570,12 +538,12 @@ void show_testing_results(){
 	cout << output.rows() << ',' << output.cols() << ",N_test(rows):" << N_test << endl;
 	int count = 0;
 
-	std::string fileName = "my.txt";
-	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	outfile << output.rows() << endl;
-	outfile << output.cols() << endl;
-	outfile << output << endl;
-	outfile.close();
+	// std::string fileName = "my.txt";
+	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+	// outfile << output.rows() << endl;
+	// outfile << output.cols() << endl;
+	// outfile << output << endl;
+	// outfile.close();
 
 	for(int i = 0; i < N_test; i++){
 		//             cout<<i<<endl;

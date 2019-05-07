@@ -79,15 +79,11 @@ string show_once() {
     string output_name="";
     for (int i = 0; i < N_test; i++) {
         int ii, jj;
-        // cout << output.row(i).maxCoeff(&ii, &jj) << endl;
-        // std::string name_plus;
-        cout<<"i"<<i<<endl;
-        // Matrixxd new_x= output.row(i);
-        // double truth =new_x.maxCoeff(&ii, &jj);
-        // double truth = output.row(i).maxCoeff(&ii, &jj);
-        // double truth = output.rowwise(i).maxCoeff( &jj);
+        // cout<<"i"<<i<<endl;
+        // cout<<output.row(i)<<endl;
+        double truth = (output.row(i)).maxCoeff(&jj);
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
-        cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
+        // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
     }
     return output_name;
 }

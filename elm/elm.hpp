@@ -53,7 +53,7 @@ extern vector<int> testingLabels;
 extern int N;
 extern int n;
 extern int N_test;
-extern MatrixXd F, output, T, temp_T;
+extern MatrixXd F, output, T/* , temp_T */;
 // extern MatrixXd * W, * b, * beta;
 // static dlib::frontal_face_detector detector; // dlib face detector
 // static dlib::shape_predictor sp;             // dlib shape predictor
@@ -74,14 +74,11 @@ void getFaces_test(Mat SrcImage, Mat & trainingImages, vector<int> & trainingLab
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages);
 
 void init_stdio();                               //初始化IO
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,
-			   MatrixXd & output, int L, int m, int n, int N); //原始ELM训练函数
-void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,
-				MatrixXd & F, MatrixXd & output, int L, int m, int n, int N,
-				int model_num);            // ELM-in-ELM训练函数
-void pr(string msg, MatrixXd & T);          //输出MatrixXd
-void pr(string msg, VectorXd & T);          //输出VectorXd
-void print_matrix(MatrixXd & T);            //输出矩阵
+void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta,  MatrixXd & output_basic, int L, int m, int n, int N); //原始ELM训练函数
+void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta,/* MatrixXd & F, *//*  MatrixXd & output,  */int L, int m, int n, int N,int model_num);            // ELM-in-ELM训练函数
+// void pr(string msg, MatrixXd & T);          //输出MatrixXd
+// void pr(string msg, VectorXd & T);          //输出VectorXd
+// void print_matrix(MatrixXd & T);            //输出矩阵
 cv::Mat face_align(const char * filename);  //人脸对齐
 int my_parse_args(int argc, char * argv[]); //设定初始参数函数
 void cout_current_settings();              //输出使用中的参数信息
