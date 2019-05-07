@@ -1,8 +1,8 @@
 #include "elm.hpp"
 vector<int> train_labels_ori;
-vector<int> test_labels_ori;
+// vector<int> test_labels_ori;
 
-int k = 1;
+int k = 1; //argc参数个数
 int flag = 0;                         // 没有人脸?
 // MatrixXd T;                           //存放训练集标签
 int L = 600;                          //隐层节点数
@@ -16,7 +16,7 @@ string trainfile_path = "/home/huoda/Desktop/1"; //路径
 // string testfile_path = "/home/huoda/Desktop/1";
 
 Mat trainingImages;
-Mat testingImages;
+// Mat testingImages;
 vector<int> trainingLabels;
 // vector<int> testingLabels;
 

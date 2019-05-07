@@ -45,9 +45,9 @@ extern int model_num;                     //子ELM模型的数量
 extern string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
 // extern string testfile_path;  // = "/home/huoda/Desktop/50";
 extern vector<int> train_labels_ori;
-extern vector<int> test_labels_ori;
+// extern vector<int> test_labels_ori;
 extern Mat trainingImages;
-extern Mat testingImages;
+// extern Mat testingImages;
 extern vector<int> trainingLabels;
 // extern vector<int> testingLabels;
 extern int N;
