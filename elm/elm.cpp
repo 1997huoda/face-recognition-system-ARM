@@ -203,7 +203,6 @@ cv::Mat face_align(const char * filename){
 	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
 	// equalizeHist(pic, pic);
 	return pic;
-
 }
 void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels){
 	vector<string> files;

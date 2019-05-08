@@ -106,7 +106,8 @@ void face_alignment(Mat image_roi){
 	// cvtColor(eve, eve, CV_BGR2GRAY);
 	// MyGammaCorrection(eve,eve,1.5f);
 	// equalizeHist(eve, eve);
-	alignment_face_recall.push_back(eve);
+	// imwrite("eve"+to_string(alignment_face_recall.size())+".jpg",eve);
+	alignment_face_recall.push_back(eve.clone());
 }
 
 void process_image(Mat mat)

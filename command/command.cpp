@@ -164,7 +164,8 @@ Mat process_once() {
     capture >> origin;
     if (origin.empty()){
         cout << "cap empty" << endl;
-        // return cv::Mat::zeros(nor, CV_8UC3);
+        face_num=0;
+        return cv::Mat::zeros(nor, CV_8UC3);
     }else{
         
     }
@@ -216,9 +217,9 @@ Mat process_once() {
         resize(image, image, size_box, 0, 0, INTER_LINEAR);
         face_alignment(image);
     }
-    for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
-        imwrite("alignment"+to_string(iter-alignment_face_recall.begin())+".jpg",(*iter));
-    }
+    // for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+    //     imwrite("alignment"+to_string(iter-alignment_face_recall.begin())+".jpg",(*iter));
+    // }
 
     for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
         int x = (*iter).x;
