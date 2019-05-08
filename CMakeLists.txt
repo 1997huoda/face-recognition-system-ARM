@@ -11,7 +11,7 @@ if(OPENMP_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
-
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 # add_compile_options(-fPIC)
 # add_definitions()
@@ -40,6 +40,5 @@ add_executable(pro ${SRC})
 target_link_libraries(pro libcom libzmq libelm libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
-
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/none.bmp DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
 # cmake  -DCMAKE_BUILD_TYPE=Release ..

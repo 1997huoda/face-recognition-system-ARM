@@ -38,6 +38,7 @@ int read_arg(int argc, char * argv[]){
 	return 0;
 }
 void eve_init() {
+    init_stdio();
     //修改全局变量
     trainfile_path = "../A";
     ip1="localhost";
@@ -53,7 +54,7 @@ void eve_init() {
         cout << "open cap(0) -->" << endl;
     }
     // get_filename(trainfile_path, names);
-    init_stdio();
+    
 }
 
 void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
@@ -83,9 +84,9 @@ void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
 string show_once() {
     string output_name="";
     for (int i = 0; i < N_test; i++) {
-        int ii, jj;
-        cout<<"i"<<i<<endl;
-        cout<<output.row(i)<<endl;
+        int /* ii, */ jj;
+        // cout<<"i"<<i<<endl;
+        // cout<<output.row(i)<<endl;
         double truth = (output.row(i)).maxCoeff(&jj);
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
         // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
@@ -165,7 +166,9 @@ Mat process_once() {
     if (origin.empty()){
         cout << "cap empty" << endl;
         face_num=0;
-        return cv::Mat::zeros(nor, CV_8UC3);
+        capture.release();
+        return process_once();
+        // return cv::Mat::zeros(nor, CV_8UC3);
     }else{
         
     }
