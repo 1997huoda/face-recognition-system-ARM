@@ -237,10 +237,12 @@ void getFaces_train(string filePath, Mat & trainingImages,vector<int> & training
 // }
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
+		// imwrite("alignment"+to_string(iter-mat_v.begin())+".jpg",(*iter));
 		Mat SrcImage;
 		resize((*iter), SrcImage, cv::Size(50, 50));
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
+
 		Mat SrcImage2 = SrcImage1.t();
 		trainingImages.push_back(SrcImage2);
 	}
@@ -467,10 +469,19 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 	// loading test images
 	// cout << "Loading test Data..." << endl;
+	// imshow();
+
 	Mat testingImages;
 	getFaces_test(mat_v, testingImages);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
 	cv2eigen(testingImages, feature1);
+
+	if(testingImages.rows==2){
+	std::string fileName = "feature.txt";
+	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+	outfile << feature1 << endl;
+	outfile.close();}
+
 	N_test = testingImages.rows;
 	// cout << "Number of testing images:" << N_test << endl;
 	return feature1;

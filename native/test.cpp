@@ -78,10 +78,11 @@ void global_init(){
 void face_alignment(Mat image_roi){
 	//<dlib::rgb_pixel>                                 //彩色图
 	//<dlib::bgr_pixel>		//才是mat的正确格式
-	dlib::cv_image<unsigned char> img(image_roi);       //灰度图
+	// dlib::cv_image<unsigned char> img(image_roi);       //灰度图
+	dlib::cv_image<dlib::bgr_pixel> img(image_roi);   
 
 	std::vector<dlib::full_object_detection> shapes;//shape的向量
-	dlib::array<dlib::array2d<dlib::rgb_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
+	dlib::array<dlib::array2d<dlib::bgr_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
 	dlib::rectangle dlibRect(0, 0, image_roi.cols, image_roi.rows);
 
 	TickMeter tm;
@@ -93,7 +94,7 @@ void face_alignment(Mat image_roi){
 	
 	shapes.push_back(shape);
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
-	dlib::array2d<dlib::rgb_pixel> equ;//图像格式
+	dlib::array2d<dlib::bgr_pixel> equ;//图像格式
 	// dlib::make_uniform_lbp_image (face_chips[0], equ);
 	dlib::equalize_histogram(face_chips[0], equ);
 	// dlib::array2d<unsigned char> img_gray;
@@ -133,14 +134,14 @@ void process_image(Mat mat)
 		int w = p[2];
 		int h = p[3];
 		int neighbors = p[4];
-		int angle = p[5];
+		// int angle = p[5];
 		if((((pResults ? *pResults : 0) > 1) && (neighbors < 90)) || (x < 0) || (y < 0) || (w <= 0) || (h <= 0) || (y + h >= mat.rows) || (x + w >= mat.cols)){//根源杜绝 mat超边界
 
 		}else{
 			location good = {x, y, w, h, neighbors};
 			final_location.push_back(good);
 		}
-		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
+		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=\n", x, y, w, h, neighbors);
 	}
 	free(pBuffer);
 }
@@ -199,27 +200,27 @@ void process_webcam_frames()
 		for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 			int x = (*iter).x; int y = (*iter).y; int w = (*iter).w; int h = (*iter).h;
 			Rect rect(x, y, w, h);
-			Point point(x, y + h);//左下角
-			String text = to_string(iter - final_location.begin());
-			int font_face = cv::FONT_HERSHEY_COMPLEX;
-			double font_scale = 2;
-			int thickness = 2;
-			int baseline;
-			cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baseline);
+			// Point point(x, y + h);//左下角
+			// String text = to_string(iter - final_location.begin());
+			// int font_face = cv::FONT_HERSHEY_COMPLEX;
+			// double font_scale = 2;
+			// int thickness = 2;
+			// int baseline;
+			// cv::Size text_size = cv::getTextSize(text, font_face, font_scale, thickness, &baseline);
 			rectangle(frame, rect, cv::Scalar(100, 0, 0), 1, 0);
-			cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
+			// cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0, 255, 255), thickness, 8, 0);
 		}
 
 
-		for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
-			imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
-			imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
-		}
+		// for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+		// 	imshow("show" + to_string(iter - alignment_face_recall.begin()), (*iter));
+		// 	imwrite("align" + to_string(iter - alignment_face_recall.begin()) + ".jpg", (*iter));
+		// }
 
-		imwrite("save.jpg", frame);
+		// imwrite("save.jpg", frame);
 
-		imshow("point", frame); //显示当前帧
-		waitKey(5); //延时5ms
+		// imshow("point", frame); //显示当前帧
+		// waitKey(5); //延时5ms
 	}
 }
 

@@ -53,6 +53,7 @@ void eve_init() {
         cout << "open cap(0) -->" << endl;
     }
     // get_filename(trainfile_path, names);
+    init_stdio();
 }
 
 void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
@@ -69,9 +70,13 @@ void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
 void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     //将整个 alignment vector送进来 产生测试数据集
     // name="";
-    MatrixXd feature, feature1;
+    MatrixXd /* feature, */ feature1;
     feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
     ELM_testing(feature1, W, b, beta);
+    // std::string fileName = "output.txt";
+	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+	// outfile << output << endl;
+	// outfile.close();
     // name为识别结果字符串
     name = show_once();
 }
@@ -79,8 +84,8 @@ string show_once() {
     string output_name="";
     for (int i = 0; i < N_test; i++) {
         int ii, jj;
-        // cout<<"i"<<i<<endl;
-        // cout<<output.row(i)<<endl;
+        cout<<"i"<<i<<endl;
+        cout<<output.row(i)<<endl;
         double truth = (output.row(i)).maxCoeff(&jj);
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
         // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
@@ -160,6 +165,8 @@ Mat process_once() {
     if (origin.empty()){
         cout << "cap empty" << endl;
         // return cv::Mat::zeros(nor, CV_8UC3);
+    }else{
+        
     }
     // return ;
     // bak_gray为原图的灰度图
@@ -191,8 +198,8 @@ Mat process_once() {
     /*********face_num***************/
     face_num = final_location.size();
 
-    int x_b = cvRound(bak_gray.cols / nor.width);
-    int y_b = cvRound(bak_gray.rows / nor.height);
+    float x_b = (bak_gray.cols / nor.width);
+    float y_b = (bak_gray.rows / nor.height);
     for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
 
         int x = cvRound(x_b * (*iter).x);
@@ -201,11 +208,16 @@ Mat process_once() {
         int h = cvRound(y_b * (*iter).h);
 
         Rect rect(x, y, w, h);
-        Mat image = (bak_gray(rect));
+        Mat image = (origin(rect));
+        // Mat image = (bak_gray(rect));
+        // imwrite(to_string(iter-final_location.begin())+".jpg",image);
 
         // resize 将长方形的人脸 resize 成标准方形
         resize(image, image, size_box, 0, 0, INTER_LINEAR);
         face_alignment(image);
+    }
+    for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
+        imwrite("alignment"+to_string(iter-alignment_face_recall.begin())+".jpg",(*iter));
     }
 
     for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {

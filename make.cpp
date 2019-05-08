@@ -35,8 +35,8 @@ int main(int argc, char* argv[]){
 			//单次人脸识别
 			Mat frame = process_once();
 			// alignment-->string name
-			if(alignment_face_recall.size() == 0)
-				name="空/";
+			if(final_location.size() == 0)
+				name="空/空/空/空/空/空/";
 			if(alignment_face_recall.size() != 0){
 				test_elm(alignment_face_recall, W, b, beta);
 			}
@@ -46,9 +46,12 @@ int main(int argc, char* argv[]){
 
 			//发人脸名字
 			send_msg(socket, name);
-			cout << "name:" << name << endl;
+			// cout << "name:" << name << endl;
 			socket.recv(&received);
 
+			if(origin.empty()){
+				frame=imread("none.bmp");
+			}
 			//摄像头 图像
 			send_pic(socket, frame);
 			socket.recv(&received);
