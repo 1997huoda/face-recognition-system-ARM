@@ -13,7 +13,7 @@ cv::Size nor(160, 120);//160 120// 320 160 // 128 96 //
 vector<location> final_location;
 vector<Mat> alignment_face_recall;
 
-void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
+/*void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 {
 	CV_Assert(src.data);
 	// accept only char type matrices
@@ -51,7 +51,7 @@ void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 				break;
 			}
 	}
-}
+}*/
 
 // //define the buffer size. Do not change the size!
 // #define DETECT_BUFFER_SIZE 0x20000
@@ -75,6 +75,34 @@ void global_init(){
 	final_location.clear();
 	alignment_face_recall.clear();
 }
+
+// Mat equalizeChannelHist(const Mat & inputImage)
+// {
+// 	if( inputImage.channels() >= 3 )
+// 	{
+// 		vector<Mat> channels;
+// 		split(inputImage, channels);
+ 
+// 		Mat B,G,R;
+ 
+// 		equalizeHist( channels[0], B );
+// 		equalizeHist( channels[1], G );
+// 		equalizeHist( channels[2], R );
+ 
+// 		vector<Mat> combined;
+// 		combined.push_back(B);
+// 		combined.push_back(G);
+// 		combined.push_back(R);
+ 
+// 		Mat result;
+// 		merge(combined, result);
+ 
+// 		return result;
+// 	}
+ 
+// 	return Mat();
+// }
+
 void face_alignment(Mat image_roi){
 	//<dlib::rgb_pixel>                                 //彩色图
 	//<dlib::bgr_pixel>		//才是mat的正确格式
@@ -95,16 +123,23 @@ void face_alignment(Mat image_roi){
 	shapes.push_back(shape);
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
 	dlib::array2d<dlib::bgr_pixel> equ;//图像格式
-	// dlib::make_uniform_lbp_image (face_chips[0], equ);
 	dlib::equalize_histogram(face_chips[0], equ);
 	// dlib::array2d<unsigned char> img_gray;
-	// dlib::assign_image(img_gray, face_chips[0]);
-	// transform_image (equ,equ);
+	// dlib::assign_image(img_gray, equ);
 	Mat eve = dlib::toMat(equ);
 	// Mat eve = dlib::toMat(img_gray);
+	// Mat avr;
+	// eve.convertTo(avr, CV_8UC3);
 	// Mat eve = dlib::toMat(face_chips[0]);
-	// cvtColor(eve, eve, CV_BGR2GRAY);
+	// Mat avr=eve.clone();
+	// cvtColor(avr, avr, CV_BGR2GRAY);
+	// MyGammaCorrection(avr,avr,1.5f);
+	// Mat eend;
+	// MyGammaCorrection(avr,avr,1.5f);
 	// MyGammaCorrection(eve,eve,1.5f);
+	// end2=eve.clone();
+	// avr=equalizeChannelHist(avr);
+	// cvtColor(end2, end2, CV_BGR2GRAY);
 	// equalizeHist(eve, eve);
 	// imwrite("eve"+to_string(alignment_face_recall.size())+".jpg",eve);
 	alignment_face_recall.push_back(eve.clone());
@@ -146,7 +181,7 @@ void process_image(Mat mat)
 	}
 	free(pBuffer);
 }
-
+/*
 void process_webcam_frames()
 {
 	//定义一个Mat变量，用于存储每一帧的图像
@@ -223,7 +258,7 @@ void process_webcam_frames()
 		// imshow("point", frame); //显示当前帧
 		// waitKey(5); //延时5ms
 	}
-}
+}*/
 
 // void pic_scan(string pic_name){
 // }

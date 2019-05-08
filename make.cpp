@@ -57,26 +57,26 @@ int main(int argc, char* argv[]){
 			socket.recv(&received);
 
 			// face_num个人脸的图像
-			// int x_b = cvRound(origin.cols / nor.width);
-			// int y_b = cvRound(origin.rows / nor.height);
-			// for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-			// 	int x = cvRound(x_b * (*iter).x);
-			// 	int y = cvRound(y_b * (*iter).y);
-			// 	int w = cvRound(x_b * (*iter).w);
-			// 	int h = cvRound(y_b * (*iter).h);
-			// 	Rect rect(x, y, w, h);
-			// 	Mat send = (origin(rect));
-			// 	resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
-			// 	send_pic(socket, send);
-			// 	socket.recv(&received);
-			// }
-
-			//备用发送 未测试
-			for(vector<Mat>::iterator iter =alignment_face_recall.begin(); iter !=	alignment_face_recall.end(); iter++){
-				Mat send=(*iter);
-				send_pic(socket,(*iter)); 
+			float x_b = (origin.cols / nor.width);
+			float y_b = (origin.rows / nor.height);
+			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+				int x = cvRound(x_b * (*iter).x);
+				int y = cvRound(y_b * (*iter).y);
+				int w = cvRound(x_b * (*iter).w);
+				int h = cvRound(y_b * (*iter).h);
+				Rect rect(x, y, w, h);
+				Mat send = (origin(rect));
+				resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
+				send_pic(socket, send);
 				socket.recv(&received);
 			}
+
+			//备用发送 未测试	//仅供测试使用 否则与u实际逻辑冲突 ***能用 但是 不推荐***
+			// for(vector<Mat>::iterator iter =alignment_face_recall.begin(); iter !=	alignment_face_recall.end(); iter++){
+			// 	Mat send=(*iter);
+			// 	send_pic(socket,(*iter)); 
+			// 	socket.recv(&received);
+			// }
 
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
@@ -109,7 +109,10 @@ int main(int argc, char* argv[]){
 			int N64 =rand()+rand();
 			// int NN64 = rng.next();
 			string sss = trainfile_path + "/" + human_name + "/" + to_string(N64) + ".jpg";
-			imwrite(sss, alignment_face_recall[0]);
+			Mat every=alignment_face_recall[0];
+			// MyGammaCorrection(every,every,1.5f);
+			// equalizeHist(every, every);
+			imwrite(sss, every);
 			tmp = "received_picture";
 			send_msg(socket, tmp);
 			// alignment_face_recall.clear();

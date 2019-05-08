@@ -52,64 +52,8 @@ void eve_init() {
         return;
     } else {
         cout << "open cap(0) -->" << endl;
-    }
-    // get_filename(trainfile_path, names);
-    
+    }    
 }
-
-void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
-    //训练参数  W b beta
-    MatrixXd feature;
-    feature = ELM_in_ELM_face_training_matrix_from_files();
-    T = generate_training_labels();
-    ELM_training(feature, W, b, beta);
-    cout << "train elm-in-elm end\n";
-    get_filename(trainfile_path, names);
-    cout << "update file name \n";
-}
-
-void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
-    //将整个 alignment vector送进来 产生测试数据集
-    // name="";
-    MatrixXd /* feature, */ feature1;
-    feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
-    ELM_testing(feature1, W, b, beta);
-    // std::string fileName = "output.txt";
-	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	// outfile << output << endl;
-	// outfile.close();
-    // name为识别结果字符串
-    name = show_once();
-}
-string show_once() {
-    string output_name="";
-    for (int i = 0; i < N_test; i++) {
-        int /* ii, */ jj;
-        // cout<<"i"<<i<<endl;
-        // cout<<output.row(i)<<endl;
-        double truth = (output.row(i)).maxCoeff(&jj);
-        output_name += names[jj]+"\n"+to_string(truth)  + "/";
-        // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
-    }
-    return output_name;
-}
-
-void mkdir_human_name(string human_name) {
-    string filename = trainfile_path + "/" + human_name;
-    DIR *dir;
-    dir = opendir(filename.c_str());
-    if (!dir) {
-        mode_t mode = umask(0);
-        if (0 == mkdir(filename.c_str(), 0777))
-            cout << filename << "  mkdir OK!" << endl;
-        umask(mode);
-        cout << "创建" << filename << "成功\n";
-        return;
-    } else {
-        cout << filename << "已经存在\n";
-    }
-}
-
 void get_filename(string path, vector<string> &names) {
     names.clear();
     struct dirent *ptr, *ptr1;
@@ -148,6 +92,62 @@ void get_filename(string path, vector<string> &names) {
     }
     closedir(dir);
 }
+void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
+    //训练参数  W b beta
+    MatrixXd feature;
+    feature = ELM_in_ELM_face_training_matrix_from_files();
+    T = generate_training_labels();
+    ELM_training(feature, W, b, beta);
+    cout << "train elm-in-elm end\n";
+    get_filename(trainfile_path, names);
+    cout << "update file name \n";
+}
+
+string show_once() {
+    string output_name="";
+    for (int i = 0; i < N_test; i++) {
+        int /* ii, */ jj;
+        // cout<<"i"<<i<<endl;
+        // cout<<output.row(i)<<endl;
+        double truth = (output.row(i)).maxCoeff(&jj);
+        output_name += names[jj]+"\n"+to_string(truth)  + "/";
+        // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
+    }
+    return output_name;
+}
+
+void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
+    //将整个 alignment vector送进来 产生测试数据集
+    // name="";
+    MatrixXd /* feature, */ feature1;
+    feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
+    ELM_testing(feature1, W, b, beta);
+    // std::string fileName = "output.txt";
+	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+	// outfile << output << endl;
+	// outfile.close();
+    // name为识别结果字符串
+    name = show_once();
+}
+
+
+void mkdir_human_name(string human_name) {
+    string filename = trainfile_path + "/" + human_name;
+    DIR *dir;
+    dir = opendir(filename.c_str());
+    if (!dir) {
+        mode_t mode = umask(0);
+        if (0 == mkdir(filename.c_str(), 0777))
+            cout << filename << "  mkdir OK!" << endl;
+        umask(mode);
+        cout << "创建" << filename << "成功\n";
+        return;
+    } else {
+        cout << filename << "已经存在\n";
+    }
+}
+
+
 
 Mat process_once() {
     if (!capture.isOpened())

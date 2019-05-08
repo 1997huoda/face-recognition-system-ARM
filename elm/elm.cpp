@@ -118,20 +118,60 @@ void getFaces_train(string filePath, Mat & trainingImages,vector<int> & training
 		}
 		resize(SrcImage, SrcImage, cv::Size(50, 50));
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
+
 		Mat SrcImage2 = SrcImage1.t();
 		trainingImages.push_back(SrcImage2);
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
-
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
+{
+	CV_Assert(src.data);
+	// accept only char type matrices
+	CV_Assert(src.depth() != sizeof(uchar));
+	// build look up table
+	unsigned char lut[256];
+	for( int i = 0; i < 256; i++ )
+	{
+		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+	}
+	dst = src.clone();
+	const int channels = dst.channels();
+	switch(channels)
+	{
+		case 1:
+			{
+				MatIterator_<uchar> it, end;
+				for( it = dst.begin<uchar>(), end = dst.end<uchar>(); it != end; it++ )
+					//*it = pow((float)(((*it))/255.0), fGamma) * 255.0;
+					*it = lut[(*it)];
+				break;
+			}
+		case 3: 
+			{
+				MatIterator_<Vec3b> it, end;
+				for( it = dst.begin<Vec3b>(), end = dst.end<Vec3b>(); it != end; it++ )
+				{
+					//(*it)[0] = pow((float)(((*it)[0])/255.0), fGamma) * 255.0;
+					//(*it)[1] = pow((float)(((*it)[1])/255.0), fGamma) * 255.0;
+					//(*it)[2] = pow((float)(((*it)[2])/255.0), fGamma) * 255.0;
+					(*it)[0] = lut[((*it)[0])];
+					(*it)[1] = lut[((*it)[1])];
+					(*it)[2] = lut[((*it)[2])];
+				}
+				break;
+			}
+	}
+}
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
 		// imwrite("alignment"+to_string(iter-mat_v.begin())+".jpg",(*iter));
 		Mat SrcImage;
 		resize((*iter), SrcImage, cv::Size(50, 50));
+		// cvtColor(SrcImage,SrcImage,COLOR_BGR2GRAY);
+		// MyGammaCorrection(SrcImage,SrcImage,1.5f);
+		// equalizeHist(SrcImage, SrcImage);
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-		// Mat SrcImage1= Mat(extract_feature_LBP(SrcImage,50,50),true);
 
 		Mat SrcImage2 = SrcImage1.t();
 		trainingImages.push_back(SrcImage2);
