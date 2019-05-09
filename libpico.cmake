@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 11)
 find_package(dlib REQUIRED)
+cmake_policy(SET CMP0028 OLD)
 # find_package(OpenCV REQUIRED)
 # find_package(OpenMP)
 # if(OPENMP_FOUND)
