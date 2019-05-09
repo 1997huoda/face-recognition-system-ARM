@@ -21,7 +21,7 @@ include_directories(../native)
 # include_directories(..)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-include(../libYu.cmake)
+# include(../libYu.cmake)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 
