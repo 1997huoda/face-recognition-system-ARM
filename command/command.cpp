@@ -4,44 +4,20 @@ int read_arg(int argc, char * argv[]){
 	while(arg < argc)
 	{
 
-		if(0 == strcmp("-ip1", argv[arg]))
-		{
-			if(arg + 1 < argc)
-			{
-				sscanf(argv[arg + 1], "%s", ip1);
-				arg = arg + 2;
-			}
-			else
-			{
-				printf("# missing argument after '%s'\n", argv[arg]);
-				return 1;
-			}
-		}else if(0 == strcmp("-ip2", argv[arg]))
-		{
-			if(arg + 1 < argc)
-			{
-				sscanf(argv[arg + 1], "%s", ip2);
-				arg = arg + 2;
-			}
-			else
-			{
-				printf("# missing argument after '%s'\n", argv[arg]);
-				return 1;
-			}
-		}
-		else
-		{
-			printf("# invalid command line argument '%s'\n", argv[arg]);
-			return 1;
-		}
+        if (strncmp(argv[arg], "-ip=", 4) == 0)
+        {
+            ip1 = &argv[arg][4];
+        }
+        arg++;
 	}
+
 	return 0;
 }
 void eve_init() {
     init_stdio();
     //修改全局变量
     trainfile_path = "../A";
-    ip1="localhost";
+    // ip1="localhost";
     global_init();
     //开启摄像头
     if (!capture.isOpened())
@@ -109,7 +85,7 @@ string show_once() {
         int /* ii, */ jj;
         // cout<<"i"<<i<<endl;
         // cout<<output.row(i)<<endl;
-        double truth = (output.row(i)).maxCoeff(&jj);
+        float truth = (output.row(i)).maxCoeff(&jj);
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
         // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
     }

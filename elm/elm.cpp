@@ -43,16 +43,25 @@ std::vector<float> extract_feature(Mat src){
 		for(int j = 0; j < src.cols; j++)
 			feature.push_back(dst.at<uchar>(i, j));
 
-	// Mat SrcImage1 = Mat(feature, true);
-	// // TickMeter tm;
-	// // tm.start();
-	// PCA pca(SrcImage1,Mat(),CV_PCA_DATA_AS_COL,1500);//按照圆的面积参数应该是0.785 
-	// Mat get_back = pca.project(SrcImage1);//映射新空间
-	// // tm.stop();
-	// // std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
-	// std::vector<float> back = convertMat2Vector<float>(get_back);
-	// return back;
-	return feature;
+	Mat  SrcImage1= Mat(feature, true);
+	// Mat ;
+	// www.convertTo(SrcImage1,CV_16F);
+	// TickMeter tm;
+	// tm.start();
+	PCA pca(SrcImage1,Mat(),PCA::DATA_AS_COL,800);//按照圆的面积参数应该是0.785 
+	Mat get_back = pca.project(SrcImage1);//映射新空间
+	cout<<pca.eigenvectors<<endl;
+	
+	std::string fileName = "pca.txt";
+	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
+	outfile << get_back << endl;
+	outfile.close();
+
+	// tm.stop();
+	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
+	std::vector<float> back = convertMat2Vector<float>(get_back);
+	return back;
+	// return feature;
 
 }
 
@@ -315,11 +324,6 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
 	cv2eigen(testingImages, feature1);
 
-	if(testingImages.rows==2){
-	std::string fileName = "feature.txt";
-	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	outfile << feature1 << endl;
-	outfile.close();}
 
 	N_test = testingImages.rows;
 	// cout << "Number of testing images:" << N_test << endl;

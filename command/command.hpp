@@ -43,7 +43,7 @@ using namespace Eigen;
 using namespace cv;
 
 // MatrixXd W[model_num], b[model_num], beta[model_num];
-string ip1,ip2;
+string ip1;
 //摄像头类
 VideoCapture capture;
 //摄像头帧

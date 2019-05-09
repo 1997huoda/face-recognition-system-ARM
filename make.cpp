@@ -10,8 +10,14 @@ int main(int argc, char* argv[]){
 	eve_init();
 	//再修改参数
 	int in = read_arg(argc, argv);
-	if(argc <= 1)
+	if(in==1){
+		cout<<"input error\n";
+	}else if(in==0){
+		ip1="localhost";
+	}
+	if(argc <= 1){
 		cout << "Using default settings!\n";
+	}
 	// main 函数变量		MatrixXd
 	MatrixXd W[model_num], b[model_num], beta[model_num];
 	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了
