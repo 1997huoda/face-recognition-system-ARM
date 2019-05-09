@@ -21,13 +21,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 
 include_directories(../src)
 include_directories(../elm)
+include_directories(../new)
 include_directories(../native)
 include_directories(../libzmq)
 include_directories(../command)
 
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-# include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
+# include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 # include(../libpico.cmake)
 # include(../libelm.cmake)
