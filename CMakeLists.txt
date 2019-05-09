@@ -31,6 +31,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/elm)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/new)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/native)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/command)
@@ -39,9 +40,9 @@ INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
-include(${CMAKE_CURRENT_LIST_DIR}/libcom.cmake)
+# include(${CMAKE_CURRENT_LIST_DIR}/libcom.cmake)
 
-link_directories(${OpenCV_LIBRARY_DIRS})
+# link_directories(${OpenCV_LIBRARY_DIRS})
 # link_directories(${CMAKE_CURRENT_LIST_DIR})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
