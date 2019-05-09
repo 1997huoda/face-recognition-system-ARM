@@ -8,6 +8,8 @@ set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" ON)
 option(ENABLE_AVX2 "use avx2" OFF)
 option(ENABLE_NEON "whether use neon, if use arm please set it on" ON)
+ add_definitions(-D_ENABLE_NEON  )
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 
 FILE(GLOB fdt_source_files ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 LIST(SORT         fdt_source_files)
