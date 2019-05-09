@@ -347,18 +347,18 @@ MatrixXd generate_training_labels(){
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	TickMeter tm;
-	tm.start();
+	// TickMeter tm;
+	// tm.start();
 	ELM_in_ELM(feature, W, b, beta/* , F, */ /* output, */ /* L, m, n, N, model_num */);
-	tm.stop();
-	std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
+	// tm.stop();
+	// std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd out_all, R, Tem, H;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
-	TickMeter tm;
-	tm.start();
+	// TickMeter tm;
+	// tm.start();
 	for(int i = 0; i < model_num; i++){
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];
 		Tem = R.array().exp() + 1;
@@ -366,8 +366,8 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 		out_all.block(0, m * i, N_test, m) = H * beta[i];
 	}
 	output = out_all * F;
-	tm.stop();
-	std::cout << "Testing time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
+	// tm.stop();
+	// std::cout << "Testing time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 }
 
 // int main(int argc, char * * argv){

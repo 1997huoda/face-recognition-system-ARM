@@ -113,11 +113,11 @@ void face_alignment(Mat image_roi){
 	dlib::array<dlib::array2d<dlib::bgr_pixel> > face_chips;//图像的向量	用来存储对齐之后的人脸
 	dlib::rectangle dlibRect(0, 0, image_roi.cols, image_roi.rows);
 
-	TickMeter tm;
-	tm.start();
+	// TickMeter tm;
+	// tm.start();
 	dlib::full_object_detection shape = sp(img, dlibRect);
-	tm.stop();
-	std::cout << "alignment 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
+	// tm.stop();
+	// std::cout << "alignment 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
     // shapes[0].part(i).x(), shapes[0].part(i).y()         //shape[0]是第一个人 第i个点的xy坐标
 	
 	shapes.push_back(shape);
@@ -154,11 +154,11 @@ void process_image(Mat mat)
 		fprintf(stderr, "Can not alloc buffer.\n");
 		return;
 	}
-	TickMeter tm;
-	tm.start();
+	// TickMeter tm;
+	// tm.start();
 	pResults = facedetect_cnn(pBuffer, (unsigned char *)(mat.ptr(0)), mat.cols, mat.rows, (int)mat.step);
-	tm.stop();
-	std::cout << "process_image 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
+	// tm.stop();
+	// std::cout << "process_image 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
 //     printf("%d faces detected.\n", (pResults ? *pResults : 0));
 
 	//print the detection results
