@@ -8,8 +8,8 @@ add_definitions(-fPIC  -pthread )
 # set(CMAKE_CXX_COMPILER /usr/local/bin/arm-linux-gnueabi-g++ )
  set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
  set(CMAKE_C_COMPILER /usr/bin/gcc-5)
- add_definitions(-D_ENABLE_NEON  )
- set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+#  add_definitions(-D_ENABLE_NEON  )
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 
 
 find_package(OpenCV REQUIRED)
