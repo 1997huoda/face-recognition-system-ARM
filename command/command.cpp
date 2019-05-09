@@ -1,4 +1,5 @@
 #include "command.hpp"
+
 int read_arg(int argc, char * argv[]){
 	int arg = 1;
 	while(arg < argc)
@@ -14,7 +15,8 @@ int read_arg(int argc, char * argv[]){
 	return 0;
 }
 void eve_init() {
-    init_stdio();
+    std::ios::sync_with_stdio(false);
+	std::cin.tie(NULL);
     //修改全局变量
     trainfile_path = "../A";
     // ip1="localhost";

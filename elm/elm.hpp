@@ -24,7 +24,6 @@
 #include <opencv2/objdetect.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/opencv.hpp>
-#include <opencv2/opencv.hpp>
 #include <string>
 #include <time.h>
 #include <vector>
@@ -33,7 +32,7 @@ using namespace std;
 using namespace Eigen;
 using namespace cv;
 
-extern int k;
+// extern int k;
 
 // MatrixXd T;                           //存放训练集标签
 extern int L;                           //隐层节点数
@@ -41,25 +40,19 @@ extern int m;                           //训练集以及测试集人数
 extern int model_num;                     //子ELM模型的数量
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 extern string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
-// extern string testfile_path;  // = "/home/huoda/Desktop/50";
 
-// extern vector<int> test_labels_ori;
-// extern Mat trainingImages;
-// extern Mat testingImages;
+
 extern vector<int> trainingLabels;
-// extern vector<int> testingLabels;
+
 extern int N;
 extern int n;
 extern int N_test;
 extern MatrixXd F, output, T/* , temp_T */;
-//其他文件爱呢还想没有调用
-// extern int flag;                          // 没有人脸?
-// extern vector<int> train_labels_ori;
 
-void init_stdio();                               //初始化IO
+
 void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/* ,MatrixXd & F, *//*  MatrixXd & output,  *//* int L, int m, int n, int N,int model_num */);            // ELM-in-ELM训练函数
 
-int my_parse_args(int argc, char * argv[]); //设定初始参数函数
+// int my_parse_args(int argc, char * argv[]); //设定初始参数函数
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);

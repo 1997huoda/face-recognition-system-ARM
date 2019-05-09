@@ -1,33 +1,22 @@
 #include "elm.hpp"
 vector<int> train_labels_ori;
-// vector<int> test_labels_ori;
 
-int k = 1; //argc参数个数
+
 int flag = 0;                         // 没有人脸?
-// MatrixXd T;                           //存放训练集标签
 int L = 600;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
-
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-string trainfile_path = "/home/huoda/Desktop/1"; //路径
-// string testfile_path = "/home/huoda/Desktop/1";
+string trainfile_path ; //路径
 
-// Mat trainingImages;
-// Mat testingImages;
 vector<int> trainingLabels;
-// vector<int> testingLabels;
 
 int N;
 int n;
 int N_test;
-MatrixXd F, output, T/* , temp_T */;
-// MatrixXd W[model_num], b[model_num], beta[model_num];
+MatrixXd F, output, T;
 
-/******extract_feature: put one image into a vector(convert to gray image
- * firstly)*****/
-/*********************************************/
 template<typename _Tp>
 vector<_Tp> convertMat2Vector(const Mat &mat)
 {
@@ -42,29 +31,9 @@ std::vector<float> extract_feature(Mat src){
 	for(int i = 0; i < src.rows; i++)
 		for(int j = 0; j < src.cols; j++)
 			feature.push_back(dst.at<uchar>(i, j));
-
-	Mat  SrcImage1= Mat(feature, true);
-	// Mat ;
-	// www.convertTo(SrcImage1,CV_16F);
-	// TickMeter tm;
-	// tm.start();
-	PCA pca(SrcImage1,Mat(),PCA::DATA_AS_COL,800);//按照圆的面积参数应该是0.785 
-	Mat get_back = pca.project(SrcImage1);//映射新空间
-	cout<<pca.eigenvectors<<endl;
-	
-	std::string fileName = "pca.txt";
-	std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	outfile << get_back << endl;
-	outfile.close();
-
-	// tm.stop();
-	// std::cout << "PCA time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
-	std::vector<float> back = convertMat2Vector<float>(get_back);
-	return back;
-	// return feature;
+	return feature;
 
 }
-
 
 void getFiles_train(string path, vector<string> & files){
 	m=0;
@@ -101,8 +70,6 @@ void getFiles_train(string path, vector<string> & files){
 cv::Mat face_align(const char * filename){
 
 	Mat pic = imread(filename);
-	// if(pic.channels() == 3)
-		// cvtColor(pic, pic, CV_BGRA2GRAY);
 	flag = 0;
 	if(pic.empty())
 	{
@@ -111,7 +78,6 @@ cv::Mat face_align(const char * filename){
 		return cv::Mat::zeros(50, 50, CV_8UC3);
 	}
 	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
-	// equalizeHist(pic, pic);
 	return pic;
 }
 void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels){
@@ -133,53 +99,12 @@ void getFaces_train(string filePath, Mat & trainingImages,vector<int> & training
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
 }
-void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
-{
-	CV_Assert(src.data);
-	// accept only char type matrices
-	CV_Assert(src.depth() != sizeof(uchar));
-	// build look up table
-	unsigned char lut[256];
-	for( int i = 0; i < 256; i++ )
-	{
-		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
-	}
-	dst = src.clone();
-	const int channels = dst.channels();
-	switch(channels)
-	{
-		case 1:
-			{
-				MatIterator_<uchar> it, end;
-				for( it = dst.begin<uchar>(), end = dst.end<uchar>(); it != end; it++ )
-					//*it = pow((float)(((*it))/255.0), fGamma) * 255.0;
-					*it = lut[(*it)];
-				break;
-			}
-		case 3: 
-			{
-				MatIterator_<Vec3b> it, end;
-				for( it = dst.begin<Vec3b>(), end = dst.end<Vec3b>(); it != end; it++ )
-				{
-					//(*it)[0] = pow((float)(((*it)[0])/255.0), fGamma) * 255.0;
-					//(*it)[1] = pow((float)(((*it)[1])/255.0), fGamma) * 255.0;
-					//(*it)[2] = pow((float)(((*it)[2])/255.0), fGamma) * 255.0;
-					(*it)[0] = lut[((*it)[0])];
-					(*it)[1] = lut[((*it)[1])];
-					(*it)[2] = lut[((*it)[2])];
-				}
-				break;
-			}
-	}
-}
+
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
 		// imwrite("alignment"+to_string(iter-mat_v.begin())+".jpg",(*iter));
 		Mat SrcImage;
 		resize((*iter), SrcImage, cv::Size(50, 50));
-		// cvtColor(SrcImage,SrcImage,COLOR_BGR2GRAY);
-		// MyGammaCorrection(SrcImage,SrcImage,1.5f);
-		// equalizeHist(SrcImage, SrcImage);
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
 
 		Mat SrcImage2 = SrcImage1.t();
@@ -223,13 +148,7 @@ bool pseudoInverse(
 	return true;
 }
 
-void init_stdio(){
-	std::ios::sync_with_stdio(false);
-	std::cin.tie(NULL);
-}
-
-
-void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output_basic/* , int L, int m, int n, int N */){
+void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta, MatrixXd & output_basic){
 	MatrixXd b, R, Tem, H;
 	W = MatrixXd::Random(n, L);
 	b_1 = MatrixXd::Random(1, L);
@@ -243,90 +162,38 @@ void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta
 	beta = result * T;
 	output_basic = H * beta;
 }
-void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/* ,MatrixXd & F, *//*  MatrixXd & output,  *//* int L, int m, int n, int N,int model_num */){
+void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd Hg, temp_out;
 	Hg = MatrixXd::Zero(N, m * model_num);
 	for(int i = 0; i < model_num; i++){
-		ELM_basic(feature, W[i], b[i], beta[i], temp_out/* , L, m, n, N */);
+		ELM_basic(feature, W[i], b[i], beta[i], temp_out);
 		Hg.block(0, m * i, N, m) = temp_out;
 	}
 	MatrixXd Hg1;
 	pseudoInverse(Hg, Hg1);
 	F = Hg1 * T;
-	// output = Hg * F;
-}
-
-
-
-/**********************************************************************************/
-int my_parse_args(int argc, char * argv[]){
-	if(argc > 1)
-		while(argv[k] && argv[k][0] == '-'){
-			char * p = argv[k];
-			p++;
-			k++;
-			if(*p == 'o'){
-				cout << "Setting number of hidden nodes ..." << endl;
-				L = atoi(argv[k++]);
-			} else if(*p == 'p'){
-				cout << "Setting number of training people ..." << endl;
-				m = atoi(argv[k++]);
-			} else if(*p == 'n'){
-				cout << "Setting number of models ..." << endl;
-				model_num = atoi(argv[k++]);
-			// } else if(*p == 't'){
-			// 	cout << "Setting number of faces per training person ..."			 << endl;
-			// 	training_face_num_per_person = atoi(argv[k++]);
-			// } else if(*p == 's'){
-			// 	cout << "Setting number of faces per testing person ..."					 << endl;
-			// 	testing_face_num_per_person = atoi(argv[k++]);
-			} else if(*p == 'r'){
-				cout << "Setting training path ..." << endl;
-				trainfile_path = argv[k++];
-			// } else if(*p == 'e'){
-			// 	cout << "Setting testing path ..." << endl;
-			// 	testfile_path = argv[k++];
-			} else {
-				cout << "-o: Setting number of hidden nodes\n";
-				cout << "-p: Setting number of training people\n";
-				cout << "-n: Setting number of models\n";
-				cout << "-t: Setting number of faces per training person\n";
-				cout << "-s: Setting number of faces per testing person\n";
-				cout << "-r: Setting training path\n";
-				cout << "-e: Setting testing path\n";
-				cout << "other: Help\n";
-				return 1;
-			}
-		}
-	return 0;
 }
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 
 	cout << "Loading train Data..." << endl;
-	// load training images
+
 	Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
-	// VectorXd label(trainingLabels.size()); //创建新的向量
 	cv2eigen(trainingImages, feature);     //转化
-	// cv2eigen(Mat(trainingLabels), label);  //转化
 	cout << "Number of training images:" << trainingImages.rows << endl; //
 	n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
 	return feature;
 }
-
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 
 	Mat testingImages;
 	getFaces_test(mat_v, testingImages);
 	MatrixXd feature1(testingImages.rows, testingImages.cols);
 	cv2eigen(testingImages, feature1);
-
-
 	N_test = testingImages.rows;
-	// cout << "Number of testing images:" << N_test << endl;
 	return feature1;
 }
 
@@ -349,7 +216,7 @@ MatrixXd generate_training_labels(){
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	// TickMeter tm;
 	// tm.start();
-	ELM_in_ELM(feature, W, b, beta/* , F, */ /* output, */ /* L, m, n, N, model_num */);
+	ELM_in_ELM(feature, W, b, beta);
 	// tm.stop();
 	// std::cout << "Training time:    " << tm.getTimeSec() << "  s" << endl;
 }
@@ -369,43 +236,3 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	// tm.stop();
 	// std::cout << "Testing time:    " << tm.getTimeSec() *1000<< "  ms" << endl;
 }
-
-// int main(int argc, char * * argv){
-// 	init_stdio();
-// 	int in = my_parse_args(argc, argv);
-// 	if(argc <= 1)
-// 		cout << "Using default settings!\n";
-// 	cout_current_settings();
-// 	if(in != 0)
-// 		return 0;
-// 	// init_face_detector_dlib();
-// 	// time
-// 	MatrixXd W[model_num], b[model_num], beta[model_num];
-// 	MatrixXd feature, feature1;
-// 	feature = ELM_in_ELM_face_training_matrix_from_files();
-// 	feature1 = ELM_in_ELM_face_testing_matrix_from_files();
-// 	T = generate_training_labels();
-// 	ELM_training(feature, W, b, beta);
-// 	ELM_testing(feature1, W, b, beta);
-// 	show_testing_results();
-// 	return 0;
-// }
-
-
-// int main(){
-// 	vector<float> eee;
-// 	eee.push_back(1454.456);
-// 	eee.push_back(123.156);
-// 	eee.push_back(156.156);
-// 	eee.push_back(195.2);
-// 	eee.push_back(259.25);
-// 	eee.push_back(892.15);
-// 	eee.push_back(25.15);
-// 	eee.push_back(959.15);
-// 	eee.push_back(1489.125);
-// 	Mat aaa=Mat(eee,true);
-// 	PCA pca(aaa,Mat(),PCA::DATA_AS_COL);//按照圆的面积参数应该是0.785 
-// 	Mat get_back = pca.project(aaa);//映射新空间
-// 	cout<<pca.eigenvectors<<endl;
-// 	cout<<"get_back:	\n"<<get_back<<endl;
-// }

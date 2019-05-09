@@ -116,12 +116,9 @@ int main(int argc, char* argv[]){
 			// int NN64 = rng.next();
 			string sss = trainfile_path + "/" + human_name + "/" + to_string(N64) + ".jpg";
 			Mat every=alignment_face_recall[0];
-			// MyGammaCorrection(every,every,1.5f);
-			// equalizeHist(every, every);
 			imwrite(sss, every);
 			tmp = "received_picture";
 			send_msg(socket, tmp);
-			// alignment_face_recall.clear();
 
 		} else {
 			std::cout << "GGGGGGGGGGGGGGGGGGGG" << std::endl;
