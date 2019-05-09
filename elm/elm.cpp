@@ -390,3 +390,21 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 // 	show_testing_results();
 // 	return 0;
 // }
+int main(){
+	vector<float> eee;
+	eee.push_back(1454.456);
+	eee.push_back(123.156);
+	eee.push_back(156.156);
+	eee.push_back(195.2);
+	eee.push_back(259.25);
+	eee.push_back(892.15);
+	eee.push_back(25.15);
+	eee.push_back(959.15);
+	eee.push_back(1489.125);
+	Mat aaa=Mat(eee,true);
+	PCA pca(aaa,Mat(),PCA::DATA_AS_COL);//按照圆的面积参数应该是0.785 
+	Mat get_back = pca.project(aaa);//映射新空间
+	cout<<pca.eigenvectors<<endl;
+	cout<<"get_back:	\n"<<get_back<<endl;
+
+}
