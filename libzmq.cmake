@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 PROJECT(transmit)
-
+set(CMAKE_CXX_COMPILER g++-5)
+set(CMAKE_C_COMPILER gcc-5)
+add_definitions(-D_ENABLE_NEON  )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 # set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
