@@ -28,12 +28,12 @@ bool location::operator<(location & a){
 	else
 		return false;
 }
-void global_init(){
-	// init_face_detector_dlib();
-	dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
-	final_location.clear();
-	alignment_face_recall.clear();
-}
+// void global_init(){
+// 	// init_face_detector_dlib();
+// 	dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
+// 	final_location.clear();
+// 	alignment_face_recall.clear();
+// }
 
 
 

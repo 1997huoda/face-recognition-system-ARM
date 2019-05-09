@@ -38,7 +38,7 @@ struct location {
 extern vector<location> final_location;
 extern vector<Mat> alignment_face_recall;
 
-void global_init();//参数初始化 模型加载
+// void global_init();//参数初始化 模型加载
 
 void face_alignment(Mat image_roi);//人脸矫正 直到误差小于等于3度 最后结果标准化输出
 void process_image(Mat mat);//角度检测函数

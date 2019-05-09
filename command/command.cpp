@@ -20,7 +20,8 @@ void eve_init() {
     //修改全局变量
     trainfile_path = "../A";
     // ip1="localhost";
-    global_init();
+    // global_init();
+    dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
     //开启摄像头
     if (!capture.isOpened())
         capture.open(0);
