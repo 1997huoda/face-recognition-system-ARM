@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 # find_package(Eigen3)
 
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 add_definitions(-fPIC )
 
 # include_directories(${OpenCV_INCLUDE_DIRS})
