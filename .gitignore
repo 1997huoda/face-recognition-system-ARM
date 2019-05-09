@@ -13,4 +13,5 @@ Qt/build-server-Desktop-Debug
 */*/build
 */*/*/build
 arm-build/
+dlib/build
 \.vscode/

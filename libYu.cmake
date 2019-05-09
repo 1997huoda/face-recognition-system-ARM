@@ -6,8 +6,8 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" ON)
-option(ENABLE_AVX2 "use avx2" OFF)
-option(ENABLE_NEON "whether use neon, if use arm please set it on" ON)
+option(ENABLE_AVX2 "use avx2" ON)
+option(ENABLE_NEON "whether use neon, if use arm please set it on" OFF)
 
 FILE(GLOB fdt_source_files ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 LIST(SORT         fdt_source_files)

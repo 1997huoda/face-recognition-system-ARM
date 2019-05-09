@@ -1,14 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(transmit)
 
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#list(APPEND CMAKE_MODULE_PATH "./cmake_modules")
-#set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/libzmq)
 
-add_definitions(-fPIC -pthread -fopenmp)
+add_definitions(-fPIC)
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #set(CMAKE_MODULE_PATH ./)
@@ -19,7 +14,6 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
 set(LIBRARY ${ZMQ_LIBRARIES} ${OpenCV_LIBS})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/libzmq/*.cpp)
-
 
 add_library(libzmq SHARED ${SRC})
 
