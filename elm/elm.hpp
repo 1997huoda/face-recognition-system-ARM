@@ -27,32 +27,21 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include "new.hpp"
 
 using namespace std;
 using namespace Eigen;
 using namespace cv;
 
-// extern int k;
 
-// MatrixXd T;                           //存放训练集标签
-extern int L;                           //隐层节点数
-extern int m;                           //训练集以及测试集人数
-extern int model_num;                     //子ELM模型的数量
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 extern string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
 
-
 extern vector<int> trainingLabels;
 
-extern int N;
-extern int n;
+
 extern int N_test;
-extern MatrixXd F, output, T/* , temp_T */;
 
-
-void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta/* ,MatrixXd & F, *//*  MatrixXd & output,  *//* int L, int m, int n, int N,int model_num */);            // ELM-in-ELM训练函数
-
-// int my_parse_args(int argc, char * argv[]); //设定初始参数函数
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);
@@ -61,29 +50,5 @@ MatrixXd generate_training_labels();                  //生成训练集标签
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta); // ELM-in-ELM训练函数
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta); // ELM-in-ELM测试函数
 
-
-/* ----------------sample mian function:
-        int main(int argc, char** argv)
-   {
-        init_stdio();
-        int in=my_parse_args(argc,argv);
-        if(argc<=1)
-                cout<<"Using default settings!\n";
-        cout_current_settings();
-        if(in!=0)
-                return 0;
-        init_face_detector_dlib();
-        //time
-        MatrixXd W[model_num],b[model_num], beta[model_num];
-        MatrixXd feature,feature1;
-        feature=ELM_in_ELM_face_training_matrix_from_files();
-        feature1=ELM_in_ELM_face_testing_matrix_from_files();
-        T=generate_training_labels();
-        ELM_training(feature,W,b,beta);
-        ELM_testing(feature1,W,b,beta);
-        show_testing_results();
-        return 0;
-   }
- */
 
 #endif /* _ELM_H */
