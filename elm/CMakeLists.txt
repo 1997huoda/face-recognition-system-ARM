@@ -11,8 +11,8 @@ add_definitions(-fPIC -fopenmp)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-include_directories(../elm)
-include_directories(../new)
+#include_directories(../elm)
+#include_directories(../new)
 # include(../libnew.cmake)
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
@@ -30,3 +30,4 @@ INSTALL(TARGETS libelm
 target_link_libraries(libelm  libnew ${OpenCV_LIBS})
 # dlib::dlib
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/elm.hpp DESTINATION /usr/local/include)

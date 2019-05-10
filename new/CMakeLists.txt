@@ -11,7 +11,7 @@ add_definitions(-fPIC )
 
 # include_directories(${OpenCV_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+#include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
@@ -21,10 +21,11 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 # add_executable(elm ${SRC})
 add_library(libnew SHARED ${SRC})
 INSTALL(TARGETS libnew
-#        RUNTIME DESTINATION bin
-       LIBRARY DESTINATION /usr/local/lib
-#        ARCHIVE DESTINATION libstatic
-)
+	#        RUNTIME DESTINATION bin
+	LIBRARY DESTINATION /usr/local/lib
+	#        ARCHIVE DESTINATION libstatic
+	)
 target_link_libraries(libnew  )
 # dlib::dlib
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/new.hpp DESTINATION /usr/local/include)

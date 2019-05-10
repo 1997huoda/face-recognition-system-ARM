@@ -46,6 +46,6 @@ void process_image(Mat mat);//角度检测函数
 bool cmp(const location & m1, const location & m2);
 bool big(const location & m1, const location & m2);
 
-static dlib::shape_predictor sp;               // dlib shape predictor
+ dlib::shape_predictor sp;               // dlib shape predictor
 
 #endif /* _TEST_H */

@@ -1,4 +1,23 @@
 #include "make.hpp"
+void eve_init() {
+    std::ios::sync_with_stdio(false);
+	std::cin.tie(NULL);
+    //修改全局变量
+	dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
+    trainfile_path = "../A";
+    // ip1="localhost";
+    // global_init();
+    //开启摄像头
+    if (!capture.isOpened())
+        capture.open(0);
+    if (!capture.isOpened()) //没有打开摄像头的话，就返回。
+    {
+        cout << "failed open capture" << endl;
+        return;
+    } else {
+        cout << "open cap(0) -->" << endl;
+    }    
+}
 // int main(int argc, char* argv[])
 // {
 //  return 0;
@@ -8,6 +27,7 @@
 int main(int argc, char* argv[]){
 	//先参数初始化
 	eve_init();
+	
 	//再修改参数
 	int in = read_arg(argc, argv);
 	if(in==1){
@@ -20,8 +40,6 @@ int main(int argc, char* argv[]){
 	}
 	// main 函数变量		MatrixXd
 	MatrixXd W[model_num], b[model_num], beta[model_num];
-	//应该首先开机训练 50人 训练4s 写参数txt 14s	就不需要读取参数了
-	//也就不用写参数了
 	train_elm(W, b, beta);
 	cout << "init--OK" << endl;
 	zmq::context_t context(1);

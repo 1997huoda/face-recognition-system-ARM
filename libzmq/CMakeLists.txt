@@ -10,7 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 FIND_PACKAGE(ZMQ REQUIRED)
 FIND_PACKAGE(OpenCV REQUIRED)
 # include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+#include_directories(${CMAKE_CURRENT_LIST_DIR})
 set(LIBRARY ${ZMQ_LIBRARIES} ${OpenCV_LIBS})
 
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
@@ -24,3 +24,4 @@ INSTALL(TARGETS libzmq
 target_link_libraries(libzmq ${LIBRARY})
 
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/libzmq.hpp DESTINATION /usr/local/include)

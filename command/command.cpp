@@ -14,25 +14,7 @@ int read_arg(int argc, char * argv[]){
 
 	return 0;
 }
-void eve_init() {
-    std::ios::sync_with_stdio(false);
-	std::cin.tie(NULL);
-    //修改全局变量
-    trainfile_path = "../A";
-    // ip1="localhost";
-    // global_init();
-    dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
-    //开启摄像头
-    if (!capture.isOpened())
-        capture.open(0);
-    if (!capture.isOpened()) //没有打开摄像头的话，就返回。
-    {
-        cout << "failed open capture" << endl;
-        return;
-    } else {
-        cout << "open cap(0) -->" << endl;
-    }    
-}
+
 void get_filename(string path, vector<string> &names) {
     names.clear();
     struct dirent *ptr, *ptr1;

@@ -39,3 +39,4 @@ target_link_libraries(libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
 
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/test.hpp DESTINATION /usr/local/include)
