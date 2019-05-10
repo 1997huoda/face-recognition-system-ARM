@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 11)
 
- #set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
- #set(CMAKE_C_COMPILER /usr/bin/gcc-5)
- # add_definitions(-D_ENABLE_NEON  )
- # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+# add_definitions(-D_ENABLE_NEON  )
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 
 
 
@@ -39,10 +39,10 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 #add_executable(pico ${SRC})
 add_library(libpico SHARED ${SRC})
 INSTALL(TARGETS libpico
-#        RUNTIME DESTINATION bin
-       LIBRARY DESTINATION /usr/local/lib
-#        ARCHIVE DESTINATION libstatic
-)
+	#        RUNTIME DESTINATION bin
+	LIBRARY DESTINATION /usr/local/lib
+	#        ARCHIVE DESTINATION libstatic
+	)
 target_link_libraries(libpico libfacedetection ${OpenCV_LIBS})
 
 
