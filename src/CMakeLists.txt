@@ -1,17 +1,17 @@
 # CMakeLists for libfacedetectcnn
 
-add_definitions(-fPIC  )
+add_definitions(-fPIC -O3 )
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 cmake_minimum_required(VERSION 2.8)
-
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+set(CMAKE_C_COMPILER /usr/bin/gcc-5)
 set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" ON)
 option(ENABLE_AVX2 "use avx2" OFF)
 option(ENABLE_NEON "whether use neon, if use arm please set it on" ON)
-#set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
-#set(CMAKE_C_COMPILER /usr/bin/gcc-5)
-add_definitions(-D_ENABLE_NEON  )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+
+
 
 FILE(GLOB fdt_source_files ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 LIST(SORT         fdt_source_files)
@@ -30,6 +30,8 @@ endif()
 if(ENABLE_NEON)
 	message("using arm")
 	add_definitions(-D_ENABLE_NEON)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
