@@ -163,8 +163,8 @@ Mat process_once() {
     /*********face_num***************/
     face_num = final_location.size();
 
-    float x_b = (bak_gray.cols / nor.width);
-    float y_b = (bak_gray.rows / nor.height);
+    float x_b = (origin.cols / nor.width);
+    float y_b = (origin.rows / nor.height);
     for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
 
         int x = cvRound(x_b * (*iter).x);
