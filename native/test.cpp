@@ -7,7 +7,7 @@
 
 cv::Size size_box(100, 100);
 cv::Size nor(160, 120);//160 120// 320 160 // 128 96 //
-
+ dlib::shape_predictor sp;               // dlib shape predictor
 vector<location> final_location;
 vector<Mat> alignment_face_recall;
 
