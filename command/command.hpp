@@ -34,7 +34,8 @@
 #include "new.hpp"
 #include "libzmq.hpp"
 
-
+#include <sys/stat.h>
+#include <sys/types.h>
 
 using namespace std;
 using namespace Eigen;
