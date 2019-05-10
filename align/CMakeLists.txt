@@ -2,6 +2,13 @@ project(align)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 11)
+
+ set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+ set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+  add_definitions(-D_ENABLE_NEON  )
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+cmake_policy(SET CMP0028 OLD)
+
 find_package(dlib REQUIRED)
 cmake_policy(SET CMP0028 OLD)
 find_package(OpenCV REQUIRED)
