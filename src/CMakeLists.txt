@@ -8,10 +8,10 @@ set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" ON)
 option(ENABLE_AVX2 "use avx2" OFF)
 option(ENABLE_NEON "whether use neon, if use arm please set it on" ON)
- set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
- set(CMAKE_C_COMPILER /usr/bin/gcc-5)
-  add_definitions(-D_ENABLE_NEON  )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+#set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+#set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+add_definitions(-D_ENABLE_NEON  )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 
 FILE(GLOB fdt_source_files ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 LIST(SORT         fdt_source_files)
@@ -41,36 +41,36 @@ INCLUDE_DIRECTORIES(${fdt_inc_dir})
 # Create a shared library (.so)
 ADD_LIBRARY(libfacedetection SHARED ${fdt_source_files})
 INSTALL(TARGETS libfacedetection
-#        RUNTIME DESTINATION bin
-       LIBRARY DESTINATION /usr/local/lib
-#        ARCHIVE DESTINATION libstatic
-)
+	#        RUNTIME DESTINATION bin
+	LIBRARY DESTINATION /usr/local/lib
+	#        ARCHIVE DESTINATION libstatic
+	)
 if (GSTREAMER)
-    find_package(OpenCV REQUIRED)
+	find_package(OpenCV REQUIRED)
 
-    include(FindPkgConfig)
-    pkg_search_module(GSTREAMER REQUIRED gstreamer-1.0)
-    pkg_search_module(GSTREAMER_BASE REQUIRED gstreamer-base-1.0)
-    pkg_search_module(GSTREAMER_VIDEO REQUIRED gstreamer-video-1.0)
+	include(FindPkgConfig)
+	pkg_search_module(GSTREAMER REQUIRED gstreamer-1.0)
+	pkg_search_module(GSTREAMER_BASE REQUIRED gstreamer-base-1.0)
+	pkg_search_module(GSTREAMER_VIDEO REQUIRED gstreamer-video-1.0)
 
-    add_library(gstfacedetect SHARED
-        example/libfacedetect.cpp
-    )
+	add_library(gstfacedetect SHARED
+		example/libfacedetect.cpp
+		)
 
-    include_directories(gstfacedetect PRIVATE
-        ${GSTREAMER_INCLUDE_DIRS}
-        ${GSTREAMER_BASE_INCLUDE_DIRS}
-        ${GSTREAMER_VIDEO_INCLUDE_DIRS}
-        ${OpenCV_INCLUDE_DIRS}
-    )
+	include_directories(gstfacedetect PRIVATE
+		${GSTREAMER_INCLUDE_DIRS}
+		${GSTREAMER_BASE_INCLUDE_DIRS}
+		${GSTREAMER_VIDEO_INCLUDE_DIRS}
+		${OpenCV_INCLUDE_DIRS}
+		)
 
-    target_link_libraries(gstfacedetect
-        ${GSTREAMER_LIBRARIES}
-        ${GSTREAMER_BASE_LIBRARIES}
-        ${GSTREAMER_VIDEO_LIBRARIES}
-        ${OpenCV_LIBS}
-        ${fdt_lib_shared}
-    )
+	target_link_libraries(gstfacedetect
+		${GSTREAMER_LIBRARIES}
+		${GSTREAMER_BASE_LIBRARIES}
+		${GSTREAMER_VIDEO_LIBRARIES}
+		${OpenCV_LIBS}
+		${fdt_lib_shared}
+		)
 
 endif()
 
