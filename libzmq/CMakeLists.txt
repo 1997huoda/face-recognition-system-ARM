@@ -16,7 +16,11 @@ set(LIBRARY ${ZMQ_LIBRARIES} ${OpenCV_LIBS})
 file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_library(libzmq SHARED ${SRC})
-
+INSTALL(TARGETS libzmq
+#        RUNTIME DESTINATION bin
+       LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
 target_link_libraries(libzmq ${LIBRARY})
 
 

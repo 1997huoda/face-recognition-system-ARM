@@ -2,10 +2,14 @@ project(com)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
 
+add_definitions(-fPIC )
 find_package(OpenCV REQUIRED)
 find_package(OpenMP)
 find_package(Eigen3)
- find_package(dlib REQUIRED)
+find_package(dlib REQUIRED)
+cmake_policy(SET CMP0028 OLD)
+set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+FIND_PACKAGE(ZMQ REQUIRED)
 # 
 if(OPENMP_FOUND)
     message("OPENMP FOUND")
@@ -15,34 +19,39 @@ if(OPENMP_FOUND)
 endif()
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
-# add_compile_options(-fPIC)
+
 # add_definitions()
 
 
 include_directories(../src)
-include_directories(../elm)
-include_directories(../new)
+# include_directories(../elm)
+# include_directories(../new)
 include_directories(../native)
 include_directories(../libzmq)
 include_directories(../command)
+include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
-# include_directories(${CMAKE_CURRENT_LIST_DIR})
+
 
 # include(../libpico.cmake)
 # include(../libelm.cmake)
 # include(../libzmq.cmake)
 
-link_directories(${OpenCV_LIBRARY_DIRS})
+# link_directories(${OpenCV_LIBRARY_DIRS})
 # link_directories(..)
 
-file(GLOB SRC ../command/*.cpp)
+file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 # add_executable(pro ${SRC})
 add_library(libcom SHARED ${SRC})
-
-target_link_libraries(libcom libzmq libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+INSTALL(TARGETS libcom
+#        RUNTIME DESTINATION bin
+       LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
+target_link_libraries(libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
 # file(COPY ../native/shape_predictor_68_face_landmarks.dat DESTINATION ../build)
 

@@ -6,16 +6,19 @@ add_definitions(-fPIC  -pthread )
 
 # set(CMAKE_C_COMPILER /usr/local/bin/arm-linux-gnueabi-gcc )
 # set(CMAKE_CXX_COMPILER /usr/local/bin/arm-linux-gnueabi-g++ )
- set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
- set(CMAKE_C_COMPILER /usr/bin/gcc-5)
- add_definitions(-D_ENABLE_NEON  )
- set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+#  set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+#  set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+#  add_definitions(-D_ENABLE_NEON  )
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 cmake_policy(SET CMP0028 OLD)
 
 find_package(OpenCV REQUIRED)
 find_package(OpenMP)
 find_package(Eigen3)
 find_package(dlib REQUIRED)
+set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/libzmq)
+FIND_PACKAGE(ZMQ REQUIRED)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(OPENMP_FOUND)
     message("OPENMP FOUND")
@@ -35,10 +38,11 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/new)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/native)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/command)
+include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+
 
 # include(${CMAKE_CURRENT_LIST_DIR}/libcom.cmake)
 
@@ -49,8 +53,12 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_executable(pro ${SRC})
 # add_library(libpico SHARED ${SRC})
-
-target_link_libraries(pro libcom libzmq libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+INSTALL(TARGETS pro
+       RUNTIME DESTINATION /usr/local/bin
+#        LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
+target_link_libraries(pro libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/none.bmp DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

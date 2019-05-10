@@ -11,7 +11,7 @@ if(POLICY CMP0048)
 endif()
 
 project(dlib)
-
+add_definitions(-fPIC )
 set(CPACK_PACKAGE_NAME "dlib")
 set(CPACK_PACKAGE_VERSION_MAJOR "19")
 set(CPACK_PACKAGE_VERSION_MINOR "17")

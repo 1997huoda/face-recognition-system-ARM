@@ -9,7 +9,7 @@ int model_num = 5;                    //子ELM模型的数量
 
 MatrixXd F, output, T;
 
-template<typename _Matrix_Type_>
+template <typename _Matrix_Type_>
 bool pseudoInverse(
 	const _Matrix_Type_ & a, _Matrix_Type_ & result,
 	double epsilon =
@@ -20,12 +20,8 @@ bool pseudoInverse(
 		typename _Matrix_Type_::Scalar tolerance =
 			epsilon * std::max(a.cols(), a.rows()) *
 			svd.singularValues().array().abs()(0);
-		result = svd.matrixV() *
-				 (svd.singularValues().array().abs() > tolerance)
-				 .select(svd.singularValues().array().inverse(), 0)
-				 .matrix()
-				 .asDiagonal() *
-				 svd.matrixU().adjoint();
+		result = svd.matrixV() * (svd.singularValues().array().abs() > tolerance)
+.select(svd.singularValues().array().inverse(), 0).matrix()	.asDiagonal() *svd.matrixU().adjoint();
 	}
 	// return false;
 	else {

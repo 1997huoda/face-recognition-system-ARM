@@ -31,6 +31,7 @@
 
 #include "test.hpp"
 #include "elm.hpp"
+#include "new.hpp"
 #include "libzmq.hpp"
 
 #include <sys/stat.h>

@@ -20,7 +20,11 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 # add_executable(elm ${SRC})
 add_library(libnew SHARED ${SRC})
-
+INSTALL(TARGETS libnew
+#        RUNTIME DESTINATION bin
+       LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
 target_link_libraries(libnew  )
 # dlib::dlib
 

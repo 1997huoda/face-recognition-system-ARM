@@ -1,6 +1,6 @@
 # CMakeLists for libfacedetectcnn
 
-add_definitions(-fPIC  -pthread )
+add_definitions(-fPIC  )
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 cmake_minimum_required(VERSION 2.8)
 
@@ -38,7 +38,11 @@ INCLUDE_DIRECTORIES(${fdt_inc_dir})
 
 # Create a shared library (.so)
 ADD_LIBRARY(libfacedetection SHARED ${fdt_source_files})
-
+INSTALL(TARGETS libfacedetection
+#        RUNTIME DESTINATION bin
+       LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
 if (GSTREAMER)
     find_package(OpenCV REQUIRED)
 

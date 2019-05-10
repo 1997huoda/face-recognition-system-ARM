@@ -15,14 +15,18 @@ include_directories(../elm)
 include_directories(../new)
 # include(../libnew.cmake)
 
-file(GLOB SRC ../elm/*.cpp)
+file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 # add_subdirectory(../native-dlib/dlib dlib_build)
-link_directories(${OpenCV_LIBRARY_DIRS})
+# link_directories(${OpenCV_LIBRARY_DIRS})
 
 # add_executable(elm ${SRC})
 add_library(libelm SHARED ${SRC})
-
+INSTALL(TARGETS libelm
+#        RUNTIME DESTINATION bin
+       LIBRARY DESTINATION /usr/local/lib
+#        ARCHIVE DESTINATION libstatic
+)
 target_link_libraries(libelm  libnew ${OpenCV_LIBS})
 # dlib::dlib
 
