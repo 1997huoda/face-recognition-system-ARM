@@ -125,7 +125,7 @@ int main(int argc, char* argv[]){
 			cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();
 			face_alignment(rec_img);
-			int N64 =rand()+rand();
+			int N64 =rand();
 			// int NN64 = rng.next();
 			string sss = trainfile_path + "/" + human_name + "/" + to_string(N64) + ".jpg";
 			Mat every=alignment_face_recall[0];

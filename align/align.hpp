@@ -10,6 +10,8 @@
 #include <dlib/image_transforms.h>
 #include <dlib/opencv.h>
 
+#include<ctime>
+
 using namespace std;
 using namespace cv;
 

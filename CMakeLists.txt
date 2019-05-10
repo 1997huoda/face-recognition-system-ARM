@@ -33,14 +33,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 # add_definitions()
 
 
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/elm)
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/new)
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/native)
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/command)
-#include_directories(${CMAKE_CURRENT_LIST_DIR})
-
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${OpenCV_INCLUDE_DIRS})
 

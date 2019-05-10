@@ -17,9 +17,9 @@ vector<location> final_location;
 bool cmp(const location & m1, const location & m2){//按照x从小到大，的顺序
 	return m1.x < m2.x;
 }
-bool big(const location & m1, const location & m2){//按照w从大到小，的顺序
-	return m1.w > m2.w;
-}
+// bool big(const location & m1, const location & m2){//按照w从大到小，的顺序
+// 	return m1.w > m2.w;
+// }
 
 //重载< 用于remove location
 bool location::operator<(location & a){
@@ -40,11 +40,12 @@ void process_image(Mat mat)
 		fprintf(stderr, "Can not alloc buffer.\n");
 		return;
 	}
-	// TickMeter tm;
-	// tm.start();
+clock_t start,end;
+start=clock();	
 	pResults = facedetect_cnn(pBuffer, (unsigned char *)(mat.ptr(0)), mat.cols, mat.rows, (int)mat.step);
-	// tm.stop();
-	// std::cout << "process_image 用时      " << tm.getTimeSec() * 1000 << "   ms" << endl;//输出是s
+end=clock();
+double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+cout<<"detect time:		"<<endtime*1000<<"ms"<<endl;		//s为单位
 //     printf("%d faces detected.\n", (pResults ? *pResults : 0));
 
 	//print the detection results

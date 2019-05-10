@@ -26,6 +26,7 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <time.h>
+#include<ctime>
 #include <vector>
 #include "new.hpp"
 

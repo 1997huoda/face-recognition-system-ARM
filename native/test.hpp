@@ -4,6 +4,7 @@
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include <time.h>
+#include<ctime>
 #include "facedetectcnn.h"
 
 #include <opencv2/highgui/highgui.hpp>
@@ -33,13 +34,10 @@ struct location {
 };
 extern vector<location> final_location;
 
-// void global_init();//参数初始化 模型加载
-
-
 void process_image(Mat mat);//角度检测函数
 
 bool cmp(const location & m1, const location & m2);
-bool big(const location & m1, const location & m2);
+// bool big(const location & m1, const location & m2);
 
 
 
