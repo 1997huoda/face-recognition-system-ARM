@@ -1,0 +1,6 @@
+ 
+need:
+    make -j2;
+
+otherwise:
+    timeout;

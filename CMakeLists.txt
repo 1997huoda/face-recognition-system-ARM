@@ -1,7 +1,7 @@
 project(pro)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
-add_definitions(-fPIC  -pthread )
+add_definitions(-fPIC   )
 
 
 # set(CMAKE_C_COMPILER /usr/local/bin/arm-linux-gnueabi-gcc )
@@ -26,8 +26,9 @@ if(OPENMP_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
+
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 # add_compile_options(-fPIC)
 # add_definitions()
 
@@ -53,11 +54,11 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_executable(pro ${SRC})
 # add_library(libpico SHARED ${SRC})
-INSTALL(TARGETS pro
-       RUNTIME DESTINATION /usr/local/bin
+# INSTALL(TARGETS pro
+#        RUNTIME DESTINATION /usr/local/bin
 #        LIBRARY DESTINATION /usr/local/lib
 #        ARCHIVE DESTINATION libstatic
-)
+# )
 target_link_libraries(pro libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection libalign dlib::dlib ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

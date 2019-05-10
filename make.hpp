@@ -3,6 +3,8 @@
 
 #include "command.hpp"
 #include "align.hpp"
+#include <sys/stat.h>
+#include <sys/types.h>
 
 
 

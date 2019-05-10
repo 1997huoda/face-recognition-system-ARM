@@ -19,12 +19,7 @@ void eve_init() {
         cout << "open cap(0) -->" << endl;
     }    
 }
-// int main(int argc, char* argv[])
-// {
-//  return 0;
-// }
-// extern int model_num;
-// MatrixXd W[5], b[5], beta[5];
+
 int main(int argc, char* argv[]){
 	//先参数初始化
 	eve_init();

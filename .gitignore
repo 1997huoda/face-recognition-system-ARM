@@ -2,7 +2,7 @@ build/
 
 native/build/
 native-dlib/build/
-
+Qt/build-server-Desktop-Debug
 elm/build/
 elm-data-test/build/
 exe/build
