@@ -5,10 +5,10 @@
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 cmake_minimum_required(VERSION 2.8.12)
- #set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
- #set(CMAKE_C_COMPILER /usr/bin/gcc-5)
- # add_definitions(-D_ENABLE_NEON  )
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+ set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+ set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+ add_definitions(-D_ENABLE_NEON  )
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 
 if(POLICY CMP0048)
    cmake_policy(SET CMP0048 NEW)
