@@ -5,6 +5,7 @@ void eve_init() {
     //修改全局变量
 	dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
     trainfile_path = "../A";
+	ip1="localhost";
     // ip1="localhost";
     // global_init();
     //开启摄像头
@@ -33,7 +34,6 @@ int main(int argc, char* argv[]){
 	if(in==1){
 		cout<<"input error\n";
 	}else if(in==0){
-		ip1="localhost";
 	}
 	if(argc <= 1){
 		cout << "Using default settings!\n";
