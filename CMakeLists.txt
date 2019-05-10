@@ -6,10 +6,10 @@ add_definitions(-fPIC  -pthread )
 
 # set(CMAKE_C_COMPILER /usr/local/bin/arm-linux-gnueabi-gcc )
 # set(CMAKE_CXX_COMPILER /usr/local/bin/arm-linux-gnueabi-g++ )
- set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
- set(CMAKE_C_COMPILER /usr/bin/gcc-5)
-  add_definitions(-D_ENABLE_NEON  )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
+# set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+# set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+#  add_definitions(-D_ENABLE_NEON  )
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard -mcpu=cortex-a7 -mfpu=neon-vfpv4 -o3")
 cmake_policy(SET CMP0028 OLD)
 
 find_package(OpenCV REQUIRED)
@@ -58,7 +58,7 @@ INSTALL(TARGETS pro
 #        LIBRARY DESTINATION /usr/local/lib
 #        ARCHIVE DESTINATION libstatic
 )
-target_link_libraries(pro libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+target_link_libraries(pro libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection libalign dlib::dlib ${OpenCV_LIBS})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/none.bmp DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)

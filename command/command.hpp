@@ -30,6 +30,7 @@
 #include <string>
 
 #include "test.hpp"
+#include "align.hpp"
 #include "elm.hpp"
 #include "new.hpp"
 #include "libzmq.hpp"

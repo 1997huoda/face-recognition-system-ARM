@@ -1,9 +1,9 @@
-project(pico)
+project(align)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 11)
-#find_package(dlib REQUIRED)
-#cmake_policy(SET CMP0028 OLD)
+find_package(dlib REQUIRED)
+cmake_policy(SET CMP0028 OLD)
 find_package(OpenCV REQUIRED)
 # find_package(OpenMP)
 # if(OPENMP_FOUND)
@@ -29,14 +29,14 @@ file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 # add_subdirectory(../native/dlib dlib_build)
 
 #add_executable(pico ${SRC})
-add_library(libpico SHARED ${SRC})
-INSTALL(TARGETS libpico
+add_library(libalign SHARED ${SRC})
+INSTALL(TARGETS libalign
 #        RUNTIME DESTINATION bin
        LIBRARY DESTINATION /usr/local/lib
 #        ARCHIVE DESTINATION libstatic
 )
-target_link_libraries(libpico libfacedetection ${OpenCV_LIBS})
+target_link_libraries(libalign dlib::dlib ${OpenCV_LIBS})
 
 
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/test.hpp DESTINATION /usr/local/include)
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/align.hpp DESTINATION /usr/local/include)

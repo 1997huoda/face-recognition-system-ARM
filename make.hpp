@@ -2,6 +2,7 @@
 #define _MAKE_H
 
 #include "command.hpp"
+#include "align.hpp"
 
 
 

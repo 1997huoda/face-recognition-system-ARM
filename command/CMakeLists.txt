@@ -51,7 +51,7 @@ INSTALL(TARGETS libcom
 	LIBRARY DESTINATION /usr/local/lib
 	#        ARCHIVE DESTINATION libstatic
 	)
-target_link_libraries(libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection dlib::dlib ${OpenCV_LIBS})
+target_link_libraries(libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection libalign dlib::dlib ${OpenCV_LIBS})
 
 # file(COPY ../native/shape_predictor_68_face_landmarks.dat DESTINATION ../build)
 
