@@ -2,7 +2,9 @@
 #include <opencv2/opencv.hpp>	
 #include <unistd.h>	
 #include <zmq.hpp>	
+#include "libzmq.hpp"
 using namespace std;
+using namespace cv;
 // void send_msg(zmq::socket_t &socket, std::string str) {	
 //     zmq::message_t msg(str.size());	
 //     memcpy(msg.data(), str.c_str(), str.size());	
@@ -25,7 +27,7 @@ int main() {
     zmq::message_t reply, request;	
     socket.bind("tcp://*:5555");	
 
-     socket.recv(&request);	
+    socket.recv(&request);	
     while (true) {	
       //  command = read_command();	
         std::cout << "command: " << command << std::endl;	
