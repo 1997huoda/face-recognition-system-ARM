@@ -43,7 +43,7 @@ int main(int argc, char* argv[]){
 	socket.connect("tcp://"+ip1+":5555");
 	zmq::message_t msg;
 	zmq::message_t received;
-	send_msg(socket, "xxxx");
+	send_msg(socket, "0");	 //这样崩溃的时候少一次启动
 	while(true){
 		//接收命令
 		command = recv_msg(socket);
