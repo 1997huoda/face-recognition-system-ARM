@@ -3,7 +3,10 @@
 #include <unistd.h>	
 #include <zmq.hpp>	
 using namespace std;
-
+void send_pic(zmq::socket_t &socket, std::string path) {	
+    cv::Mat img = cv::imread(path);	
+    send_pic(socket, img);	
+}
 int main() {	
 
 	std::string command="send_picture";	
@@ -58,7 +61,7 @@ int main() {
             //收	
 //             socket.recv(&request);	
             //发送图片	
-            send_pic(socket, "../pic/1.png");	
+            send_pic(socket, "../none.bmp");	
             //收	
             socket.recv(&request);	
         } else {	
