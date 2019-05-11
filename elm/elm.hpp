@@ -1,6 +1,7 @@
 #ifndef _ELM_H
 #define _ELM_H
 
+#include <omp.h>
 // #define DLIB_JPEG_SUPPORT
 #include <Eigen/Dense>
 #include <Eigen/SVD>
