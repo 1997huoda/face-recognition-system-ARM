@@ -41,12 +41,17 @@ void process_image(Mat mat)
 		return;
 	}
 	//TickMeter tm;
-clock_t start,end;
-start=clock();	
+	float t = getticks();
+// clock_t start,end;
+// start=clock();	
 	pResults = facedetect_cnn(pBuffer, (unsigned char *)(mat.ptr(0)), mat.cols, mat.rows, (int)mat.step);
-end=clock();
-double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-cout<<"detect time:		"<<endtime*1000<<"ms"<<endl;		//s为单位
+// end=clock();
+// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+// cout<<"detect time:		"<<endtime*1000<<"ms"<<endl;		//s为单位
+    t = getticks() - t;
+    if(t!=0)    cout<<" detect    time     "<<t*1000<<"ms"<<endl;
+
+
 //     printf("%d faces detected.\n", (pResults ? *pResults : 0));
 
 	//print the detection results
