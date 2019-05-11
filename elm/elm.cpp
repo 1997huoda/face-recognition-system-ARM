@@ -198,6 +198,7 @@ Mat pro=pca.project(ac);//映射新空间
 // 	dst.push_back(pca.eigenvectors.row(N+i));	//多人
 // }
 // Mat dst = pca.eigenvectors.row(N);//特征向量 从0行开始 //这里 只有一行 我们要多行
+MatrixXd feature1;
 // cv2eigen(dst, feature1);     //转化
 cv2eigen(pro, feature1);     //转化
 // t = getticks() - t;
