@@ -125,8 +125,9 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
 	cout << "Number of training images:" << trainingImages.rows << endl; //
-	n = trainingImages.cols; // number of features //输出特征值
+	// n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
+	n=N;//在PCA中 输出特征的数量 我们取 PCA的位数 一般不大于2500 所以我们取PCA 维数为N
 	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
 
 	PCA pca2(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
