@@ -25,7 +25,7 @@ void face_alignment(Mat image_roi){
 float t = getticks();
 	dlib::full_object_detection shape = sp(img, dlibRect);
     t = getticks() - t;
-    if(t!=0)    cout<<" align    time     "<<t*1000<<"ms"<<endl;
+    if(t!=0)    cout<<" face feature point time     "<<t*1000<<"ms"<<endl;
 // end=clock();
 // double endtime=(double)(end-start)/CLOCKS_PER_SEC;
 // cout<<"align time:	"<<endtime*1000<<"ms"<<endl;		//ms为单位
@@ -34,7 +34,11 @@ float t = getticks();
 // shapes[0].part(i).x(), shapes[0].part(i).y()         //shape[0]是第一个人 第i个点的xy坐标
 	
 	shapes.push_back(shape);
+	 t = getticks();
 	dlib::extract_image_chips(img, dlib::get_face_chip_details(shapes), face_chips);
+	t = getticks() - t;
+    if(t!=0)    cout<<" face align    time     "<<t*1000<<"ms"<<endl;
+	
 	dlib::array2d<dlib::bgr_pixel> equ;//图像格式
 	dlib::equalize_histogram(face_chips[0], equ);
 
