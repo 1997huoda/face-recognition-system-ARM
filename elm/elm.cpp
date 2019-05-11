@@ -129,7 +129,7 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	N = trainingImages.rows;
 	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
 
-	pca.PCA(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N)；
+	pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
 	Mat dst = pca.project(trainingImages);//映射新空间
 	// Mat eigenvectors = pca.eigenvectors.clone();//特征向量矩阵
 	// cv2eigen(eigenvectors, feature);     //转化/
@@ -180,11 +180,11 @@ void ELM_testing(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 
 // float t = getticks();
-// Mat origin=trainingImages；
+// Mat origin=trainingImages;
 Mat ac;
 eigen2cv(feature1,ac);
 // origin.push_back(ac);
-// PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N)；
+// PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N);
 // Mat pro=pca.project(origin);//映射新空间
 Mat pro=pca.project(ac);//映射新空间
 // int num= pro.rows;num-=N;
