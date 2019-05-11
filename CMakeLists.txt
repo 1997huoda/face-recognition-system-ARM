@@ -53,7 +53,7 @@ add_executable(pro ${SRC})
 # )
 target_link_libraries(pro libcom libzmq ${ZMQ_LIBRARIES} libelm libnew libpico libfacedetection libalign dlib::dlib ${OpenCV_LIBS})
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_68_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/shape_predictor_5_face_landmarks.dat DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/none.bmp DESTINATION ${CMAKE_CURRENT_LIST_DIR}/build)
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/make.hpp DESTINATION /usr/local/include)
 # cmake  -DCMAKE_BUILD_TYPE=Release ..

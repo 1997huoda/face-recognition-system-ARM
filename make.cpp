@@ -3,7 +3,7 @@ void eve_init() {
     std::ios::sync_with_stdio(false);
 	std::cin.tie(NULL);
     //修改全局变量
-	dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> sp;
+	dlib::deserialize("shape_predictor_5_face_landmarks.dat") >> sp;
     trainfile_path = "../A";
 	ip1="localhost";
     // ip1="localhost";
