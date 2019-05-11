@@ -161,6 +161,8 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 clock_t start,end;
 start=clock();	
+	
+        #pragma omp parallel for
 	for(int i = 0; i < model_num; i++){
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];
 		Tem = R.array().exp() + 1;
