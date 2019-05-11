@@ -182,7 +182,7 @@ void ELM_testing(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 // float t = getticks();
 // Mat origin=trainingImages;
 Mat ac;
-eigen2cv(feature1,ac);
+eigen2cv(feature,ac);
 // origin.push_back(ac);
 // PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N);
 // Mat pro=pca.project(origin);//映射新空间
