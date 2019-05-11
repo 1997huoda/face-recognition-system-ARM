@@ -40,6 +40,7 @@ void process_image(Mat mat)
 		fprintf(stderr, "Can not alloc buffer.\n");
 		return;
 	}
+	TickMeter tm;
 clock_t start,end;
 start=clock();	
 	pResults = facedetect_cnn(pBuffer, (unsigned char *)(mat.ptr(0)), mat.cols, mat.rows, (int)mat.step);
