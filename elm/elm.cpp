@@ -1,7 +1,13 @@
 #include "elm.hpp"
+float getticks()
+{
+	struct timespec ts;
+	if(clock_gettime(CLOCK_MONOTONIC, &ts) < 0)
+		return -1.0f;
+	return ts.tv_sec + 1e-9f*ts.tv_nsec;
+}
+
 vector<int> train_labels_ori;
-
-
 int flag = 0;                         // 没有人脸?
 int N_test;
 
@@ -148,19 +154,23 @@ MatrixXd generate_training_labels(){
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-clock_t start,end;
-start=clock();	
+// clock_t start,end;
+// start=clock();	
+float t = getticks();
 	ELM_in_ELM(feature, W, b, beta);
-end=clock();
-double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
+t = getticks() - t;
+if(t!=0)    cout<<" elm		test    time     "<<t*1000<<"ms"<<endl;
+// end=clock();
+// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+// cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
-clock_t start,end;
-start=clock();	
+// clock_t start,end;
+// start=clock();	
+float t = getticks();
 	MatrixXd tem[model_num];
     #pragma omp parallel for num_threads(2)
 	for(int i = 0; i < model_num; i++){
@@ -175,7 +185,9 @@ start=clock();
 		out_all.block(0, m * i, N_test, m) = tem[i] * beta[i];
 	}
 	output = out_all * F;
-end=clock();
-double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-cout<<"elm test time:	"<<endtime*1000<<"ms"<<endl;		//s为单位
+t = getticks() - t;
+if(t!=0)    cout<<" elm		test    time     "<<t*1000<<"ms"<<endl;
+// end=clock();
+// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+// cout<<"elm test time:	"<<endtime*1000<<"ms"<<endl;		//s为单位
 }
