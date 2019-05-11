@@ -127,8 +127,11 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
 	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
+
 	PCA pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N)；
 	Mat dst = pca.project(trainingImages);//映射新空间
+	// Mat eigenvectors = pca.eigenvectors.clone();//特征向量矩阵
+	// cv2eigen(eigenvectors, feature);     //转化/
 	cv2eigen(dst, feature);     //转化
 	// cv2eigen(trainingImages, feature);     //转化
 	return feature;
@@ -175,13 +178,29 @@ void ELM_testing(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 
+float t = getticks();
 Mat origin=trainingImages；
 Mat ac;
 eigen2cv(feature1,ac);
 origin.push_back(ac);
 PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N)；
-Mat dst = pca.eigenvectors.row(N);//特征向量 从0行开始
+Mat pro=pca.project(origin);//映射新空间
+int num= pro.rows;num-=N;
+// int num= pca.eigenvectors.size();num-=N;
+// Mat eigenvectors = pca.eigenvectors.clone();
+Mat dst;
+for(int i=0;i<num;i++){
+	dst.push_back(pro.row(N+i).clone());	//多人
+}
+// for(int i=0;i<num;i++){
+// 	dst.push_back(pca.eigenvectors.row(N+i));	//多人
+// }
+// Mat dst = pca.eigenvectors.row(N);//特征向量 从0行开始 //这里 只有一行 我们要多行
 cv2eigen(dst, feature1);     //转化
+t = getticks() - t;
+if(t!=0)    cout<<" PCA	rebuild   time     "<<t*1000<<"ms"<<endl;
+
+
 // clock_t start,end;
 // start=clock();	
 float t = getticks();
