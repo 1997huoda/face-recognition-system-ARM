@@ -157,14 +157,14 @@ cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-	MatrixXd out_all, R, Tem, H;
+	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 clock_t start,end;
 start=clock();	
 	MatrixXd tem[model_num];
     #pragma omp parallel for num_threads(2)
-	
 	for(int i = 0; i < model_num; i++){
+		MatrixXd R,Tem,H;
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];
 		Tem = R.array().exp() + 1;
 		H = Tem.array().inverse();
