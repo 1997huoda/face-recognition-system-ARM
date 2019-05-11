@@ -159,7 +159,7 @@ void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 float t = getticks();
 	ELM_in_ELM(feature, W, b, beta);
 t = getticks() - t;
-if(t!=0)    cout<<" elm		test    time     "<<t*1000<<"ms"<<endl;
+if(t!=0)    cout<<" elm	triaining    time     "<<t*1000<<"ms"<<endl;
 // end=clock();
 // double endtime=(double)(end-start)/CLOCKS_PER_SEC;
 // cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
@@ -186,7 +186,7 @@ float t = getticks();
 	}
 	output = out_all * F;
 t = getticks() - t;
-if(t!=0)    cout<<" elm		test    time     "<<t*1000<<"ms"<<endl;
+if(t!=0)    cout<<" elm	test    time     "<<t*1000<<"ms"<<endl;
 // end=clock();
 // double endtime=(double)(end-start)/CLOCKS_PER_SEC;
 // cout<<"elm test time:	"<<endtime*1000<<"ms"<<endl;		//s为单位
