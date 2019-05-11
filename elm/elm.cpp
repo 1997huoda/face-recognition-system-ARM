@@ -11,6 +11,8 @@ vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
 
+Mat trainingImages;
+
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path ; //路径
 
@@ -80,8 +82,9 @@ cv::Mat face_align(const char * filename){
 	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
 	return pic;
 }
-void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels){
+void getFaces_train(string filePath, Mat & training,vector<int> & trainingLabels){
 	vector<string> files;
+	training.clear();//training 全局变量之后 不能直接push back
 	getFiles_train(filePath, files);
 	int number = files.size();
 	for(int i = 0; i < number; i++){
@@ -93,11 +96,12 @@ void getFaces_train(string filePath, Mat & trainingImages,vector<int> & training
 		}
 		resize(SrcImage, SrcImage, cv::Size(50, 50));
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-
 		Mat SrcImage2 = SrcImage1.t();
-		trainingImages.push_back(SrcImage2);
+		training.push_back(SrcImage2);
 		trainingLabels.push_back(train_labels_ori.at(i));
 	}
+	//training 将 SrcImage2 挨个放进去 一张图一个行向量
+
 }
 
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
@@ -115,16 +119,18 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
-
 	cout << "Loading train Data..." << endl;
-
-	Mat trainingImages;
+	// Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
-	cv2eigen(trainingImages, feature);     //转化
 	cout << "Number of training images:" << trainingImages.rows << endl; //
 	n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
+	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
+	PCA pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N)；
+	Mat dst = pca.project(trainingImages);//映射新空间
+	cv2eigen(dst, feature);     //转化
+	// cv2eigen(trainingImages, feature);     //转化
 	return feature;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
@@ -165,9 +171,17 @@ if(t!=0)    cout<<" elm	triaining    time     "<<t*1000<<"ms"<<endl;
 // cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
 }
 // ELM testing
-void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
+void ELM_testing(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){//MatrixXd feature1 -->MatrixXd feature
 	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
+
+Mat origin=trainingImages；
+Mat ac;
+eigen2cv(feature1,ac);
+origin.push_back(ac);
+PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N)；
+Mat dst = pca.eigenvectors.row(N);//特征向量 从0行开始
+cv2eigen(dst, feature1);     //转化
 // clock_t start,end;
 // start=clock();	
 float t = getticks();
