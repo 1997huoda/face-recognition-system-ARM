@@ -2,10 +2,10 @@
 #include"new.hpp"
 
 int n;
-int L = 300;                          //隐层节点数
+int L = 200;                          //隐层节点数
 int N;
 int m;// = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
-int model_num = 5;                    //子ELM模型的数量
+int model_num = 6;                    //子ELM模型的数量
 
 MatrixXd F, output, T;
 
@@ -59,11 +59,16 @@ void ELM_basic(MatrixXd & feature, MatrixXd & W, MatrixXd & b_1, MatrixXd & beta
 void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd Hg, temp_out;
 	Hg = MatrixXd::Zero(N, m * model_num);
+	MatrixXd tem[model_num];
 	//#pragma omp  for
-	//#pragma omp  parallel for
+	#pragma omp  parallel for
 	for(int i = 0; i < model_num; i++){
-		ELM_basic(feature, W[i], b[i], beta[i], temp_out);
-		Hg.block(0, m * i, N, m) = temp_out;
+		ELM_basic(feature, W[i], b[i], beta[i], tem[i]);
+		//ELM_basic(feature, W[i], b[i], beta[i], temp_out);
+		//Hg.block(0, m * i, N, m) = temp_out;
+	}
+	for(int i = 0; i < model_num; i++){
+		Hg.block(0, m * i, N, m) = tem[i];
 	}
 	MatrixXd Hg1;
 	pseudoInverse(Hg, Hg1);
