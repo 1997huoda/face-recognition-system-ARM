@@ -61,7 +61,7 @@ void ELM_in_ELM(MatrixXd & feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 	Hg = MatrixXd::Zero(N, m * model_num);
 	MatrixXd tem[model_num];
 	//#pragma omp  for
-	#pragma omp  parallel for
+	//#pragma omp  parallel for
 	for(int i = 0; i < model_num; i++){
 		ELM_basic(feature, W[i], b[i], beta[i], tem[i]);
 		//ELM_basic(feature, W[i], b[i], beta[i], temp_out);

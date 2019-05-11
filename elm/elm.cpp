@@ -95,12 +95,12 @@ void getFaces_train(string filePath, Mat & trainingImages,vector<int> & training
 }
 
 void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
+	
 	for(vector<Mat>::iterator iter = mat_v.begin(); iter != mat_v.end(); iter++){
 		// imwrite("alignment"+to_string(iter-mat_v.begin())+".jpg",(*iter));
 		Mat SrcImage;
 		resize((*iter), SrcImage, cv::Size(50, 50));
 		Mat SrcImage1 = Mat(extract_feature(SrcImage), true);
-
 		Mat SrcImage2 = SrcImage1.t();
 		trainingImages.push_back(SrcImage2);
 	}
@@ -162,7 +162,7 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 clock_t start,end;
 start=clock();	
 	MatrixXd tem[model_num];
-        #pragma omp parallel for 
+      //  #pragma omp parallel for 
 	for(int i = 0; i < model_num; i++){
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];
 		Tem = R.array().exp() + 1;
