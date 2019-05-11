@@ -4,6 +4,13 @@
 #include "test.hpp"
 #include "facedetectcnn.h"
 
+float getticks()
+{
+	struct timespec ts;
+	if(clock_gettime(CLOCK_MONOTONIC, &ts) < 0)
+		return -1.0f;
+	return ts.tv_sec + 1e-9f*ts.tv_nsec;
+}
 
 cv::Size size_box(100, 100);
 cv::Size nor(160, 120);//160 120// 320 160 // 128 96 //

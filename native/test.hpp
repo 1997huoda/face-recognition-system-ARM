@@ -17,6 +17,7 @@
 
 
 
+
 //define the buffer size. Do not change the size!
 #define DETECT_BUFFER_SIZE 0x20000
 using namespace std;

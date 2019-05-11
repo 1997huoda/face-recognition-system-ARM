@@ -3,7 +3,13 @@
 #include <stdio.h>
 #include <math.h>
 #include "align.hpp"
-
+float getticks()
+{
+	struct timespec ts;
+	if(clock_gettime(CLOCK_MONOTONIC, &ts) < 0)
+		return -1.0f;
+	return ts.tv_sec + 1e-9f*ts.tv_nsec;
+}
 dlib::shape_predictor sp;               // dlib shape predictor
 vector<Mat> alignment_face_recall;
 
