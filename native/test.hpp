@@ -1,6 +1,6 @@
 #ifndef _TEST_H
 #define _TEST_H
-
+#include <omp.h>
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include <time.h>
