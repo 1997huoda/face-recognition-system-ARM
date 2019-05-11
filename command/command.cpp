@@ -74,6 +74,7 @@ string show_once() {
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
         // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
     }
+	cout<<output_name<<endl;
     return output_name;
 }
 
