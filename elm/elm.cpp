@@ -11,7 +11,8 @@ vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
 
-Mat trainingImages;
+// Mat trainingImages;//将pca全局变量 而非训练数据
+PCA pca;
 
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path ; //路径
@@ -84,7 +85,7 @@ cv::Mat face_align(const char * filename){
 }
 void getFaces_train(string filePath, Mat & training,vector<int> & trainingLabels){
 	vector<string> files;
-	training.clear();//training 全局变量之后 不能直接push back
+	// training.clear();//training 全局变量之后 不能直接push back
 	getFiles_train(filePath, files);
 	int number = files.size();
 	for(int i = 0; i < number; i++){
@@ -120,7 +121,7 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	cout << "Loading train Data..." << endl;
-	// Mat trainingImages;
+	Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
 	cout << "Number of training images:" << trainingImages.rows << endl; //
@@ -128,7 +129,7 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	N = trainingImages.rows;
 	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
 
-	PCA pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N)；
+	pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N)；
 	Mat dst = pca.project(trainingImages);//映射新空间
 	// Mat eigenvectors = pca.eigenvectors.clone();//特征向量矩阵
 	// cv2eigen(eigenvectors, feature);     //转化/
@@ -178,27 +179,29 @@ void ELM_testing(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
 
-float t = getticks();
-Mat origin=trainingImages；
+// float t = getticks();
+// Mat origin=trainingImages；
 Mat ac;
 eigen2cv(feature1,ac);
-origin.push_back(ac);
-PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N)；
-Mat pro=pca.project(origin);//映射新空间
-int num= pro.rows;num-=N;
+// origin.push_back(ac);
+// PCA pca(origin, Mat(), CV_PCA_DATA_AS_ROW, N)；
+// Mat pro=pca.project(origin);//映射新空间
+Mat pro=pca.project(ac);//映射新空间
+// int num= pro.rows;num-=N;
 // int num= pca.eigenvectors.size();num-=N;
 // Mat eigenvectors = pca.eigenvectors.clone();
-Mat dst;
-for(int i=0;i<num;i++){
-	dst.push_back(pro.row(N+i).clone());	//多人
-}
+// Mat dst;
+// for(int i=0;i<num;i++){
+// 	dst.push_back(pro.row(N+i).clone());	//多人
+// }
 // for(int i=0;i<num;i++){
 // 	dst.push_back(pca.eigenvectors.row(N+i));	//多人
 // }
 // Mat dst = pca.eigenvectors.row(N);//特征向量 从0行开始 //这里 只有一行 我们要多行
-cv2eigen(dst, feature1);     //转化
-t = getticks() - t;
-if(t!=0)    cout<<" PCA	rebuild   time     "<<t*1000<<"ms"<<endl;
+// cv2eigen(dst, feature1);     //转化
+cv2eigen(pro, feature1);     //转化
+// t = getticks() - t;
+// if(t!=0)    cout<<" PCA	rebuild   time     "<<t*1000<<"ms"<<endl;
 
 
 // clock_t start,end;
