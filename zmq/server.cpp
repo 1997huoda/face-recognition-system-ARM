@@ -46,8 +46,8 @@ int main() {
             send_msg(socket, "received_face_name");	
             //收图片	
             cv::Mat img;	
-			if(face_num!=0)
-            for (int i = 0; i <face_num; i++) {	//修改代码把《=中的=号去了
+			//if(face_num!=0)
+            for (int i = 0; i <=face_num; i++) {	//修改代码把《=中的=号去了
                 socket.recv(&request);	
                 std::vector<uchar> img_data(request.size());	
                 memcpy(img_data.data(), request.data(), request.size());	
