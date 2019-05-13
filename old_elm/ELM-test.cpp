@@ -347,7 +347,7 @@ void ELM_in_ELM(MatrixXd &feature, /*VectorXd &label,*/ MatrixXd* W, MatrixXd* b
 	output=Hg*F;
 }
 #endif
-
+/* 
 void pr(string msg, MatrixXd &T) {
 	cout<<msg<<endl<<T<<endl;
 }
@@ -362,7 +362,7 @@ void print_matrix(MatrixXd &T) {
 	//~ for (int i = 0; i < N; i++)
 		//~ cout << output(i, 0) << " ";
 	//~ cout<<endl;
-}
+} */
 
 /*void load_MatrixXd(MatrixXd &T,string filename) {
 	char *text=get_file_text(filename.c_str());
@@ -376,10 +376,11 @@ cv::Mat face_align(const char* filename)
 	// cout<<pic<<endl;
 	if((pic.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
 	Mat for_end;
-	cvtColor(pic, for_end, COLOR_BGR2GRAY);
+	dst=pic.clone();Mat gray;
+	cvtColor(dst, gray, COLOR_BGR2GRAY);
 	// pic.convertTo(for_end,CV_8UC1);
-	equalizeHist(for_end,for_end);
-	return pic;
+	equalizeHist(gray,gray);
+	return gray;
 /* 	Mat image_roi=imread(filename,0);
 		if((image_roi.empty()))	{		flag = 1;		cout << "pic  empty" << endl;		return cv::Mat::zeros(50, 50, CV_8UC1);	}
 	equalizeHist(image_roi, image_roi); */
