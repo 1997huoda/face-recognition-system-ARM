@@ -61,10 +61,12 @@ int main(int argc, char* argv[]){
 			}
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
+			cout<<to_string(face_num)<<endl;
 			socket.recv(&received);
 
 			//发人脸名字
 			send_msg(socket, name);
+			cout<<name<<endl;
 			// cout << "name:" << name << endl;
 			socket.recv(&received);
 
@@ -73,6 +75,7 @@ int main(int argc, char* argv[]){
 			}
 			//摄像头 图像
 			send_pic(socket, frame);
+			cout<<"cap"<<endl;
 			socket.recv(&received);
 
 			// face_num个人脸的图像
@@ -87,6 +90,7 @@ int main(int argc, char* argv[]){
 				Mat send = (origin(rect));
 				resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
 				send_pic(socket, send);
+				cout<<(iter-final_location.begin())<<endl;
 				socket.recv(&received);
 			}
 
@@ -99,6 +103,7 @@ int main(int argc, char* argv[]){
 
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
+			cout<<"end"<<endl;
 
 		} else if(!strcmp(command.c_str(), "none")){
 			std::string tmp = "none";
