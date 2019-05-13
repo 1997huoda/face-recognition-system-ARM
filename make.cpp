@@ -93,6 +93,7 @@ int main(int argc, char* argv[]){
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
+			cout<<"after for\n"
 
 			//备用发送 未测试	//仅供测试使用 否则与u实际逻辑冲突 ***能用 但是 不推荐***
 			// for(vector<Mat>::iterator iter =alignment_face_recall.begin(); iter !=	alignment_face_recall.end(); iter++){
