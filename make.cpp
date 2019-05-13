@@ -82,6 +82,7 @@ int main(int argc, char* argv[]){
 			float x_b = (origin.cols / nor.width);
 			float y_b = (origin.rows / nor.height);
 			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+				cout<<to_string(iter-final_location.begin())<<endl;
 				int x = cvRound(x_b * (*iter).x);
 				int y = cvRound(y_b * (*iter).y);
 				int w = cvRound(x_b * (*iter).w);
@@ -90,7 +91,6 @@ int main(int argc, char* argv[]){
 				Mat send = (origin(rect));
 				resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
 				send_pic(socket, send);
-				cout<<(iter-final_location.begin())<<endl;
 				socket.recv(&received);
 			}
 
