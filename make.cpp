@@ -23,7 +23,6 @@ void eve_init() {
 int main(int argc, char* argv[]){
 	//先参数初始化
 	eve_init();
-	
 	//再修改参数
 	int in = read_arg(argc, argv);
 	if(in==1){

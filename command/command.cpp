@@ -26,8 +26,7 @@ void get_filename(string path, vector<string> &names) {
     }
     while ((ptr = readdir(dir)) != NULL) //读取列表
     {
-        if (strncmp(ptr->d_name, ".", 1) ==
-            0) //去掉本级目录	去掉上级目录	去掉隐藏文件
+        if ((strncmp(ptr->d_name, ".", 1)==  0)||ptr->d_name[0] == '.' ) //去掉本级目录	去掉上级目录	去掉隐藏文件
             continue;
         if (ptr->d_type == DT_DIR) { // DT_DIR目录    DT_REG常规文件
             string ss = ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题
@@ -36,8 +35,7 @@ void get_filename(string path, vector<string> &names) {
             dir1 = opendir(path_ss.c_str());
             int exit_flag = 0;
             while ((ptr1 = readdir(dir1)) != NULL) {
-                if (strncmp(ptr1->d_name, ".", 1) ==
-                    0) //去掉本级目录	去掉上级目录	去掉隐藏文件
+                if ((strncmp(ptr1->d_name, ".", 1)==  0)||ptr1->d_name[0] == '.' ) //去掉本级目录	去掉上级目录	去掉隐藏文件
                 {
                     continue;
                 } else {
