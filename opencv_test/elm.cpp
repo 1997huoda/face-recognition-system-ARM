@@ -100,9 +100,15 @@ int main(int argc, char * * argv){
 	Mat g4=gray.clone();
 	MyGammaCorrection(g4,g4,0.4f);
 	imwrite("gamma0.4.jpg",g4);
+	Mat g4e=g4.clone();
+	equalizeHist(g4e,g4e);
+	imwrite("g4+equalize.jpg",g4e);
 	Mat g15=gray.clone();
 	MyGammaCorrection(g15,g15,1.5f);
+	Mat g15e=g15.clone();
 	imwrite("gamma1.5.jpg",g15);
+	equalizeHist(g15e,g15e);
+	imwrite("g15+equalize.jpg",g15e);
 	Mat l=gray.clone();
 	l=logTransform3(l,3.0f);
 	imwrite("log.jpg",l);
