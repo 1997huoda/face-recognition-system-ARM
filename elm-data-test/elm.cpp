@@ -5,7 +5,7 @@ vector<int> test_labels_ori;
 int k = 1;
 int flag = 0;                         // 没有人脸?
 // MatrixXd T;                           //存放训练集标签
-int L = 600;                          //隐层节点数
+int L = 100;                          //隐层节点数
 int m = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 5;                    //子ELM模型的数量
 
