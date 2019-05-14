@@ -61,7 +61,7 @@ void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     MatrixXd feature;
     Mat A,B;
     A = ELM_in_ELM_face_training_matrix_from_files();
-    lda=LDA(A,trainingLabels,N-1);
+    lda=LDA(A,trainingLabels,0);
     B=lda.project(A);
     cv2eigen(B,feature);
 
