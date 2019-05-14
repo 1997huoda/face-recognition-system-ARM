@@ -83,8 +83,8 @@ int main(int argc, char* argv[]){
 			float y_b = (origin.rows / nor.height);
 			//if(face_num!= 0)
 				 for (int i = 0; i <face_num; i++) {
-					 vector<location>::iterator iter = final_location.begin()+i;
-			//for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+					// vector<location>::iterator iter = final_location.begin()+i;
+			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
 				cout<<to_string(iter-final_location.begin())<<endl;
 				int x = cvRound(x_b * (*iter).x);
 				int y = cvRound(y_b * (*iter).y);
