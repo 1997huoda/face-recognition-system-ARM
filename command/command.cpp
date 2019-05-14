@@ -123,7 +123,7 @@ Mat process_once() {
     name.clear();
     origin.release();    
 
-    Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+    Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
 	cvtColor(origin, origin, CV_RGB2BGR);
     if (origin.empty()){
@@ -137,7 +137,7 @@ Mat process_once() {
     }
     // return ;
     // bak_gray为原图的灰度图
-    //cvtColor(origin, bak_gray, CV_BGR2GRAY);
+    cvtColor(origin, bak_gray, CV_BGR2GRAY);
     // capture >> frame;
     resize(origin, frame, nor, 0, 0, INTER_LINEAR);
     if (frame.empty())
