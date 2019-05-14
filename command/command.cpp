@@ -174,8 +174,9 @@ Mat process_once() {
         int h = cvRound(y_b * (*iter).h);
 
         Rect rect(x, y, w, h);
-        Mat image = (origin(rect));
-        // Mat image = (bak_gray(rect));
+        //Mat image = (origin(rect));
+         Mat image = (bak_gray(rect));
+		 equalizeHist(image,image);
         // imwrite(to_string(iter-final_location.begin())+".jpg",image);
 
         // resize 将长方形的人脸 resize 成标准方形
