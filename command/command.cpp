@@ -137,7 +137,7 @@ Mat process_once() {
     }
     // return ;
     // bak_gray为原图的灰度图
-    cvtColor(origin, bak_gray, CV_BGR2GRAY);
+    cvtColor(origin.clone(), bak_gray, CV_BGR2GRAY);
     // capture >> frame;
     resize(origin, frame, nor, 0, 0, INTER_LINEAR);
     if (frame.empty())
