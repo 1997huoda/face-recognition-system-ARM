@@ -1,4 +1,5 @@
 #include "command.hpp"
+LDA lda;
 
 int read_arg(int argc, char * argv[]){
 	int arg = 1;
@@ -52,9 +53,18 @@ void get_filename(string path, vector<string> &names) {
     closedir(dir);
 }
 void train_elm(MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
+/*  LDA(const Mat& src, vector<int> labels,int num_components = 0) :
+第一个为数据集（行排列）
+第二个为int类型的标签数组和第一个数据集相对应
+第三个为默认降维的维度为c-1，c是类别的数量 */
     //训练参数  W b beta
     MatrixXd feature;
-    feature = ELM_in_ELM_face_training_matrix_from_files();
+    Mat A,B;
+    A = ELM_in_ELM_face_training_matrix_from_files();
+    lda=LDA(A,trainingLabels);
+    B=lda.project(A);
+    cv2eigen(B,feature);
+
     T = generate_training_labels();
     ELM_training(feature, W, b, beta);
     cout << "train elm-in-elm end\n";
@@ -80,7 +90,10 @@ void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     //将整个 alignment vector送进来 产生测试数据集
     // name="";
     MatrixXd /* feature, */ feature1;
-    feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
+    Mat A,B;
+    A = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
+    B=lda.project(A);
+    cv2eigen(B,feature1);
     ELM_testing(feature1, W, b, beta);
     // std::string fileName = "output.txt";
 	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 

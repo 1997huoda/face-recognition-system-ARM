@@ -43,10 +43,10 @@ extern vector<int> trainingLabels;
 
 
 extern int N_test;
+extern vector<int> trainingLabels;
 
-
-MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);
+Mat ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
+Mat ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);
 
 MatrixXd generate_training_labels();                  //生成训练集标签
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta); // ELM-in-ELM训练函数

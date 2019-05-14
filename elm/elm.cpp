@@ -11,6 +11,7 @@ vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
 
+
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path ; //路径
 
@@ -113,11 +114,31 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 }
 
 
+Mat ELM_in_ELM_face_training_matrix_from_files(){
 
+	cout << "Loading train Data..." << endl;
+	Mat trainingImages;
+	getFaces_train(trainfile_path, trainingImages, trainingLabels);
+	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
+	// cv2eigen(trainingImages, feature);     //转化
+	cout << "Number of training images:" << trainingImages.rows << endl; //
+	n = trainingImages.cols; // number of features //输出特征值
+	N = trainingImages.rows;
+	return trainingImages;
+}
+Mat ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
+
+	Mat testingImages;
+	getFaces_test(mat_v, testingImages);
+	MatrixXd feature1(testingImages.rows, testingImages.cols);
+	// cv2eigen(testingImages, feature1);
+	N_test = testingImages.rows;
+	return testingImages;
+}
+/* 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 
 	cout << "Loading train Data..." << endl;
-
 	Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
@@ -126,8 +147,8 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
 	return feature;
-}
-MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
+} */
+/* MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 
 	Mat testingImages;
 	getFaces_test(mat_v, testingImages);
@@ -135,7 +156,7 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 
 	cv2eigen(testingImages, feature1);
 	N_test = testingImages.rows;
 	return feature1;
-}
+} */
 
 MatrixXd generate_training_labels(){
 	MatrixXd temp_T;
@@ -154,15 +175,12 @@ MatrixXd generate_training_labels(){
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-// clock_t start,end;
-// start=clock();	
+
 float t = getticks();
 	ELM_in_ELM(feature, W, b, beta);
 t = getticks() - t;
 if(t!=0)    cout<<" elm	triaining    time     "<<t*1000<<"ms"<<endl;
-// end=clock();
-// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-// cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
+
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
@@ -187,7 +205,5 @@ float t = getticks();
 	output = out_all * F;
 t = getticks() - t;
 if(t!=0)    cout<<" elm	test    time     "<<t*1000<<"ms"<<endl;
-// end=clock();
-// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-// cout<<"elm test time:	"<<endtime*1000<<"ms"<<endl;		//s为单位
+
 }
