@@ -15,7 +15,7 @@ vector<Mat> alignment_face_recall;
 
 void face_alignment(Mat image_roi){
 	//equalizeHist
-	cv::cvtColor(image_roi, image_roi, CV_BGR2RGB);
+	cv::cvtColor(image_roi, image_roi, CV_BGR2GRAY);
 	equalizeHist(image_roi,image_roi);
 	//dlib::cv_image<dlib::rgb_pixel> img(image_roi);  
 	dlib::cv_image<unsigned char> img(image_roi);  	
