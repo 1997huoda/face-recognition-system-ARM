@@ -14,7 +14,9 @@ dlib::shape_predictor sp;               // dlib shape predictor
 vector<Mat> alignment_face_recall;
 
 void face_alignment(Mat image_roi){
-	//cv::cvtColor(image_roi, image_roi, CV_BGR2RGB);
+	//equalizeHist
+	cv::cvtColor(image_roi, image_roi, CV_BGR2RGB);
+	equalizeHist(image_roi,image_roi);
 	//dlib::cv_image<dlib::rgb_pixel> img(image_roi);  
 	dlib::cv_image<unsigned char> img(image_roi);  	
 	std::vector<dlib::full_object_detection> shapes;//shape的向量

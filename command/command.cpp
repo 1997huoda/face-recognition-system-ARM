@@ -123,9 +123,9 @@ Mat process_once() {
     name.clear();
     origin.release();    
 
-    Mat frame, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+    Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
-	cvtColor(origin.clone(), origin, CV_RGB2BGR);
+	//cvtColor(origin.clone(), origin, CV_RGB2BGR);
     if (origin.empty()){
         cout << "cap empty" << endl;
         face_num=0;
@@ -137,7 +137,7 @@ Mat process_once() {
     }
     // return ;
     // bak_gray为原图的灰度图
-    cvtColor(origin.clone(), bak_gray, CV_BGR2GRAY);
+    //cvtColor(origin.clone(), bak_gray, CV_BGR2GRAY);
     // capture >> frame;
     resize(origin, frame, nor, 0, 0, INTER_LINEAR);
     if (frame.empty())
@@ -175,9 +175,9 @@ Mat process_once() {
         int h = cvRound(y_b * (*iter).h);
 
         Rect rect(x, y, w, h);
-        //Mat image = (origin(rect));
-         Mat image = (bak_gray(rect));
-		 equalizeHist(image,image);
+        Mat image = (origin(rect));
+        // Mat image = (bak_gray(rect));
+		// equalizeHist(image,image);
         // imwrite(to_string(iter-final_location.begin())+".jpg",image);
 
         // resize 将长方形的人脸 resize 成标准方形
