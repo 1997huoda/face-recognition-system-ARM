@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
 
 			//收图
 			rec_img = receive_pic(socket);
-			cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
+			//cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();
 			face_alignment(rec_img);
 			int N64 =rand();
