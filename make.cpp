@@ -91,7 +91,7 @@ int main(int argc, char* argv[]){
 				int h = cvRound(y_b * (*iter).h);
 				Rect rect(x, y, w, h);
 				Mat send = (origin(rect));
-				resize(origin, frame, size_box, 0, 0, INTER_LINEAR);
+				resize(origin, frame, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
