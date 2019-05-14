@@ -125,6 +125,7 @@ Mat process_once() {
 
     Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
+	cvtColor(origin, origin, CV_RGB2BGR);
     if (origin.empty()){
         cout << "cap empty" << endl;
         face_num=0;
