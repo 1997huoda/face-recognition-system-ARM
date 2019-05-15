@@ -12,7 +12,8 @@ alignment 10ms
 
 elm-in-elm test 60ms
 
-##代码结构：##
+#代码结构：
+
 ###
 make.cpp为主文件
 
@@ -36,7 +37,8 @@ Qt/server/* 为Qt可视化界面代码 采用CMake管理 Qmake保证不能用
 
 Android系统可视化界面代码请见另外一个仓库 AS-ELM ，使用时注意OpenCV的配置
 
-##分支说明
+#分支说明
+
 ###
 master为ARM当前版本代码
 
