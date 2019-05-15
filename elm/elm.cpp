@@ -145,11 +145,14 @@ MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	cout << "Number of training images:" << trainingImages.rows << endl; //
 	// n = trainingImages.cols; // number of features //输入矩阵 单个样本 特征值 个数
 	N = trainingImages.rows;
-	n=N;//ELM
 	pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
 	Mat dst = pca.project(trainingImages);//映射新空间	
-	MatrixXd feature(trainingImages.rows, N); 
-	cv2eigen(dst, feature); 
+	lda=LDA(dst,trainingLabels);//应该是类别数减一的特征值 查看该矩阵的列数就可以得到
+	Mat eivector=lda.eigenvectors().clone();//LDA 每个类的特征值 每个类别为一行
+
+	MatrixXd feature(eivector.rows, eivector.cols); 
+	n=eivector.cols;//ELM 输入特征值个数
+	cv2eigen(eivector, feature); 
 	return feature;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
@@ -160,8 +163,9 @@ MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 
 	// cv2eigen(testingImages, feature1);
 	N_test = testingImages.rows;
 	Mat dst = pca.project(testingImages);//映射新空间
-	MatrixXd feature1(testingImages.rows, N);
-	cv2eigen(dst, feature1); 
+	Mat A=lda.project(testingImages);
+	MatrixXd feature1(A.rows, A.cols);
+	cv2eigen(A, feature1); 
 	return feature1;
 }
 
