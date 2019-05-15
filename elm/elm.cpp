@@ -10,6 +10,8 @@ float getticks()
 vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
+PCA pca;
+LDA lda;
 
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path ; //路径
@@ -112,28 +114,54 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 	}
 }
 
-
-
-MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
-
+/* MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
 	cout << "Loading train Data..." << endl;
-
 	Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
-	cv2eigen(trainingImages, feature);     //转化
 	cout << "Number of training images:" << trainingImages.rows << endl; //
-	n = trainingImages.cols; // number of features //输出特征值
+	// n = trainingImages.cols; // number of features //输出特征值
 	N = trainingImages.rows;
+	n=N;//在PCA中 输出特征的数量 我们取 PCA的位数 一般不大于2500 所以我们取PCA 维数为N
+	// N 时训练人数 PCA的位数 就是这个个数，一般人脸照片数不会超过 2500
+
+	pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
+	// PCA pca2(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
+	// pca=pca2;
+	Mat dst = pca.project(trainingImages);//映射新空间
+	// Mat eigenvectors = pca.eigenvectors.clone();//特征向量矩阵
+	// cv2eigen(eigenvectors, feature);     //转化/
+	cv2eigen(dst, feature);     //转化
+	// cv2eigen(trainingImages, feature);     //转化
+	return feature;
+} */
+
+MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
+	cout << "Loading train Data..." << endl;
+	Mat trainingImages;
+	getFaces_train(trainfile_path, trainingImages, trainingLabels);
+	// MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
+	// cv2eigen(trainingImages, feature);     //转化
+	cout << "Number of training images:" << trainingImages.rows << endl; //
+	// n = trainingImages.cols; // number of features //输入矩阵 单个样本 特征值 个数
+	N = trainingImages.rows;
+	n=N;//ELM
+	pca(trainingImages, Mat(), CV_PCA_DATA_AS_ROW, N);
+	Mat dst = pca.project(trainingImages);//映射新空间	
+	MatrixXd feature(trainingImages.rows, N); 
+	cv2eigen(dst, feature); 
 	return feature;
 }
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v){ //重载 有参数Mat
 
 	Mat testingImages;
 	getFaces_test(mat_v, testingImages);
-	MatrixXd feature1(testingImages.rows, testingImages.cols);
-	cv2eigen(testingImages, feature1);
+	// MatrixXd feature1(testingImages.rows, testingImages.cols);
+	// cv2eigen(testingImages, feature1);
 	N_test = testingImages.rows;
+	Mat dst = pca.project(testingImages);//映射新空间
+	MatrixXd feature1(testingImages.rows, N);
+	cv2eigen(dst, feature1); 
 	return feature1;
 }
 

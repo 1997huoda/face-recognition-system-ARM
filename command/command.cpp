@@ -66,11 +66,8 @@ string show_once() {
     string output_name="";
     for (int i = 0; i < N_test; i++) {
         int /* ii, */ jj;
-        // cout<<"i"<<i<<endl;
-        // cout<<output.row(i)<<endl;
         float truth = (output.row(i)).maxCoeff(&jj);
         output_name += names[jj]+"\n"+to_string(truth)  + "/";
-        // cout <<"ii:"<<ii<<"  jj:"<< jj <<"   name:"<<names[jj]<< "   truth:"<<truth<<endl;
     }
 	cout<<output_name<<endl;
     return output_name;
@@ -82,11 +79,6 @@ void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
     MatrixXd /* feature, */ feature1;
     feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
     ELM_testing(feature1, W, b, beta);
-    // std::string fileName = "output.txt";
-	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	// outfile << output << endl;
-	// outfile.close();
-    // name为识别结果字符串
     name = show_once();
 }
 
