@@ -1,4 +1,4 @@
-# 可穿戴嵌入式人脸识别系统
+# 嵌入式人脸识别系统
 ###
 arm : up-1.2Ghz armv7l  512M mem 16G sd card
 
@@ -12,7 +12,7 @@ alignment 10ms
 
 elm-in-elm test 60ms
 
-#代码结构：
+'''代码结构：'''
 
 ###
 make.cpp为主文件
