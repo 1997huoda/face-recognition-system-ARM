@@ -6,7 +6,7 @@ arm : up-1.2Ghz armv7l  512M mem 16G sd card
 
 detect 27ms
 
-feature point 30ms
+feature point 20ms
 
 alignment 10ms
 
