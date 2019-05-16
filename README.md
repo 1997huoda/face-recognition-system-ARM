@@ -1,6 +1,6 @@
 # 嵌入式人脸识别系统
 ###
-arm : up-1.2Ghz armv7l  512M mem 16G sd card
+arm : up-1.2Ghz armv7l  512M RAM 16G sd card
 
  enable_neon  -mfpu=vfpv3 -march=armv7-a 
 
