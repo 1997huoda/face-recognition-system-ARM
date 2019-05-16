@@ -123,6 +123,7 @@ Mat process_once() {
 
     Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
+	flip(origin, origin, 0);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
 	//cvtColor(origin.clone(), origin, CV_RGB2BGR);
     if (origin.empty()){
         cout << "cap empty" << endl;
