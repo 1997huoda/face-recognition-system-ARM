@@ -46,4 +46,4 @@ PCA 为PCA实现人脸识别
 
 LDA 为LDA实现人脸识别
 
-Linux为PC上运行测试的版本 作者用来传输数据使用 并非真正的编译版本 如果使用 去掉CMake指定编译器和NEON操作即可编译
+Linux为PC上运行测试的版本 作者用来传输数据使用 并非真正的编译版本 如果LINUX使用 master去掉CMake指定编译器和NEON操作即可编译
