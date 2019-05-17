@@ -77,16 +77,9 @@ string show_once() {
 }
 
 void test_elm(vector<Mat> mat_v, MatrixXd *W, MatrixXd *b, MatrixXd *beta) {
-    //将整个 alignment vector送进来 产生测试数据集
-    // name="";
     MatrixXd /* feature, */ feature1;
     feature1 = ELM_in_ELM_face_testing_matrix_from_files(mat_v);
     ELM_testing(feature1, W, b, beta);
-    // std::string fileName = "output.txt";
-	// std::ofstream outfile(	fileName.c_str()); // file name and the operation type. 
-	// outfile << output << endl;
-	// outfile.close();
-    // name为识别结果字符串
     name = show_once();
 }
 
@@ -98,7 +91,7 @@ void mkdir_human_name(string human_name) {
     if (!dir) {
         mode_t mode = umask(0);
         if (0 == mkdir(filename.c_str(), 0777))
-            cout << filename << "  mkdir OK!" << endl;
+            // cout << filename << "  mkdir OK!" << endl;
         umask(mode);
         cout << "创建" << filename << "成功\n";
         return;
@@ -115,7 +108,7 @@ Mat process_once() {
     if (!capture.isOpened()) //没有打开摄像头的话，就返回。
         cout << "failed open capture" << endl;
 
-    //将识别结果清空
+    //将识别结果清空f
     final_location.clear();
     alignment_face_recall.clear();
     name.clear();
@@ -123,7 +116,9 @@ Mat process_once() {
 
     Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
     capture >> origin;
+    //ARM
 	flip(origin, origin, 0);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
+
 	//cvtColor(origin.clone(), origin, CV_RGB2BGR);
     if (origin.empty()){
         cout << "cap empty" << endl;

@@ -10,6 +10,7 @@ float getticks()
 vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
+ cv::Size elm_size(40,40);
 
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
 string trainfile_path ; //路径
@@ -75,9 +76,9 @@ cv::Mat face_align(const char * filename){
 	{
 		flag = 1;
 		cout << "pic  empty" << endl;
-		return cv::Mat::zeros(50, 50, CV_8UC3);
+		return cv::Mat::zeros(elm_size, CV_8UC3);
 	}
-	resize(pic, pic, cv::Size(50, 50), 0, 0, INTER_LINEAR);
+	resize(pic, pic, elm_size, 0, 0, INTER_LINEAR);
 	return pic;
 }
 void getFaces_train(string filePath, Mat & trainingImages,vector<int> & trainingLabels){

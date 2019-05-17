@@ -65,7 +65,7 @@ int main(int argc, char* argv[]){
 
 			//发人脸名字
 			send_msg(socket, name);
-			cout<<name<<endl;
+			// cout<<name<<endl;
 			// cout << "name:" << name << endl;
 			socket.recv(&received);
 
@@ -74,14 +74,14 @@ int main(int argc, char* argv[]){
 			}
 			//摄像头 图像
 			send_pic(socket, frame);
-			cout<<"cap"<<endl;
+			// cout<<"cap"<<endl;
 			socket.recv(&received);
 
 			// face_num个人脸的图像
 			float x_b = (origin.cols / nor.width);
 			float y_b = (origin.rows / nor.height);
 			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-				cout<<to_string(iter-final_location.begin())<<endl;
+				// cout<<to_string(iter-final_location.begin())<<endl;
 				int x = cvRound(x_b * (*iter).x);
 				int y = cvRound(y_b * (*iter).y);
 				int w = cvRound(x_b * (*iter).w);
@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
-			cout<<"after for\n";
+			// cout<<"after for\n";
 
 			//备用发送 未测试	//仅供测试使用 否则与u实际逻辑冲突 ***能用 但是 不推荐***
 			// for(vector<Mat>::iterator iter =alignment_face_recall.begin(); iter !=	alignment_face_recall.end(); iter++){
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]){
 
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
-			cout<<"end"<<endl;
+			// cout<<"end"<<endl;
 
 		} else if(!strcmp(command.c_str(), "none")){
 			std::string tmp = "none";
