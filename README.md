@@ -6,11 +6,11 @@ arm : now=1.0GHz armv7l  512M RAM 16G sd card
 
 detect 27ms
 
-feature point 20ms
+feature point 19ms
 
-alignment 10ms
+alignment 9ms
 
-elm-in-elm test 60ms
+elm-in-elm test 61ms
 
 '''代码结构：'''
 
