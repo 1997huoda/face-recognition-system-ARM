@@ -73,8 +73,8 @@ int main(int argc, char* argv[]){
 				frame=imread("none.bmp");
 			}
 			//摄像头 图像
+			resize(frame, frame, cv::Size(120,90), 0, 0, INTER_LINEAR);//减小传输数据	//120	90
 			send_pic(socket, frame);
-			// cout<<"cap"<<endl;
 			socket.recv(&received);
 
 			// face_num个人脸的图像
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
 				int h = cvRound(y_b * (*iter).h);
 				Rect rect(x, y, w, h);
 				Mat send = (origin(rect));
-				resize(origin, frame, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
+				resize(send, send, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
 				send_pic(socket, send);
 				socket.recv(&received);
 			}
