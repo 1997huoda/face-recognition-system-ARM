@@ -2,7 +2,7 @@
 #include"new.hpp"
 
 int n;
-int L = 200;                          //隐层节点数
+int L = 150;                          //隐层节点数
 int N;
 int m;// = 50;                           //训练集以及测试集人数		//后期会自动更新m为训练集文件夹的数量
 int model_num = 6;                    //子ELM模型的数量
