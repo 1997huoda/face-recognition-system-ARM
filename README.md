@@ -1,10 +1,10 @@
 # 嵌入式人脸识别系统
-###
+
 arm : now=1.0GHz armv7l  512M RAM 16G sd card
 
  enable_neon  -mfpu=vfpv3 -march=armv7-a 
 
-detect 27ms
+detect 23.7ms（一米多近两米）（3米距离68ms）
 
 feature point 19ms
 
@@ -12,9 +12,8 @@ alignment 9ms
 
 elm-in-elm test 61ms
 
-'''代码结构：'''
+**代码结构**：
 
-###
 make.cpp为主文件
 
 command /*.cpp封装函数 被make.cpp调用
@@ -37,13 +36,9 @@ Qt/server/* 为Qt可视化界面代码 采用CMake管理 Qmake保证不能用
 
 Android系统可视化界面代码请见另外一个仓库 AS-ELM ，使用时注意OpenCV的配置
 
-#分支说明
+
 
 ###
 master为ARM当前版本代码
 
-PCA 为PCA实现人脸识别
-
-LDA 为LDA实现人脸识别
-
-Linux为PC上运行测试的版本 作者用来传输数据使用 并非真正的编译版本 如果LINUX使用 master去掉CMake指定编译器和NEON操作即可编译
+ 如果LINUX使用 去掉CMake指定编译器和NEON操作即可编译
