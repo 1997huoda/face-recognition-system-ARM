@@ -5,7 +5,7 @@ void eve_init() {
     //修改全局变量
 	dlib::deserialize("shape_predictor_5_face_landmarks.dat") >> sp;
     trainfile_path = "../A";
-	ip1="127.20.10.13";
+	ip1="172.20.10.13";
     // ip1="localhost";
     // global_init();
     //开启摄像头
