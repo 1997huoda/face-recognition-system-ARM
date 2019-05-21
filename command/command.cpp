@@ -16,7 +16,11 @@ int read_arg(int argc, char * argv[]){
 }
 
 void get_filename(string path, vector<string> &names) {
-    names.clear();
+	if(names.size()!=0){
+		// names.clear();
+		vector <string>().swap(names);
+	}
+    
     struct dirent *ptr, *ptr1;
     DIR *dir, *dir1;
     dir = opendir(path.c_str()); // path如果是文件夹 返回NULL
