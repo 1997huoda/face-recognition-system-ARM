@@ -119,7 +119,10 @@ Mat process_once() {
     origin.release();    
 
     Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
+	float t_c = getticks();
     capture >> origin;
+	t_c = getticks() - t_c;
+    if(t_c!=0)    cout<<" detect    time     "<<t_c*1000<<"ms"<<endl;
     //ARM
 	flip(origin, origin, 0);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
 
