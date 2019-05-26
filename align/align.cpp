@@ -12,6 +12,7 @@ float getticks()
 }
 dlib::shape_predictor sp;               // dlib shape predictor
 vector<Mat> alignment_face_recall;
+
 void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 {
 	CV_Assert(src.data);

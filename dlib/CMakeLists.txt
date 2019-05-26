@@ -102,7 +102,7 @@ if (DLIB_IN_PROJECT_BUILD)
    endif()
 
    # Tell cmake to build dlib as a static library
-   set(BUILD_SHARED_LIBS false)
+   set(BUILD_SHARED_LIBS true)
 
 elseif(BUILD_SHARED_LIBS)
    if (MSVC)

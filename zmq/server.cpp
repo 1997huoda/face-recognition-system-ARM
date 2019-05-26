@@ -27,7 +27,7 @@ int main() {
     zmq::message_t reply, request;	
     socket.bind("tcp://*:5555");	
 
-    socket.recv(&request);	
+    socket.recv(request);	
     while (true) {	
       //  command = read_command();	
         std::cout << "command: " << command << std::endl;	
@@ -35,12 +35,12 @@ int main() {
         if (command == "send_picture") {	
             //下位机发图，上位机收图	
             //收人脸数	
-            socket.recv(&request);	
+            socket.recv(request);	
             int face_num =	
                 std::stoi(std::string((char *)request.data(), request.size()));	
             send_msg(socket, "received_face_num");	
             //人脸名字	
-            socket.recv(&request);	
+            socket.recv(request);	
             std::string name =	
                 std::string((char *)request.data(), request.size());	
             send_msg(socket, "received_face_name");	
@@ -48,26 +48,26 @@ int main() {
             cv::Mat img;	
 			//if(face_num!=0)
             for (int i = 0; i <=face_num; i++) {	//修改代码把《=中的=号去了
-                socket.recv(&request);	
+                socket.recv(request);	
                 std::vector<uchar> img_data(request.size());	
                 memcpy(img_data.data(), request.data(), request.size());	
                 img = cv::imdecode(img_data, cv::IMREAD_COLOR);	
                // imwrite("" + to_string(i) + ".jpg", img);	
                 send_msg(socket, "reveice_picture_i");	
             }	
-            socket.recv(&request);	
+            socket.recv(request);	
         } else if (command == "none") {	
-            socket.recv(&request);	
+            socket.recv(request);	
         } else if (command == "start_traning") {	
             //收	
-            socket.recv(&request);	
+            socket.recv(request);	
         } else if (command == "change_train_set") {	
-            socket.recv(&request);	
+            socket.recv(request);	
             //发人名	
             std::string human_name = "hhh";	
             send_msg(socket, human_name);	
             //收	
-            socket.recv(&request);	
+            socket.recv(request);	
             //发照片名字	
 //             std::string picture_name = "1.jpg";	
 //             send_msg(socket, picture_name);	
@@ -77,7 +77,7 @@ int main() {
             Mat send_to=imread("../none.bmp");
             send_pic(socket,send_to);	
             //收	
-            socket.recv(&request);	
+            socket.recv(request);	
         } else {	
             std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;	
         }	

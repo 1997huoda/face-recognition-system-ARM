@@ -1,5 +1,11 @@
 #include "command.hpp"
-
+float getticks()
+{
+	struct timespec ts;
+	if(clock_gettime(CLOCK_MONOTONIC, &ts) < 0)
+		return -1.0f;
+	return ts.tv_sec + 1e-9f*ts.tv_nsec;
+}
 int read_arg(int argc, char * argv[]){
 	int arg = 1;
 	while(arg < argc)
@@ -11,15 +17,14 @@ int read_arg(int argc, char * argv[]){
         }
         arg++;
 	}
-
 	return 0;
 }
 
 void get_filename(string path, vector<string> &names) {
-	if(names.size()!=0){
-		// names.clear();
-		vector <string>().swap(names);
-	}
+	names.clear();
+	// if(names.size()!=0){
+		// vector <string>().swap(names);
+	// }
     
     struct dirent *ptr, *ptr1;
     DIR *dir, *dir1;
@@ -30,7 +35,7 @@ void get_filename(string path, vector<string> &names) {
     }
     while ((ptr = readdir(dir)) != NULL) //读取列表
     {
-        if ((strncmp(ptr->d_name, ".", 1)==  0)||ptr->d_name[0] == '.' ) //去掉本级目录	去掉上级目录	去掉隐藏文件
+        if (ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db") //去掉本级目录	去掉上级目录	去掉隐藏文件
             continue;
         if (ptr->d_type == DT_DIR) { // DT_DIR目录    DT_REG常规文件
             string ss = ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题
@@ -39,7 +44,7 @@ void get_filename(string path, vector<string> &names) {
             dir1 = opendir(path_ss.c_str());
             int exit_flag = 0;
             while ((ptr1 = readdir(dir1)) != NULL) {
-                if ((strncmp(ptr1->d_name, ".", 1)==  0)||ptr1->d_name[0] == '.' ) //去掉本级目录	去掉上级目录	去掉隐藏文件
+                if (ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db") //去掉本级目录	去掉上级目录	去掉隐藏文件
                 {
                     continue;
                 } else {
@@ -116,17 +121,18 @@ Mat process_once() {
     final_location.clear();
     alignment_face_recall.clear();
     name.clear();
-    origin.release();    
+    origin.release();
 
     Mat frame;//, bak_gray; //定义一个Mat变量，用于存储每一帧的图像
 	float t_c = getticks();
+	// capture.set(CAP_PROP_FRAME_WIDTH, 1280);
+	// capture.set(CAP_PROP_FRAME_HEIGHT, 720);
     capture >> origin;
 	t_c = getticks() - t_c;
-    if(t_c!=0)    cout<<" detect    time     "<<t_c*1000<<"ms"<<endl;
+    if(t_c!=0)    cout<<" cap    time     "<<t_c*1000<<"ms"<<endl;
     //ARM
 	flip(origin, origin, 0);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
 
-	//cvtColor(origin.clone(), origin, CV_RGB2BGR);
     if (origin.empty()){
         cout << "cap empty" << endl;
         face_num=0;
@@ -136,10 +142,6 @@ Mat process_once() {
     }else{
         
     }
-    // return ;
-    // bak_gray为原图的灰度图
-    //cvtColor(origin.clone(), bak_gray, CV_BGR2GRAY);
-    // capture >> frame;
     resize(origin, frame, nor, 0, 0, INTER_LINEAR);
     if (frame.empty())
         cout << "frame empty" << endl;
@@ -177,17 +179,11 @@ Mat process_once() {
 
         Rect rect(x, y, w, h);
         Mat image = (origin(rect));
-        // Mat image = (bak_gray(rect));
-		// equalizeHist(image,image);
-        // imwrite(to_string(iter-final_location.begin())+".jpg",image);
 
         // resize 将长方形的人脸 resize 成标准方形
         resize(image, image, size_box, 0, 0, INTER_LINEAR);
         face_alignment(image);
     }
-    // for(vector<Mat>::iterator iter = alignment_face_recall.begin(); iter != alignment_face_recall.end(); iter++){
-    //     imwrite("alignment"+to_string(iter-alignment_face_recall.begin())+".jpg",(*iter));
-    // }
 
     for (vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++) {
         int x = (*iter).x;
@@ -195,20 +191,8 @@ Mat process_once() {
         int w = (*iter).w;
         int h = (*iter).h;
         Rect rect(x, y, w, h);
-        // Point point(x, y );//左上角 //不影响截图
-        // String text = to_string(iter - final_location.begin());
-        // int font_face = cv::FONT_HERSHEY_COMPLEX;
-        // double font_scale = 2;
-        // int thickness = 2;
-        // int baseline;
-        // cv::Size text_size = cv::getTextSize(text, font_face, font_scale,
-        // thickness, &baselinebaseline);
         rectangle(frame, rect, cv::Scalar(100, 0, 0), 1, 0);
-        //检测结果不用写在图上
-        // cv::putText(frame, text, point, font_face, font_scale, cv::Scalar(0,
-        // 255, 255), thickness, 8, 0);
     }
-    // waitKey(5);
     return frame;
 }
 

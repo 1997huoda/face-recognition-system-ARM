@@ -7,7 +7,7 @@
 # add_definitions(-fPIC )
 find_path (ZMQ_INCLUDE_DIR zmq.h)
 find_library (ZMQ_LIBRARY NAMES zmq)
-
+set(CMAKE_CXX_STANDARD 11)
 set (ZMQ_LIBRARIES ${ZMQ_LIBRARY})
 set (ZMQ_INCLUDE_DIRS ${ZMQ_INCLUDE_DIR})
 

@@ -12,7 +12,7 @@ int flag = 0;                         // 没有人脸?
 int N_test;
  cv::Size elm_size(40,40);
 
-//此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
+//此路径后面不能加“/”      
 string trainfile_path ; //路径
 
 vector<int> trainingLabels;
@@ -44,25 +44,28 @@ void getFiles_train(string path, vector<string> & files){
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
-		// if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")      //去掉当前文件夹目录和
-			                 // Thumbs.db这个windows下保存图片就会产生的文件
-		if(strncmp(ptr->d_name, ".", 1) == 0)
+		if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")
 			continue;
 		if(ptr->d_type == DT_DIR){ 
 			m++;
 			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
 			dir1 = opendir(ss.c_str());
+			int exit_flag = 0;
 			while((ptr1 = readdir(dir1)) != NULL){
-					// if(ptr1->d_name[0] == '.' || ptr1->d_name == "Thumbs.db")
-					if(strncmp(ptr1->d_name, ".", 1) == 0)
-					continue;
-				
-				string sss = ss + ptr1->d_name; //
+				if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")
+				{continue;}
+				else{
+					exit_flag=1;
+				}
+				string sss = ss + ptr1->d_name; 
 				files.push_back(sss);           //返回图片路径
 				train_labels_ori.push_back(person_id); // vector<int> train_labels_ori;添加标签
 			}
 			closedir(dir1);
-			person_id++; //下一个文件夹 下一个人的标签++			
+			if(exit_flag==1){
+				person_id++; //下一个文件夹 下一个人的标签++		
+			}
+				
 		}
 	}
 	closedir(dir);
@@ -155,25 +158,21 @@ MatrixXd generate_training_labels(){
 
 // ELM training
 void ELM_training(MatrixXd feature, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
-// clock_t start,end;
-// start=clock();	
+
 float t = getticks();
 	ELM_in_ELM(feature, W, b, beta);
 t = getticks() - t;
 if(t!=0)    cout<<" elm	triaining    time     "<<t*1000<<"ms"<<endl;
-// end=clock();
-// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-// cout<<"elm train time:	"<<endtime<<"s"<<endl;		//s为单位
+
 }
 // ELM testing
 void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta){
 	MatrixXd out_all;
 	out_all = MatrixXd::Zero(N_test, m * model_num);
-// clock_t start,end;
-// start=clock();	
+
 float t = getticks();
 	MatrixXd tem[model_num];
-    #pragma omp parallel for num_threads(2)
+    // #pragma omp parallel for num_threads(2)
 	for(int i = 0; i < model_num; i++){
 		MatrixXd R,Tem,H;
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];
@@ -188,7 +187,5 @@ float t = getticks();
 	output = out_all * F;
 t = getticks() - t;
 if(t!=0)    cout<<" elm	test    time     "<<t*1000<<"ms"<<endl;
-// end=clock();
-// double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-// cout<<"elm test time:	"<<endtime*1000<<"ms"<<endl;		//s为单位
+
 }

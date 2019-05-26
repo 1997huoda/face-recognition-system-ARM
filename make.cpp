@@ -42,17 +42,14 @@ int main(int argc, char* argv[]){
 	socket.connect("tcp://"+ip1+":5555");
 	zmq::message_t msg;
 	zmq::message_t received;
-	send_msg(socket, "0");	 //这样崩溃的时候少一次启动
+	send_msg(socket, "0");	 
 	while(true){
 		//接收命令
 		command = recv_msg(socket);
 		cout << "command : 	" << command << endl;
 		if(!strcmp(command.c_str(), "send_picture")){
-			//清空输出name字符串
-			// name.clear();//在process——once里面写了清空
 			//单次人脸识别
 			Mat frame = process_once();
-			// alignment-->string name
 			if(final_location.size() == 0)
 				name="空/空/空/空/空/空/";
 			if(alignment_face_recall.size() != 0){
@@ -61,13 +58,11 @@ int main(int argc, char* argv[]){
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
 			cout<<to_string(face_num)<<endl;
-			socket.recv(&received);
+			socket.recv(received);
 
 			//发人脸名字
 			send_msg(socket, name);
-			// cout<<name<<endl;
-			// cout << "name:" << name << endl;
-			socket.recv(&received);
+			socket.recv(received);
 
 			if(origin.empty()){
 				frame=imread("none.bmp");
@@ -75,13 +70,12 @@ int main(int argc, char* argv[]){
 			//摄像头 图像
 			resize(frame, frame, cv::Size(120,90), 0, 0, INTER_LINEAR);//减小传输数据	//120	90
 			send_pic(socket, frame);
-			socket.recv(&received);
+			socket.recv(received);
 
 			// face_num个人脸的图像
 			float x_b = (origin.cols / nor.width);
 			float y_b = (origin.rows / nor.height);
 			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
-				// cout<<to_string(iter-final_location.begin())<<endl;
 				int x = cvRound(x_b * (*iter).x);
 				int y = cvRound(y_b * (*iter).y);
 				int w = cvRound(x_b * (*iter).w);
@@ -90,20 +84,12 @@ int main(int argc, char* argv[]){
 				Mat send = (origin(rect));
 				resize(send, send, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
 				send_pic(socket, send);
-				socket.recv(&received);
+				socket.recv(received);
 			}
-			// cout<<"after for\n";
 
-			//备用发送 未测试	//仅供测试使用 否则与u实际逻辑冲突 ***能用 但是 不推荐***
-			// for(vector<Mat>::iterator iter =alignment_face_recall.begin(); iter !=	alignment_face_recall.end(); iter++){
-			// 	Mat send=(*iter);
-			// 	send_pic(socket,(*iter)); 
-			// 	socket.recv(&received);
-			// }
 
 			std::string tmp = "send_picture_done";
 			send_msg(socket, tmp);
-			// cout<<"end"<<endl;
 
 		} else if(!strcmp(command.c_str(), "none")){
 			std::string tmp = "none";
@@ -123,15 +109,12 @@ int main(int argc, char* argv[]){
 			tmp = "received_human_name";
 			send_msg(socket, tmp);
 
-			//收照片名字        不需要了
-
 			//收图
 			rec_img = receive_pic(socket);
 			//cvtColor(rec_img, rec_img, COLOR_BGR2GRAY);
 			alignment_face_recall.clear();
 			face_alignment(rec_img);
 			int N64 =rand();
-			// int NN64 = rng.next();
 			string sss = trainfile_path + "/" + human_name + "/" + to_string(N64) + ".jpg";
 			Mat every=alignment_face_recall[0];
 			imwrite(sss, every);
@@ -142,6 +125,5 @@ int main(int argc, char* argv[]){
 			std::cout << "GGGGGGGGGGGGGGGGGGGG" << std::endl;
 		}
 	}
-
 	return 0;
 }
