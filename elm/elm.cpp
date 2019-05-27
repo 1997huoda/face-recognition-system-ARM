@@ -47,7 +47,7 @@ void getFiles_train(string path, vector<string> & files){
 		if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")
 			continue;
 		if(ptr->d_type == DT_DIR){ 
-			m++;
+			
 			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
 			dir1 = opendir(ss.c_str());
 			int exit_flag = 0;
@@ -63,7 +63,8 @@ void getFiles_train(string path, vector<string> & files){
 			}
 			closedir(dir1);
 			if(exit_flag==1){
-				person_id++; //下一个文件夹 下一个人的标签++		
+				person_id++; //下一个文件夹 下一个人的标签++	
+				m++;				
 			}
 				
 		}
@@ -172,7 +173,7 @@ void ELM_testing(MatrixXd feature1, MatrixXd * W, MatrixXd * b, MatrixXd * beta)
 
 float t = getticks();
 	MatrixXd tem[model_num];
-    // #pragma omp parallel for num_threads(2)
+    // #pragma omp parallel for 
 	for(int i = 0; i < model_num; i++){
 		MatrixXd R,Tem,H;
 		R = -feature1 * W[i] + MatrixXd::Ones(N_test, 1) * b[i];

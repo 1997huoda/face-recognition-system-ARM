@@ -131,7 +131,7 @@ Mat process_once() {
 	t_c = getticks() - t_c;
     if(t_c!=0)    cout<<" cap    time     "<<t_c*1000<<"ms"<<endl;
     //ARM
-	flip(origin, origin, 0);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
+	flip(origin, origin, -1);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
 
     if (origin.empty()){
         cout << "cap empty" << endl;
