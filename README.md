@@ -1,6 +1,6 @@
 # 嵌入式人脸识别系统
 
-arm : now=1.0GHz armv7l  512M RAM 16G sd card
+arm : now=1.0GHz armv7l  512M RAM 
 
  enable_neon  -mfpu=vfpv3 -march=armv7-a 
 
@@ -10,7 +10,7 @@ feature point 19ms
 
 alignment 9ms
 
-elm-in-elm test 61ms
+elm-in-elm 人脸识别 61ms
 
 **代码结构**：
 
@@ -41,4 +41,4 @@ Android系统可视化界面代码请见另外一个仓库 AS-ELM ，使用时�
 ###
 master为ARM当前版本代码
 
- 如果LINUX使用 去掉CMake指定编译器和NEON操作即可编译
+ 如果LINUX PC使用 去掉CMake指定编译器和NEON操作即可编译
