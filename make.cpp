@@ -17,7 +17,12 @@ void eve_init() {
         return;
     } else {
         cout << "open cap(0) -->" << endl;
-    }    
+    }  
+	
+	for( int i = 0; i < 256; i++ )
+	{
+		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+	}	
 }
 
 int main(int argc, char* argv[]){
