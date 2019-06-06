@@ -4,12 +4,12 @@ add_definitions(-fPIC -O3 -fopenmp)
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
-set(CMAKE_C_COMPILER /usr/bin/gcc-5)
+# set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+# set(CMAKE_C_COMPILER /usr/bin/gcc-5)
 set(CMAKE_BUILD_TYPE  Release)
-option(ENABLE_INT8 "use int8" ON)
-option(ENABLE_AVX2 "use avx2" OFF)
-option(ENABLE_NEON "whether use neon, if use arm please set it on" ON)
+option(ENABLE_INT8 "use int8" OFF)
+option(ENABLE_AVX2 "use avx2" ON)
+option(ENABLE_NEON "whether use neon, if use arm please set it on" OFF)
 
 
 

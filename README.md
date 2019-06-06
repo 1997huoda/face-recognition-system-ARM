@@ -42,3 +42,21 @@ Android系统可视化界面代码请见另外一个仓库 AS-ELM ，使用时�
 master为ARM当前版本代码
 
  如果LINUX PC使用 去掉CMake指定编译器和NEON操作即可编译
+
+
+
+#
+
+#### #PS
+
+人脸检测算法https://github.com/GRAYKEY/mobilefacenet_ncnn
+
+人脸对齐算法Dlib
+
+人脸识别算法Elm-In-ELM：一种嵌套型的ELM分类算法
+
+这一版将全部使用PC设备 取消编译选项
+
+ARM的版本请使用v0.2.1（该版本仍有待优化）
+
+###### 
