@@ -50,7 +50,7 @@ test分支为PC版本 目前开发者在进行算法升级 在PC上进行测试
 
 #### #PS
 
-人脸检测算法https://github.com/GRAYKEY/mobilefacenet_ncnn
+人脸检测算法 libfacedetection
 
 人脸对齐算法Dlib
 
