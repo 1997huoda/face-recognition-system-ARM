@@ -5,8 +5,8 @@ void eve_init() {
     //修改全局变量
 	dlib::deserialize("shape_predictor_5_face_landmarks.dat") >> sp;
     trainfile_path = "../A";
-	ip1="172.20.10.13";
-    // ip1="localhost";
+// 	ip1="172.20.10.13";
+    ip1="localhost";
     // global_init();
     //开启摄像头
     if (!capture.isOpened())
@@ -20,6 +20,40 @@ void eve_init() {
     }    
 }
 
+int main(){
+	eve_init();
+	MatrixXd W[model_num], b[model_num], beta[model_num];
+	train_elm(W, b, beta);
+	cout << "init--OK" << endl;
+while(1){
+//单次人脸识别
+			Mat frame = process_once();
+			if(final_location.size() == 0)
+				name="空/空/空/空/空/空/";
+			if(alignment_face_recall.size() != 0){
+				test_elm(alignment_face_recall, W, b, beta);
+			}
+
+			if(origin.empty()){
+				frame=imread("none.bmp");
+			}
+			//摄像头 图像
+
+			// face_num个人脸的图像
+			float x_b = (origin.cols / nor.width);
+			float y_b = (origin.rows / nor.height);
+			for(vector<location>::iterator iter = final_location.begin(); iter != final_location.end(); iter++){
+				int x = cvRound(x_b * (*iter).x);
+				int y = cvRound(y_b * (*iter).y);
+				int w = cvRound(x_b * (*iter).w);
+				int h = cvRound(y_b * (*iter).h);
+				Rect rect(x, y, w, h);
+				Mat send = (origin(rect));
+
+			}
+}
+}
+/*
 int main(int argc, char* argv[]){
 	//先参数初始化
 	eve_init();
@@ -58,11 +92,11 @@ int main(int argc, char* argv[]){
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
 			cout<<to_string(face_num)<<endl;
-			socket.recv(received);
+			socket.recv(&received);
 
 			//发人脸名字
 			send_msg(socket, name);
-			socket.recv(received);
+			socket.recv(&received);
 
 			if(origin.empty()){
 				frame=imread("none.bmp");
@@ -70,7 +104,7 @@ int main(int argc, char* argv[]){
 			//摄像头 图像
 			resize(frame, frame, cv::Size(120,90), 0, 0, INTER_LINEAR);//减小传输数据	//120	90
 			send_pic(socket, frame);
-			socket.recv(received);
+			socket.recv(&received);
 
 			// face_num个人脸的图像
 			float x_b = (origin.cols / nor.width);
@@ -84,7 +118,7 @@ int main(int argc, char* argv[]){
 				Mat send = (origin(rect));
 				resize(send, send, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
 				send_pic(socket, send);
-				socket.recv(received);
+				socket.recv(&received);
 			}
 
 
@@ -127,3 +161,4 @@ int main(int argc, char* argv[]){
 	}
 	return 0;
 }
+*/

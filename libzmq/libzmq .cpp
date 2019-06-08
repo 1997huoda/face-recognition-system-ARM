@@ -11,7 +11,7 @@ void send_msg(zmq::socket_t &socket, std::string str) {
 }
 std::string recv_msg(zmq::socket_t &socket) {
     zmq::message_t received;
-    socket.recv(received);
+    socket.recv(&received);
     return std::string((char *)received.data(), received.size());
 }
 void send_pic(zmq::socket_t &socket, cv::Mat img) {
@@ -30,7 +30,7 @@ void send_pic(zmq::socket_t &socket, std::string path) {
 Mat receive_pic(zmq::socket_t &socket){
             Mat rec_img;
             zmq::message_t received;
-            socket.recv(received);
+            socket.recv(&received);
 			std::vector<uchar> img_data(received.size());
 			memcpy(img_data.data(), received.data(), received.size());
 			rec_img = cv::imdecode(img_data, cv::IMREAD_COLOR);
