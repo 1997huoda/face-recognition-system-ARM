@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "align.hpp"
-unsigned char lut[256];
-float fGamma=1.5f;
 float getticks()
 {
 	struct timespec ts;
@@ -14,21 +12,17 @@ float getticks()
 }
 dlib::shape_predictor sp;               // dlib shape predictor
 vector<Mat> alignment_face_recall;
-
-void MyGammaCorrection(Mat& src, Mat& dst, float ga)
+void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 {
-	if(ga!=1.5f){
-		for( int i = 0; i < 256; i++ )
-		{
-			lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), ga) * 255.0f);
-		}	
-	}
-	// CV_Assert(src.data);
+	CV_Assert(src.data);
 	// accept only char type matrices
-	// CV_Assert(src.depth() != sizeof(uchar));
+	CV_Assert(src.depth() != sizeof(uchar));
 	// build look up table
-	
-
+	unsigned char lut[256];
+	for( int i = 0; i < 256; i++ )
+	{
+		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+	}
 	dst = src.clone();
 	const int channels = dst.channels();
 	switch(channels)
@@ -37,6 +31,7 @@ void MyGammaCorrection(Mat& src, Mat& dst, float ga)
 			{
 				MatIterator_<uchar> it, end;
 				for( it = dst.begin<uchar>(), end = dst.end<uchar>(); it != end; it++ )
+					//*it = pow((float)(((*it))/255.0), fGamma) * 255.0;
 					*it = lut[(*it)];
 				break;
 			}
@@ -45,6 +40,9 @@ void MyGammaCorrection(Mat& src, Mat& dst, float ga)
 				MatIterator_<Vec3b> it, end;
 				for( it = dst.begin<Vec3b>(), end = dst.end<Vec3b>(); it != end; it++ )
 				{
+					//(*it)[0] = pow((float)(((*it)[0])/255.0), fGamma) * 255.0;
+					//(*it)[1] = pow((float)(((*it)[1])/255.0), fGamma) * 255.0;
+					//(*it)[2] = pow((float)(((*it)[2])/255.0), fGamma) * 255.0;
 					(*it)[0] = lut[((*it)[0])];
 					(*it)[1] = lut[((*it)[1])];
 					(*it)[2] = lut[((*it)[2])];

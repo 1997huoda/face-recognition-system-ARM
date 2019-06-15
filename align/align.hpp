@@ -17,8 +17,7 @@ using namespace cv;
 
 extern vector<Mat> alignment_face_recall;
 extern  dlib::shape_predictor sp;               // dlib shape predictor
-extern unsigned char lut[256];
-extern float fGamma;
+
 void face_alignment(Mat image_roi);//人脸矫正 直到误差小于等于3度 最后结果标准化输出
 
 
