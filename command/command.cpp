@@ -58,7 +58,7 @@ void get_filename(string path, vector<string> &names) {
     }
     while ((ptr = readdir(dir)) != NULL) //读取列表
     {
-        if (ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db") //去掉本级目录	去掉上级目录	去掉隐藏文件
+        if (ptr->d_name[0] == '.') //去掉本级目录	去掉上级目录 || ptr->d_name ==  "Thumbs.db"
             continue;
         if (ptr->d_type == DT_DIR) { // DT_DIR目录    DT_REG常规文件
             string ss = ptr->d_name; //+ '/'; //二级文件夹目录   //这TM有问题
@@ -155,7 +155,7 @@ Mat process_once() {
 	t_c = getticks() - t_c;
     if(t_c!=0)    cout<<" cap    time     "<<t_c*1000<<"ms"<<endl;
     //ARM
-	flip(origin, origin, -1);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
+	// flip(origin, origin, -1);//当参数flipCode=0时，将对矩阵沿X轴方向翻转；当flipCode>0时，将对矩阵沿Y轴方向翻转；当flipCode<0时，将对矩阵沿XY轴方向翻转。
 
     if (origin.empty()){
         cout << "cap empty" << endl;

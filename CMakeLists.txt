@@ -23,7 +23,7 @@ if(OPENMP_FOUND)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -Wall")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 # add_compile_options(-fPIC)
 # add_definitions()
@@ -44,10 +44,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/libcom.cmake)
 # link_directories(${OpenCV_LIBRARY_DIRS})
 # link_directories(${CMAKE_CURRENT_LIST_DIR})
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
+file(GLOB MAKESRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
-add_executable(pro ${SRC})
-# add_library(libpico SHARED ${SRC})
+add_executable(pro ${MAKESRC})
+# add_library(libpico SHARED ${MAKESRC})
 # INSTALL(TARGETS pro
 #        RUNTIME DESTINATION /usr/local/bin
 #        LIBRARY DESTINATION /usr/local/lib

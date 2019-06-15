@@ -1,7 +1,57 @@
 [
 {
   "directory": "/home/huoda/Desktop/pico/build",
-  "command": "/usr/bin/c++   -I/usr/include/eigen3 -isystem /usr/include/opencv4   -fopenmp -g  -O3   -fPIC -mavx -Wreturn-type -std=gnu++11 -o CMakeFiles/pro.dir/make.cpp.o -c /home/huoda/Desktop/pico/make.cpp",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibcom_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -mavx -Wreturn-type -std=c++11 -o CMakeFiles/libcom.dir/command/command.cpp.o -c /home/huoda/Desktop/pico/command/command.cpp",
+  "file": "/home/huoda/Desktop/pico/command/command.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibpico_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libpico.dir/native/test.cpp.o -c /home/huoda/Desktop/pico/native/test.cpp",
+  "file": "/home/huoda/Desktop/pico/native/test.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibzmq_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libzmq.dir/libzmq/libzmq_.cpp.o -c \"/home/huoda/Desktop/pico/libzmq/libzmq .cpp\"",
+  "file": "/home/huoda/Desktop/pico/libzmq/libzmq .cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -mavx -Wreturn-type -std=c++11 -o CMakeFiles/pro.dir/make.cpp.o -c /home/huoda/Desktop/pico/make.cpp",
   "file": "/home/huoda/Desktop/pico/make.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibfacedetection_EXPORTS -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-floatdata.cpp.o -c /home/huoda/Desktop/pico/src/facedetectcnn-floatdata.cpp",
+  "file": "/home/huoda/Desktop/pico/src/facedetectcnn-floatdata.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibfacedetection_EXPORTS -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-int8data.cpp.o -c /home/huoda/Desktop/pico/src/facedetectcnn-int8data.cpp",
+  "file": "/home/huoda/Desktop/pico/src/facedetectcnn-int8data.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibfacedetection_EXPORTS -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn-model.cpp.o -c /home/huoda/Desktop/pico/src/facedetectcnn-model.cpp",
+  "file": "/home/huoda/Desktop/pico/src/facedetectcnn-model.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibfacedetection_EXPORTS -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libfacedetection.dir/src/facedetectcnn.cpp.o -c /home/huoda/Desktop/pico/src/facedetectcnn.cpp",
+  "file": "/home/huoda/Desktop/pico/src/facedetectcnn.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibnew_EXPORTS -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libnew.dir/new/new.cpp.o -c /home/huoda/Desktop/pico/new/new.cpp",
+  "file": "/home/huoda/Desktop/pico/new/new.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibelm_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libelm.dir/new/new.cpp.o -c /home/huoda/Desktop/pico/new/new.cpp",
+  "file": "/home/huoda/Desktop/pico/new/new.cpp"
+},
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibalign_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -mavx -Wreturn-type -std=c++11 -o CMakeFiles/libalign.dir/align/align.cpp.o -c /home/huoda/Desktop/pico/align/align.cpp",
+  "file": "/home/huoda/Desktop/pico/align/align.cpp"
 }
 ]

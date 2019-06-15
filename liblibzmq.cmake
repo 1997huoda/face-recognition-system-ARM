@@ -13,9 +13,9 @@ FIND_PACKAGE(OpenCV REQUIRED)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/libzmq)
 set(LIBRARY ${ZMQ_LIBRARIES} ${OpenCV_LIBS})
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/libzmq/*.cpp)
+file(GLOB LIBZMQSRC ${CMAKE_CURRENT_LIST_DIR}/libzmq/*.cpp)
 
-add_library(libzmq SHARED ${SRC})
+add_library(libzmq SHARED ${LIBZMQSRC})
 # INSTALL(TARGETS libzmq
 # 	#        RUNTIME DESTINATION bin
 # 	LIBRARY DESTINATION /usr/local/lib

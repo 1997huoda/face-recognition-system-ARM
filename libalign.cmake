@@ -17,11 +17,11 @@ include_directories(${OpenCV_INCLUDE_DIRS}/align)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/align/*.cpp)
+file(GLOB ALIGNSRC ${CMAKE_CURRENT_LIST_DIR}/align/*.cpp)
 # add_subdirectory(../native/dlib dlib_build)
 
 #add_executable(pico ${SRC})
-add_library(libalign SHARED ${SRC})
+add_library(libalign SHARED ${ALIGNSRC})
 # INSTALL(TARGETS libalign
 # #        RUNTIME DESTINATION bin
 #        LIBRARY DESTINATION /usr/local/lib

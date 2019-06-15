@@ -6,22 +6,21 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3)
 
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 add_definitions(-fPIC -fopenmp)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/elm)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/new)
+include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories(${CMAKE_CURRENT_LIST_DIR}/elm)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/new)
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/elm/*.cpp)
+file(GLOB ELMSRC ${CMAKE_CURRENT_LIST_DIR}/elm/*.cpp)
 
 include(${CMAKE_CURRENT_LIST_DIR}/libnew.cmake)
 
 # link_directories(${OpenCV_LIBRARY_DIRS})
 # add_executable(elm ${SRC})
-add_library(libelm SHARED ${SRC})
+add_library(libelm SHARED ${ELMSRC})
 # INSTALL(TARGETS libelm
 # 	#        RUNTIME DESTINATION bin
 # 	LIBRARY DESTINATION /usr/local/lib

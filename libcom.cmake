@@ -17,7 +17,7 @@ if(OPENMP_FOUND)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_C_FLAGS}")
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/src)
@@ -38,10 +38,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/libalign.cmake)
 # link_directories(${OpenCV_LIBRARY_DIRS})
 # link_directories(..)
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/command/*.cpp)
+file(GLOB COMSRC ${CMAKE_CURRENT_LIST_DIR}/command/*.cpp)
 
 # add_executable(com ${SRC})
-add_library(libcom SHARED ${SRC})
+add_library(libcom SHARED ${COMSRC})
 # INSTALL(TARGETS libcom
 # 	#        RUNTIME DESTINATION bin
 # 	LIBRARY DESTINATION /usr/local/lib

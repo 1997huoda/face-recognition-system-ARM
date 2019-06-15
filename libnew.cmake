@@ -5,19 +5,19 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package(Eigen3)
 
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g  -O3")
 add_definitions(-fPIC -fopenmp)
 
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_LIST_DIR}/new)
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/new/*.cpp)
+file(GLOB NEWSRC ${CMAKE_CURRENT_LIST_DIR}/new/*.cpp)
 
 # link_directories(${OpenCV_LIBRARY_DIRS})
 
 # add_executable(elm ${SRC})
-add_library(libnew SHARED ${SRC})
+add_library(libnew SHARED ${NEWSRC})
 # INSTALL(TARGETS libnew
 # 	#        RUNTIME DESTINATION bin
 # 	LIBRARY DESTINATION /usr/local/lib

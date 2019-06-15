@@ -2,17 +2,10 @@
 #define _ELM_H
 
 #include <omp.h>
-// #define DLIB_JPEG_SUPPORT
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 #include <algorithm>
 #include <dirent.h>
-// #include <dlib/image_io.h>
-// #include <dlib/image_processing.h>
-// #include <dlib/image_processing/frontal_face_detector.h>
-// #include <dlib/image_processing/render_face_detections.h>
-// #include <dlib/image_transforms.h>
-// #include <dlib/opencv.h>
 #include <fstream>
 #include <iostream>
 #include <opencv2/core/eigen.hpp>
@@ -39,6 +32,10 @@ using namespace cv;
 extern string trainfile_path; // = "../A";   
 extern vector<int> trainingLabels;
 extern int N_test;
+
+// int N_test;
+// string trainfile_path ; 	//此路径最后面不能加“/”     
+// vector<int> trainingLabels;
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);

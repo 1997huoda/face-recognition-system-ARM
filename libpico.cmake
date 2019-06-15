@@ -11,7 +11,7 @@ find_package(OpenCV REQUIRED)
 #     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_C_FLAGS}")
 #     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 # endif()
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -pthread -O3")
 add_definitions(-fPIC  -fopenmp)
 
@@ -25,10 +25,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/libsrc.cmake)
 
 link_directories(${OpenCV_LIBRARY_DIRS})
 
-file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/native/*.cpp)
+file(GLOB PICOSRC ${CMAKE_CURRENT_LIST_DIR}/native/*.cpp)
 
 #add_executable(pico ${SRC})
-add_library(libpico SHARED ${SRC})
+add_library(libpico SHARED ${PICOSRC})
 # INSTALL(TARGETS libpico
 # 	#        RUNTIME DESTINATION bin
 # 	LIBRARY DESTINATION /usr/local/lib

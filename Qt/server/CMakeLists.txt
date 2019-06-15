@@ -14,7 +14,7 @@ find_package(Qt5 REQUIRED Widgets)
 # find_package(Qt5Widgets CONFIG REQUIRED)
 
 include_directories(../../libzmq)
-include(../../libzmq.cmake)
+include(../../liblibzmq.cmake)
 
 file(GLOB_RECURSE SOURCES main.cpp mainwindow.cpp)
 file(GLOB_RECURSE HEADERS mainwindow.h)

@@ -9,11 +9,10 @@ float getticks()
 
 vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
-int N_test;
 cv::Size elm_size(40,40);
 
+int N_test;
 string trainfile_path ; 	//此路径最后面不能加“/”     
-
 vector<int> trainingLabels;
 
 

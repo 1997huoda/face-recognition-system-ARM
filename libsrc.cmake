@@ -1,7 +1,7 @@
 # CMakeLists for libfacedetectcnn
 
 add_definitions(-fPIC -O3 -fopenmp)
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
 
@@ -9,7 +9,7 @@ set(CMAKE_BUILD_TYPE  Release)
 option(ENABLE_INT8 "use int8" OFF)
 option(ENABLE_AVX2 "use avx2" ON)
 option(ENABLE_NEON "whether use neon, if use arm please set it on" OFF)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -o3")
 include_directories(${OpenCV_INCLUDE_DIRS}/src)
 
 FILE(GLOB fdt_source_files ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
@@ -23,7 +23,7 @@ endif()
 if(ENABLE_AVX2)
 	message("using avx2")
 	add_definitions(-D_ENABLE_AVX2)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mfma -o3")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mfma ")
 endif()
 
 if(ENABLE_NEON)
