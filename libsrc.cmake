@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_BUILD_TYPE  Release)
-option(ENABLE_INT8 "use int8" OFF)
+option(ENABLE_INT8 "use int8" ON)
 option(ENABLE_AVX2 "use avx2" ON)
 option(ENABLE_NEON "whether use neon, if use arm please set it on" OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -o3")

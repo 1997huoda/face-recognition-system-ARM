@@ -62,7 +62,7 @@ extern std::string picture_name;
 //收到的图
 extern Mat rec_img;
 
-
+float getticks();
 int read_arg(int argc, char * argv[]);
 void eve_init();
 

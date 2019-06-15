@@ -46,8 +46,8 @@
 },
 {
   "directory": "/home/huoda/Desktop/pico/build",
-  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibelm_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libelm.dir/new/new.cpp.o -c /home/huoda/Desktop/pico/new/new.cpp",
-  "file": "/home/huoda/Desktop/pico/new/new.cpp"
+  "command": "/usr/bin/c++  -D_ENABLE_AVX2 -Dlibelm_EXPORTS -I/usr/include/eigen3 -I/home/huoda/Desktop/pico/src -I/home/huoda/Desktop/pico/elm -I/home/huoda/Desktop/pico/new -I/home/huoda/Desktop/pico/native -I/home/huoda/Desktop/pico/libzmq -I/home/huoda/Desktop/pico/align -I/home/huoda/Desktop/pico/command -I/home/huoda/Desktop/pico -I/usr/include/opencv4/native -I/usr/include/opencv4/src -I/usr/include/opencv4/align -isystem /usr/include/opencv4   -fopenmp -g  -O3 -fopenmp -g -pthread -O3 -g -pthread -O3 -o3 -mavx2 -mfma  -g  -O3 -g  -O3 -g -pthread -O3  -O3 -Wall -fPIC   -fPIC -fPIC -fPIC -fopenmp -fPIC -O3 -fopenmp -fPIC -fopenmp -fPIC -fopenmp -fPIC -fPIC -fopenmp -std=c++11 -o CMakeFiles/libelm.dir/elm/elm.cpp.o -c /home/huoda/Desktop/pico/elm/elm.cpp",
+  "file": "/home/huoda/Desktop/pico/elm/elm.cpp"
 },
 {
   "directory": "/home/huoda/Desktop/pico/build",

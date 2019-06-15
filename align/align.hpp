@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace cv;
+extern unsigned char lut[256];
 
 extern vector<Mat> alignment_face_recall;
 extern  dlib::shape_predictor sp;               // dlib shape predictor

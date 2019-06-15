@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "align.hpp"
+unsigned char lut[256];
 float getticks()
 {
 	struct timespec ts;
@@ -18,11 +19,11 @@ void MyGammaCorrection(Mat& src, Mat& dst, float fGamma)
 	// accept only char type matrices
 	CV_Assert(src.depth() != sizeof(uchar));
 	// build look up table
-	unsigned char lut[256];
-	for( int i = 0; i < 256; i++ )
-	{
-		lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
-	}
+	if(fGamma!=1.5f)
+		for( int i = 0; i < 256; i++ )
+		{
+			lut[i] = saturate_cast<uchar>(pow((float)(i/255.0), fGamma) * 255.0f);
+		}
 	dst = src.clone();
 	const int channels = dst.channels();
 	switch(channels)

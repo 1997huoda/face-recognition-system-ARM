@@ -69,7 +69,7 @@ public:
                     if(i>5)
                         continue;   
                     recieve_mat[i] = receive_pic(socket);
-                    resize( recieve_mat[i],  recieve_mat[i], cv::Size(100, 100), 0, 0, INTER_LINEAR);
+                    resize( recieve_mat[i],  recieve_mat[i], cv::Size(80, 80), 0, 0, INTER_LINEAR);
                     send_msg(socket, "reveice_picture_i");
                 }
                 this->update_signal();
