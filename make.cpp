@@ -4,9 +4,9 @@ void eve_init() {
 	std::cin.tie(NULL);
     //修改全局变量
 	dlib::deserialize("shape_predictor_5_face_landmarks.dat") >> sp;
-    trainfile_path = "../A";
-	ip1="172.20.10.13";
-    // ip1="localhost";
+    trainfile_path = "/home/huoda/Desktop/pico/A";				//后面不要有'/'
+	// ip1="172.20.10.13";
+    ip1="localhost";
     // global_init();
     //开启摄像头
     if (!capture.isOpened())
@@ -58,11 +58,13 @@ int main(int argc, char* argv[]){
 			//发人脸数量
 			send_msg(socket, to_string(face_num));
 			cout<<to_string(face_num)<<endl;
-			socket.recv(received);
+			// socket.recv(received);
+			recv_msg(socket);
 
 			//发人脸名字
 			send_msg(socket, name);
-			socket.recv(received);
+			// socket.recv(received);
+			recv_msg(socket);
 
 			if(origin.empty()){
 				frame=imread("none.bmp");
@@ -70,7 +72,8 @@ int main(int argc, char* argv[]){
 			//摄像头 图像
 			resize(frame, frame, cv::Size(120,90), 0, 0, INTER_LINEAR);//减小传输数据	//120	90
 			send_pic(socket, frame);
-			socket.recv(received);
+			// socket.recv(received);
+			recv_msg(socket);
 
 			// face_num个人脸的图像
 			float x_b = (origin.cols / nor.width);
@@ -84,7 +87,8 @@ int main(int argc, char* argv[]){
 				Mat send = (origin(rect));
 				resize(send, send, cv::Size(80,80), 0, 0, INTER_LINEAR);//减小传输数据
 				send_pic(socket, send);
-				socket.recv(received);
+				// socket.recv(received);
+				recv_msg(socket);
 			}
 
 

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/huoda/Desktop/pico/build",
+  "command": "/usr/bin/c++   -I/usr/include/eigen3 -isystem /usr/include/opencv4   -fopenmp -g  -O3   -fPIC -mavx -Wreturn-type -std=gnu++11 -o CMakeFiles/pro.dir/make.cpp.o -c /home/huoda/Desktop/pico/make.cpp",
+  "file": "/home/huoda/Desktop/pico/make.cpp"
+}
+]

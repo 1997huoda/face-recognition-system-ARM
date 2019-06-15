@@ -15,3 +15,5 @@ Qt/build-server-Desktop-Debug
 arm-build/
 dlib/build
 \.vscode/
+
+elm-data-test/Makefile

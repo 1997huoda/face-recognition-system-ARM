@@ -52,7 +52,7 @@ void getFiles_train(string path, vector<string> & files){
 			dir1 = opendir(ss.c_str());
 			int exit_flag = 0;
 			while((ptr1 = readdir(dir1)) != NULL){
-				if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")
+				if(ptr1->d_name[0] == '.' || ptr1->d_name ==  "Thumbs.db")
 				{continue;}
 				else{
 					exit_flag=1;
