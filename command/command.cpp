@@ -1,4 +1,5 @@
 #include "command.hpp"
+
 float getticks()
 {
 	struct timespec ts;
@@ -6,6 +7,28 @@ float getticks()
 		return -1.0f;
 	return ts.tv_sec + 1e-9f*ts.tv_nsec;
 }
+
+// MatrixXd W[model_num], b[model_num], beta[model_num];
+string ip1;
+//摄像头类
+VideoCapture capture;
+//摄像头帧
+Mat origin;
+
+//发送人脸数量
+int face_num;
+//人 名字 标签
+vector<string> names;
+//识别结果
+std::string name;
+
+//收到的人的名称
+std::string human_name;
+//收到的照片名称
+std::string picture_name;
+//收到的图
+Mat rec_img;
+
 int read_arg(int argc, char * argv[]){
 	int arg = 1;
 	while(arg < argc)
@@ -44,7 +67,7 @@ void get_filename(string path, vector<string> &names) {
             dir1 = opendir(path_ss.c_str());
             int exit_flag = 0;
             while ((ptr1 = readdir(dir1)) != NULL) {
-                if (ptr1->d_name[0] == '.' || ptr1->d_name ==  "Thumbs.db") //去掉本级目录	去掉上级目录	去掉隐藏文件
+                if (ptr1->d_name[0] == '.' ) //去掉本级目录	去掉上级目录//|| ptr1->d_name ==  "Thumbs.db"
                 {
                     continue;
                 } else {
@@ -52,6 +75,7 @@ void get_filename(string path, vector<string> &names) {
                     break;
                 }
             }
+            closedir(dir1);
             if (exit_flag == 1) {
                 cout << "push_back" << ss << endl;
                 names.push_back(ss);

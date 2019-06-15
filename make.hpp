@@ -4,7 +4,9 @@
 #include "command.hpp"
 #include "align.hpp"
 
-
+using namespace std;
+using namespace Eigen;
+using namespace cv;
 
 
 

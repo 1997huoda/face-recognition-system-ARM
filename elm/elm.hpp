@@ -35,15 +35,10 @@ using namespace std;
 using namespace Eigen;
 using namespace cv;
 
-
 //此路径后面不能加“/”       不能写成："/home/huoda/Desktop/100/"
-extern string trainfile_path; // = "../A";   // = "/home/huoda/Desktop/100"; //路径
-
+extern string trainfile_path; // = "../A";   
 extern vector<int> trainingLabels;
-
-
 extern int N_test;
-
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(); //从文件夹中获取训练集矩阵
 MatrixXd ELM_in_ELM_face_testing_matrix_from_files(vector<Mat> mat_v);

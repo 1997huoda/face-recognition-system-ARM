@@ -10,10 +10,9 @@ float getticks()
 vector<int> train_labels_ori;
 int flag = 0;                         // 没有人脸?
 int N_test;
- cv::Size elm_size(40,40);
+cv::Size elm_size(40,40);
 
-//此路径后面不能加“/”      
-string trainfile_path ; //路径
+string trainfile_path ; 	//此路径最后面不能加“/”     
 
 vector<int> trainingLabels;
 
@@ -44,15 +43,15 @@ void getFiles_train(string path, vector<string> & files){
 	dir = opendir(path.c_str());         // path如果是文件夹 返回NULL
 	while((ptr = readdir(dir)) != NULL)  //读取列表
 	{
-		if(ptr->d_name[0] == '.' || ptr->d_name ==  "Thumbs.db")
+		if(ptr->d_name[0] == '.' )		// 	|| ptr->d_name ==  "Thumbs.db"
 			continue;
 		if(ptr->d_type == DT_DIR){ 
 			m++;
-			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   //这TM有问题 path后面少了一个'/'
+			string ss = path + '/' + ptr->d_name +	'/'; //二级文件夹目录   
 			dir1 = opendir(ss.c_str());
 			int exit_flag = 0;
 			while((ptr1 = readdir(dir1)) != NULL){
-				if(ptr1->d_name[0] == '.' || ptr1->d_name ==  "Thumbs.db")
+				if(ptr1->d_name[0] == '.' )		//|| ptr1->d_name ==  "Thumbs.db"
 				{continue;}
 				else{
 					exit_flag=1;
@@ -60,7 +59,7 @@ void getFiles_train(string path, vector<string> & files){
 				string sss = ss + ptr1->d_name; 
 				files.push_back(sss);           //返回图片路径
 				train_labels_ori.push_back(person_id); // vector<int> train_labels_ori;添加标签
-			}
+			}	
 			closedir(dir1);
 			if(exit_flag==1){
 				person_id++; //下一个文件夹 下一个人的标签++		
@@ -119,9 +118,7 @@ void getFaces_test(vector<Mat> mat_v, Mat & trainingImages){
 
 
 MatrixXd ELM_in_ELM_face_training_matrix_from_files(){
-
 	cout << "Loading train Data..." << endl;
-
 	Mat trainingImages;
 	getFaces_train(trainfile_path, trainingImages, trainingLabels);
 	MatrixXd feature(trainingImages.rows, trainingImages.cols); //创建新的矩阵
