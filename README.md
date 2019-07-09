@@ -12,7 +12,7 @@ alignment 9ms
 
 elm-in-elm test 61ms
 
-**代码结构**：
+##### **代码结构**：
 
 make.cpp为主文件
 
@@ -32,13 +32,25 @@ zmq/*.cpp 为无界面server代码 方便ARM调试
 
 Qt/server/* 为Qt可视化界面代码 采用CMake管理 Qmake保证不能用
 
-以上所有模块函数 请mkdir build；cd build；cmake ..;make;make install;(/usr/local/lib)如果没有添加lib路径请自行添加
-
 Android系统可视化界面代码请见另外一个仓库 AS-ELM ，使用时注意OpenCV的配置
 
+##### 使用说明
 
+本项目统一使用CMake管理，为了方便用户PC上使用，不再需要分模块编译，现使用当前目录下CMakeLists完成统一编译。
 
-###
-master为ARM当前版本代码
+> mkdir build;cd build;cmake ..;make -j4;
 
- 如果LINUX使用 去掉CMake指定编译器和NEON操作即可编译
+cmake  -DCMAKE_BUILD_TYPE=Release ..
+
+##### 依赖库
+
+本项目PC版本运行在Arch系统：
+
+OpenCV，需要手动安装OpenCV的依赖项VTK；
+
+本项目保存了当时依赖的Dlib库的源文件，可以自行编译安装；
+
+在ARM与可视化界面（PC上的QT，安卓上的App）的信息通讯依赖于ZeroMQ，通过Arch官方库安装；
+
+其他依赖项没想起来欢迎反馈QAQ
+
