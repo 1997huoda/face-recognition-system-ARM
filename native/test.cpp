@@ -12,8 +12,8 @@ float getticks()
 	return ts.tv_sec + 1e-9f*ts.tv_nsec;
 }
 
-cv::Size size_box(80, 80);
-cv::Size nor(320, 160);//160 120// 320 160 // 128 96 //
+cv::Size size_box(100, 100);
+cv::Size nor(320, 240);//160 120// 320 240 // 128 96 // 640 480 //
 
 vector<location> final_location;
 
